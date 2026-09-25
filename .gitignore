@@ -7,3 +7,5 @@ coverage
 *.blueprint
 !examples/*.blueprint
 !src/**/__fixtures__/*.blueprint
+test-results
+playwright-report

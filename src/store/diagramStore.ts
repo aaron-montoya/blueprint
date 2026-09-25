@@ -22,6 +22,7 @@ import { partLayoutOf, partRect } from '../geometry/wireGeometry';
 import type { Rect } from '../geometry/routing';
 import type { DiagramContent } from './convert';
 import {
+  SECTION_DRAG_HANDLE,
   SECTION_Z,
   isPartNode,
   isSectionNode,
@@ -288,6 +289,7 @@ export const useDiagram = create<DiagramState>()((set, get) => {
             width: Math.max(80, snapV(rect.width)),
             height: Math.max(60, snapV(rect.height)),
             zIndex: SECTION_Z,
+            dragHandle: SECTION_DRAG_HANDLE,
             data: { label, color: SECTION_COLORS[count % SECTION_COLORS.length] },
           },
           ...s.nodes,

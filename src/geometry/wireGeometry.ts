@@ -3,6 +3,7 @@ import type { DiagramNode, PartNode, WireEdge } from '../store/types';
 import { isPartNode } from '../store/types';
 import { computeHops, pathWithHops, type Hop } from './hops';
 import { isHorizontalSide, layoutPart, type PartLayout } from './partLayout';
+import { astarCoords, Occupancy } from './astar';
 import { autoCoords, coordsFromPoints, pathFromCoords, simplify, type Anchor, type Rect } from './routing';
 
 export interface WireGeometry {
@@ -47,31 +48,48 @@ export function computeWireGeometry(nodes: DiagramNode[], edges: WireEdge[]): Ma
   const parts = new Map<string, PartNode>();
   for (const n of nodes) if (isPartNode(n)) parts.set(n.id, n);
 
-  const pending: { id: string; g: Omit<WireGeometry, 'hops' | 'd'> }[] = [];
+  // Manual (frozen) and straight wires are fixed; route them first so the
+  // auto-router can steer the rest around them.
+  const obstacles = [...parts.values()].map(partRect);
+  const occupancy = new Occupancy();
+  const pending: ({ id: string; g: Omit<WireGeometry, 'hops' | 'd'> } | null)[] = [];
+  const auto: { index: number; id: string; source: Anchor; target: Anchor; sNode: PartNode; tNode: PartNode }[] = [];
   for (const e of edges) {
     const sNode = parts.get(e.source);
     const tNode = parts.get(e.target);
     const source = pinAnchor(sNode, e.sourceHandle);
     const target = pinAnchor(tNode, e.targetHandle);
     if (!source || !target || !e.data) continue;
-    let raw: XY[];
-    let coords: number[] = [];
+    const firstH = isHorizontalSide(source.side);
     if (e.data.route === 'straight') {
-      raw = [{ x: source.x, y: source.y }, ...(e.data.points ?? []), { x: target.x, y: target.y }];
+      const raw = [{ x: source.x, y: source.y }, ...(e.data.points ?? []), { x: target.x, y: target.y }];
+      pending.push({ id: e.id, g: { source, target, raw, coords: [], points: simplify(raw) } });
+    } else if (e.data.points?.length) {
+      const coords = coordsFromPoints(e.data.points, firstH);
+      const raw = pathFromCoords(source, target, coords, firstH);
+      const points = simplify(raw);
+      occupancy.add(points);
+      pending.push({ id: e.id, g: { source, target, raw, coords, points } });
     } else {
-      const firstH = isHorizontalSide(source.side);
-      coords =
-        e.data.points && e.data.points.length
-          ? coordsFromPoints(e.data.points, firstH)
-          : autoCoords(source, target, [partRect(sNode!), ...(tNode !== sNode ? [partRect(tNode!)] : [])]);
-      raw = pathFromCoords(source, target, coords, firstH);
+      auto.push({ index: pending.length, id: e.id, source, target, sNode: sNode!, tNode: tNode! });
+      pending.push(null);
     }
-    pending.push({ id: e.id, g: { source, target, raw, coords, points: simplify(raw) } });
+  }
+  for (const { index, id, source, target, sNode, tNode } of auto) {
+    const firstH = isHorizontalSide(source.side);
+    const coords =
+      astarCoords(source, target, obstacles, occupancy) ??
+      autoCoords(source, target, [partRect(sNode), ...(tNode !== sNode ? [partRect(tNode)] : [])]);
+    const raw = pathFromCoords(source, target, coords, firstH);
+    const points = simplify(raw);
+    occupancy.add(points);
+    pending[index] = { id, g: { source, target, raw, coords, points } };
   }
 
-  const hops = computeHops(pending.map((p) => p.g.points));
+  const routed = pending.filter((p) => p !== null);
+  const hops = computeHops(routed.map((p) => p.g.points));
   const result = new Map<string, WireGeometry>();
-  pending.forEach((p, i) => result.set(p.id, { ...p.g, hops: hops[i], d: pathWithHops(p.g.points, hops[i]) }));
+  routed.forEach((p, i) => result.set(p.id, { ...p.g, hops: hops[i], d: pathWithHops(p.g.points, hops[i]) }));
 
   lastNodes = nodes;
   lastEdges = edges;

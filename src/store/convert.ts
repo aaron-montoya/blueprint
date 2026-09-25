@@ -9,7 +9,7 @@ import {
   type WireRecord,
 } from '../model/format';
 import type { DiagramNode, NoteNode, PartNode, SectionNode, WireEdge } from './types';
-import { SECTION_Z } from './types';
+import { SECTION_DRAG_HANDLE, SECTION_Z } from './types';
 
 export interface DiagramContent {
   nodes: DiagramNode[];
@@ -97,6 +97,7 @@ export function fromFile(file: DiagramFile): DiagramContent {
     width: s.width,
     height: s.height,
     zIndex: SECTION_Z,
+    dragHandle: SECTION_DRAG_HANDLE,
     data: { label: s.label, color: s.color },
   }));
   const parts: PartNode[] = file.parts.map((p) => ({

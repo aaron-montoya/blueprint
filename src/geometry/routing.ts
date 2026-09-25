@@ -249,10 +249,11 @@ export function dragOrthoSegment(
   coords: number[],
   index: number,
   value: number,
+  snapToGrid = true,
 ): number[] {
   const firstH = isHorizontalSide(source.side);
   const k = coords.length;
-  const v = snap(value);
+  const v = snapToGrid ? snap(value) : Math.round(value);
   if (index >= 1 && index <= k) {
     const next = [...coords];
     next[index - 1] = v;

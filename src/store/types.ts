@@ -28,5 +28,6 @@ export const isPartNode = (n: DiagramNode): n is PartNode => n.type === 'part';
 export const isSectionNode = (n: DiagramNode): n is SectionNode => n.type === 'section';
 export const isNoteNode = (n: DiagramNode): n is NoteNode => n.type === 'note';
 
-/** Sections sit behind wires and parts. */
+/** Sections sit behind wires and parts, and are dragged by their label tab. */
 export const SECTION_Z = -1;
+export const SECTION_DRAG_HANDLE = '.section-tab';
