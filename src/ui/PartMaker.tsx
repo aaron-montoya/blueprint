@@ -51,7 +51,7 @@ function PinRow({
       <input
         className="text-input mono"
         value={pin.label}
-        placeholder="Label, e.g. D23 · MOSI"
+        placeholder="Label, e.g. OUT"
         autoFocus={autoFocus}
         onChange={(e) => onChange({ label: e.target.value })}
         aria-label="Pin label"

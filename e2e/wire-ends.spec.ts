@@ -31,7 +31,7 @@ test('drag a selected wire end onto another pin; custom heading prints', async (
   await drag(page, await center(pin(page, 'ESP32 DevKit V1', 'D23')), await center(pin(page, 'XLR Jack', '1')));
   await page.getByRole('tab', { name: /Connections/ }).click();
   const row = page.locator('table.connections tbody tr:not(.conn-editor)');
-  await expect(row).toContainText('D23 · MOSI');
+  await expect(row).toContainText('D23');
 
   // The new wire is selected, so its end grips are showing.
   const grips = page.locator('.wire-handle.end');
@@ -44,18 +44,18 @@ test('drag a selected wire end onto another pin; custom heading prints', async (
   await page.locator('table.connections tbody tr').first().click();
   const espGrip = (await grips.nth(0).boundingBox())!.x < (await grips.nth(1).boundingBox())!.x ? grips.nth(0) : grips.nth(1);
   await drag(page, await center(espGrip), await center(pin(page, 'ESP32 DevKit V1', 'D19')));
-  await expect(row).toContainText('D19 · MISO');
+  await expect(row).toContainText('D19');
   await expect(page.locator('g.wire')).toHaveCount(1);
   await page.screenshot({ path: testInfo.outputPath('moved-end.png') });
   // Dropping on empty canvas changes nothing.
   await page.locator('table.connections tbody tr').first().click();
   const g = await center(grips.first());
   await drag(page, g, { x: g.x, y: g.y + 200 });
-  await expect(row).toContainText('D19 · MISO');
+  await expect(row).toContainText('D19');
   await expect(row.locator('td').nth(2)).toContainText('3');
   // Undo walks it back.
   await page.keyboard.press('Control+z');
-  await expect(row).toContainText('D23 · MOSI');
+  await expect(row).toContainText('D23');
 
   // ---- heading
   await page.getByRole('tab', { name: 'Title block' }).click();

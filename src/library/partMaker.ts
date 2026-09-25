@@ -67,7 +67,7 @@ export function uniquePartId(name: string, taken: Set<string>): string {
   return id;
 }
 
-/** Same rule as the library converter: "D23 · MOSI" → "D23". */
+/** Same rule as the library converter: "VP · 36" → "VP". */
 export const pinIdFromLabel = (label: string) => label.split(' · ')[0].trim() || 'pin';
 
 /** Problems that block saving, in plain words. */

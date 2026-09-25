@@ -118,14 +118,14 @@
     },
     {
      "id": "D23",
-     "label": "D23 · MOSI",
+     "label": "D23",
      "side": "right",
      "index": 0,
      "type": "io"
     },
     {
      "id": "D22",
-     "label": "D22 · SCL",
+     "label": "D22",
      "side": "right",
      "index": 1,
      "type": "io"
@@ -146,28 +146,28 @@
     },
     {
      "id": "D21",
-     "label": "D21 · SDA",
+     "label": "D21",
      "side": "right",
      "index": 4,
      "type": "io"
     },
     {
      "id": "D19",
-     "label": "D19 · MISO",
+     "label": "D19",
      "side": "right",
      "index": 5,
      "type": "io"
     },
     {
      "id": "D18",
-     "label": "D18 · SCK",
+     "label": "D18",
      "side": "right",
      "index": 6,
      "type": "io"
     },
     {
      "id": "D5",
-     "label": "D5 · SS",
+     "label": "D5",
      "side": "right",
      "index": 7,
      "type": "strap"

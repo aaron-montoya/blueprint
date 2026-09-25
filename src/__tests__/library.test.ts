@@ -25,12 +25,13 @@ describe('built-in library', () => {
       'EN', 'VP · 36', 'VN · 39', 'D34', 'D35', 'D32', 'D33', 'D25', 'D26', 'D27', 'D14', 'D12', 'D13', 'GND', 'VIN',
     ]);
     expect(side('ESP32 DevKit V1', 'right').map((p) => p.label)).toEqual([
-      'D23 · MOSI', 'D22 · SCL', 'TX0', 'RX0', 'D21 · SDA', 'D19 · MISO', 'D18 · SCK', 'D5 · SS', 'D17', 'D16', 'D4', 'D2', 'D15', 'GND', '3V3',
+      'D23', 'D22', 'TX0', 'RX0', 'D21', 'D19', 'D18', 'D5', 'D17', 'D16', 'D4', 'D2', 'D15', 'GND', '3V3',
     ]);
     const byType = (t: string) => esp.pins.filter((p) => p.type === t).map((p) => p.id).sort();
     expect(byType('input')).toEqual(['D34', 'D35', 'VN', 'VP']);
     expect(byType('strap')).toEqual(['D12', 'D15', 'D2', 'D5']);
-    expect(esp.pins.find((p) => p.id === 'D23')?.label).toBe('D23 · MOSI');
+    // Plain pin names only: what a pin is used for belongs in each diagram, not the part.
+    expect(esp.pins.map((p) => p.label).filter((l) => /MOSI|MISO|SCK|SCL|SDA|SS/.test(l))).toEqual([]);
   });
 
   it('keeps the required notes', () => {

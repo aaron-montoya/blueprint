@@ -124,8 +124,8 @@ ESP32 = Part(
     left=[("EN", NC), ("VP · 36", IN), ("VN · 39", IN), ("D34", IN), ("D35", IN),
           ("D32", IO), ("D33", IO), ("D25", IO), ("D26", IO), ("D27", IO),
           ("D14", IO), ("D12", S), ("D13", IO), ("GND", G), ("VIN", P)],
-    right=[("D23 · MOSI", IO), ("D22 · SCL", IO), ("TX0", NC), ("RX0", NC), ("D21 · SDA", IO),
-           ("D19 · MISO", IO), ("D18 · SCK", IO), ("D5 · SS", S), ("D17", IO), ("D16", IO),
+    right=[("D23", IO), ("D22", IO), ("TX0", NC), ("RX0", NC), ("D21", IO),
+           ("D19", IO), ("D18", IO), ("D5", S), ("D17", IO), ("D16", IO),
            ("D4", IO), ("D2", S), ("D15", S), ("GND", G), ("3V3", P)],
     note="blue = input only · orange = boot/strapping pin")
 

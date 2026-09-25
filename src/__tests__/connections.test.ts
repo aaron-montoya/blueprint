@@ -21,7 +21,7 @@ describe('connection list', () => {
     const rows = connectionRows({ nodes, edges });
     expect(rows.map((r) => [r.from.part, r.from.pin, r.colorName, r.to.part, r.to.pin, r.label])).toEqual([
       ['ESP32', 'GND', 'Black', 'LED 1', '− (K)', ''],
-      ['ESP32', 'D23 · MOSI', 'White/Blue', 'Top XLR 1', '1', 'D23 → Top XLR 1'],
+      ['ESP32', 'D23', 'White/Blue', 'Top XLR 1', '1', 'D23 → Top XLR 1'],
     ]);
   });
 
