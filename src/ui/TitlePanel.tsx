@@ -62,7 +62,7 @@ function TitleBlockTab() {
           <input
             className="text-input"
             value={title[f.key]}
-            placeholder={f.key === 'updated' ? new Date().toLocaleDateString() : ''}
+            placeholder={f.placeholder ?? (f.key === 'updated' ? new Date().toLocaleDateString() : '')}
             onChange={(e) => setTitle(f.key, e.target.value)}
             onKeyDown={(e) => e.stopPropagation()}
           />

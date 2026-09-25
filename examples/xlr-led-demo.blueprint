@@ -4,7 +4,7 @@
   "title": {
     "room": "Example (made-up)",
     "prop": "XLR + LED demo",
-    "firmware": "demo-fw v0.1",
+    "firmware": "pz-exampleDemo",
     "wiredBy": "Blueprint example",
     "updated": "2026-09-25"
   },

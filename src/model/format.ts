@@ -136,6 +136,7 @@ export interface TitleBlock {
   heading: string;
   room: string;
   prop: string;
+  /** Device ID in Mastermind, e.g. pz-elementCombo / dv-podium1SC. (Stored as "firmware" for older files.) */
   firmware: string;
   wiredBy: string;
   updated: string;
@@ -143,10 +144,10 @@ export interface TitleBlock {
 
 export const EMPTY_TITLE: TitleBlock = { heading: DEFAULT_HEADING, room: '', prop: '', firmware: '', wiredBy: '', updated: '' };
 
-export const TITLE_FIELDS: { key: Exclude<keyof TitleBlock, 'heading'>; label: string }[] = [
+export const TITLE_FIELDS: { key: Exclude<keyof TitleBlock, 'heading'>; label: string; placeholder?: string }[] = [
   { key: 'room', label: 'Room' },
   { key: 'prop', label: 'Prop' },
-  { key: 'firmware', label: 'Firmware' },
+  { key: 'firmware', label: 'ID', placeholder: 'e.g. pz-elementCombo' },
   { key: 'wiredBy', label: 'Wired by' },
   { key: 'updated', label: 'Updated' },
 ];
