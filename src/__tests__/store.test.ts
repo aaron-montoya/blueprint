@@ -102,7 +102,7 @@ describe('diagram store', () => {
     const json = JSON.parse(JSON.stringify(file));
     const again = toFile(fromFile(validateDiagram(json)));
     expect(again).toEqual(file);
-    expect(file.parts[0].part.pins.length).toBe(30); // full definition embedded
+    expect(file.parts[0].part.pins.length).toBe(def('ESP32 DevKit V1').pins.length); // full definition embedded
   });
 
   it('keeps a custom heading and defaults it for older files', () => {

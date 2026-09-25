@@ -219,6 +219,13 @@
      "side": "right",
      "index": 14,
      "type": "power"
+    },
+    {
+     "id": "USB-C",
+     "label": "USB-C",
+     "side": "bottom",
+     "index": 0,
+     "type": "power"
     }
    ]
   },

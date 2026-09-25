@@ -131,9 +131,6 @@ function computeLayout(def: PartDefinition, rotation: Rotation, flip: boolean, l
   const headerHeight = subtitleLine ? HEADER_TWO_LINES : HEADER_ONE_LINE;
 
   const longest = (pins: PinDefinition[]) => Math.max(0, ...pins.map((p) => p.label.length));
-  const tbVertical = (pins: PinDefinition[]) => longest(pins) > 3;
-  const tbLabelSpace = (pins: PinDefinition[]) =>
-    pins.length === 0 ? 0 : ceilTo((tbVertical(pins) ? longest(pins) * PIN_FONT_CHAR : 10) + 10, GRID);
 
   // ---- width
   const lrWidth =
@@ -145,6 +142,11 @@ function computeLayout(def: PartDefinition, rotation: Rotation, flip: boolean, l
   const tbWidth = (tbCount + 1) * PIN_PITCH;
   const preferred = rotation % 180 === 0 ? (def.width ?? 0) : 0;
   const width = ceilTo(Math.max(100, lrWidth, Math.min(titleWidth, 260), tbWidth, preferred), 2 * GRID);
+  const tbPitch = Math.max(PIN_PITCH, Math.floor(width / (tbCount + 1) / (2 * GRID)) * 2 * GRID);
+  // Top/bottom labels stay horizontal when they fit between neighbouring pins.
+  const tbVertical = (pins: PinDefinition[]) => longest(pins) * PIN_FONT_CHAR > tbPitch - 4;
+  const tbLabelSpace = (pins: PinDefinition[]) =>
+    pins.length === 0 ? 0 : ceilTo((tbVertical(pins) ? longest(pins) * PIN_FONT_CHAR : 10) + 10, GRID);
 
   // ---- height
   const topSpace = tbLabelSpace(top);
@@ -170,7 +172,6 @@ function computeLayout(def: PartDefinition, rotation: Rotation, flip: boolean, l
   right.forEach((def, i) =>
     pins.push({ def, side: 'right', x: width, y: rowsTop + i * PIN_PITCH + PIN_PITCH / 2, verticalLabel: false }),
   );
-  const tbPitch = Math.max(PIN_PITCH, Math.floor(width / (tbCount + 1) / (2 * GRID)) * 2 * GRID);
   const placeTB = (list: PinDefinition[], side: 'top' | 'bottom') => {
     const vertical = tbVertical(list);
     list.forEach((def, i) =>

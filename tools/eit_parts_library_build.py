@@ -126,7 +126,8 @@ ESP32 = Part(
           ("D14", IO), ("D12", S), ("D13", IO), ("GND", G), ("VIN", P)],
     right=[("D23", IO), ("D22", IO), ("TX0", NC), ("RX0", NC), ("D21", IO),
            ("D19", IO), ("D18", IO), ("D5", S), ("D17", IO), ("D16", IO),
-           ("D4", IO), ("D2", S), ("D15", S), ("GND", G), ("3V3", P)])
+           ("D4", IO), ("D2", S), ("D15", S), ("GND", G), ("3V3", P)],
+    bottom=[("USB-C", P)])
 
 PI_LEFT = ["3V3", "GPIO2 SDA", "GPIO3 SCL", "GPIO4", "GND", "GPIO17", "GPIO27", "GPIO22", "3V3",
            "GPIO10 MOSI", "GPIO9 MISO", "GPIO11 SCLK", "GND", "ID_SD", "GPIO5", "GPIO6", "GPIO13",
