@@ -1,5 +1,402 @@
 {
-  "formatVersion": 1,
-  "name": "EIT added parts",
-  "parts": []
+ "formatVersion": 1,
+ "name": "EIT added parts",
+ "parts": [
+  {
+   "formatVersion": 1,
+   "id": "jst-5-pin",
+   "name": "JST 5-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5",
+     "label": "5",
+     "side": "left",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5.right",
+     "label": "5",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jst-6-pin",
+   "name": "JST 6-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5",
+     "label": "5",
+     "side": "left",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "6",
+     "label": "6",
+     "side": "left",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5.right",
+     "label": "5",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "6.right",
+     "label": "6",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jst-7-pin",
+   "name": "JST 7-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5",
+     "label": "5",
+     "side": "left",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "6",
+     "label": "6",
+     "side": "left",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "7",
+     "label": "7",
+     "side": "left",
+     "index": 6,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5.right",
+     "label": "5",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "6.right",
+     "label": "6",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "7.right",
+     "label": "7",
+     "side": "right",
+     "index": 6,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jst-8-pin",
+   "name": "JST 8-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5",
+     "label": "5",
+     "side": "left",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "6",
+     "label": "6",
+     "side": "left",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "7",
+     "label": "7",
+     "side": "left",
+     "index": 6,
+     "type": "other"
+    },
+    {
+     "id": "8",
+     "label": "8",
+     "side": "left",
+     "index": 7,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "5.right",
+     "label": "5",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "6.right",
+     "label": "6",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "7.right",
+     "label": "7",
+     "side": "right",
+     "index": 6,
+     "type": "other"
+    },
+    {
+     "id": "8.right",
+     "label": "8",
+     "side": "right",
+     "index": 7,
+     "type": "other"
+    }
+   ]
+  }
+ ]
 }
