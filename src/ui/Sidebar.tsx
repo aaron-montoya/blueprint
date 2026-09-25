@@ -105,6 +105,11 @@ export function Sidebar() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Escape' && setQuery('')}
         />
+        {query && (
+          <button className="search-clear" onClick={() => setQuery('')} title="Clear search (Esc)" aria-label="Clear search">
+            ×
+          </button>
+        )}
       </div>
       <div className="sidebar-scroll">
         {categories.map((cat) => {

@@ -366,8 +366,35 @@ kbd {
   min-height: 0;
 }
 .sidebar-search {
+  position: relative;
   padding: 8px;
   border-bottom: 1px solid var(--border);
+}
+.sidebar-search .text-input {
+  padding-right: 30px;
+}
+/* Our own clear button replaces Chrome's small built-in one. */
+.sidebar-search input::-webkit-search-cancel-button {
+  display: none;
+}
+.search-clear {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: #d5dbe3;
+  color: #333;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+.search-clear:hover {
+  background: #b9c2ce;
 }
 .sidebar-scroll {
   flex: 1;

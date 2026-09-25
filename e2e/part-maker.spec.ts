@@ -43,7 +43,8 @@ test('make a part, copy a part, wire them, see the connection list and PDF', asy
   await expect(maker.getByPlaceholder('e.g. Hall Sensor')).toHaveValue('Reed Switch (copy)');
   await maker.getByPlaceholder('e.g. Hall Sensor').fill('Test Reed (NC)');
   await maker.getByRole('button', { name: 'Save & add to canvas' }).click();
-  await page.getByPlaceholder('Search parts').fill('');
+  await page.getByRole('button', { name: 'Clear search' }).click();
+  await expect(page.getByPlaceholder('Search parts')).toHaveValue('');
   await expect(part(page, 'Test Reed (NC)')).toHaveCount(1);
   // The built-in is untouched.
   await page.getByPlaceholder('Search parts').fill('Reed Switch');
