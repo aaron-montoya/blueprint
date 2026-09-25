@@ -1318,3 +1318,212 @@ tr.conn-editor:hover {
 .sidebar-section .part-tile:hover {
   background: var(--cat-fill, #f7faff);
 }
+
+/* ============================================================ small screens */
+
+.compact-only {
+  display: none !important;
+}
+.drawer-backdrop {
+  display: none;
+}
+
+/* Toolbar: the middle group can scroll sideways on narrow screens. */
+.tb-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+.toolbar {
+  overflow: visible;
+}
+
+@media (max-width: 900px) {
+  .tb-scroll {
+    scrollbar-width: none;
+    gap: 4px;
+    padding: 0 2px;
+  }
+  .tb-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .brand {
+    display: none;
+  }
+  .compact-only {
+    display: inline-flex !important;
+  }
+  .tb-label {
+    display: none;
+  }
+  .toolbar {
+    gap: 4px;
+    padding: 0 6px;
+  }
+  .toolbar .btn {
+    padding: 0 8px;
+  }
+  .toolbar .tb-sep {
+    margin: 0 1px;
+  }
+  .brand {
+    margin-right: 0;
+  }
+
+  /* Canvas takes the whole screen; sidebars slide over it. */
+  .app,
+  .app.with-panel {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'toolbar' 'main';
+  }
+  .sidebar,
+  .title-panel {
+    position: fixed;
+    top: 46px;
+    bottom: 0;
+    z-index: 40;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    transition: transform 0.18s ease;
+  }
+  .sidebar {
+    left: 0;
+    width: min(300px, 86vw);
+    transform: translateX(-105%);
+  }
+  .app.drawer-parts .sidebar {
+    transform: none;
+  }
+  .title-panel,
+  .title-panel.wide {
+    right: 0;
+    width: min(420px, 92vw);
+  }
+  .drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 46px 0 0 0;
+    z-index: 35;
+    background: rgba(20, 28, 40, 0.35);
+  }
+
+  /* Wire bar: just the colors and a label field. */
+  .wire-bar {
+    gap: 6px;
+    padding: 5px 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: calc(100% - 16px);
+  }
+  .wire-bar-ends {
+    display: none;
+  }
+  .wire-bar .swatches {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .wire-bar .text-input {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  /* Part Maker: one column, full screen. */
+  .modal-backdrop {
+    padding: 0;
+  }
+  .modal {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  .pm-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 220px;
+    overflow-y: auto;
+  }
+  .pm-form {
+    border-right: none;
+    overflow: visible;
+    padding: 10px;
+  }
+  .pm-preview {
+    border-top: 1px solid var(--border);
+  }
+  .pm-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pm-pin {
+    grid-template-columns: 10px minmax(0, 1fr) 96px 64px 22px 22px 22px;
+    gap: 3px;
+  }
+  .modal-foot {
+    flex-wrap: wrap;
+  }
+  .pm-problems {
+    flex-basis: 100%;
+  }
+  .react-flow__minimap {
+    display: none;
+  }
+}
+
+/* ============================================================ touch screens */
+
+@media (pointer: coarse) {
+  /* Pins stay small on screen but get a finger-sized touch area. */
+  .react-flow__handle.pin::before {
+    content: '';
+    position: absolute;
+    inset: -9px;
+  }
+  .wire-handle,
+  .react-flow__resize-control,
+  .react-flow__handle {
+    touch-action: none;
+  }
+  .wire-handle.segment.ns {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(1.6, 2.2);
+  }
+  .wire-handle.segment.ew {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(2.2, 1.6);
+  }
+  .wire-handle.end,
+  .wire-handle.bend {
+    r: 9px;
+  }
+  .wire-handle.mid {
+    r: 7px;
+  }
+  /* 16px text stops phones from zooming in when an input gets focus. */
+  .text-input,
+  .part-title-input,
+  .note-text,
+  .section-tab input {
+    font-size: 16px;
+  }
+  .btn,
+  .segmented {
+    min-height: 36px;
+  }
+  .part-tile {
+    padding: 8px 9px;
+  }
+  .part-tile-actions {
+    display: inline-flex;
+  }
+  .part-tile-pins {
+    display: none;
+  }
+  .conn-actions .icon-btn {
+    opacity: 1;
+  }
+}

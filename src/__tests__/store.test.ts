@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto';
 import { BUILTIN_PARTS } from '../library/builtin';
 import { EMPTY_TITLE, validateDiagram } from '../model/format';
 import { fromFile, toFile } from '../store/convert';
-import { useDiagram } from '../store/diagramStore';
+import { freeSpot, nodeRect, useDiagram } from '../store/diagramStore';
 import { listDiagrams, loadDiagram, saveDiagram } from '../store/persistence';
 import type { DiagramNode } from '../store/types';
 
@@ -112,6 +112,19 @@ describe('diagram store', () => {
     expect(validateDiagram(file).title.heading).toBe('MY SHOP — WIRING');
     delete file.title.heading;
     expect(validateDiagram(file).title.heading).toBe('ESCAPES IN TIME — WIRING');
+  });
+
+  it('finds a free spot for a new part instead of stacking it on another', () => {
+    setup();
+    const esp = nodeRect(st().nodes[0]);
+    const spot = freeSpot(st().nodes, 120, 80, { x: esp.x + 10, y: esp.y + 10 });
+    const overlaps = st().nodes.some((n) => {
+      const r = nodeRect(n);
+      return spot.x < r.x + r.width && spot.x + 120 > r.x && spot.y < r.y + r.height && spot.y + 80 > r.y;
+    });
+    expect(overlaps).toBe(false);
+    // An empty area is used as-is.
+    expect(freeSpot(st().nodes, 120, 80, { x: 2000, y: 2000 })).toEqual({ x: 2000, y: 2000 });
   });
 
   it('rejects wires that point at missing pins', () => {

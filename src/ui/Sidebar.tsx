@@ -1,11 +1,13 @@
 import { useReactFlow } from '@xyflow/react';
 import { useMemo, useState } from 'react';
 import { exportLibrary, importLibrary } from '../app/commands';
+import { isTouch } from '../app/media';
 import { useUi } from '../app/uiStore';
 import { PART_DRAG_TYPE } from '../canvas/Canvas';
 import { categoryFill, categoryStrong, PIN_TYPE_INFO, type PartDefinition } from '../model/format';
 import { allParts, categoriesOf, isCustom, useLibrary } from '../library/libraryStore';
-import { useDiagram } from '../store/diagramStore';
+import { freeSpot, useDiagram } from '../store/diagramStore';
+import { layoutPart } from '../geometry/partLayout';
 
 function PartTile({ part, custom, onAdd }: { part: PartDefinition; custom: boolean; onAdd: () => void }) {
   const removeCustom = useLibrary((s) => s.removeCustom);
@@ -20,6 +22,8 @@ function PartTile({ part, custom, onAdd }: { part: PartDefinition; custom: boole
         e.dataTransfer.effectAllowed = 'copy';
       }}
       onDoubleClick={onAdd}
+      // Touch screens can't drag-and-drop from here: a tap adds the part.
+      onClick={() => isTouch() && onAdd()}
       title={`${part.name}${part.subtitle ? ` — ${part.subtitle}` : ''}\n${part.pins.length} pins${part.note ? `\n${part.note}` : ''}\n\nDrag onto the canvas (or double-click)`}
     >
       <div className="part-tile-main">
@@ -75,7 +79,7 @@ function PartTile({ part, custom, onAdd }: { part: PartDefinition; custom: boole
 export function Sidebar() {
   const custom = useLibrary((s) => s.custom);
   const addPart = useDiagram((s) => s.addPart);
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, flowToScreenPosition, setCenter, getZoom } = useReactFlow();
   const [query, setQuery] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
@@ -90,8 +94,17 @@ export function Sidebar() {
 
   const addAtCenter = (part: PartDefinition) => {
     const el = document.querySelector('.react-flow')!.getBoundingClientRect();
-    const p = screenToFlowPosition({ x: el.left + el.width / 2, y: el.top + el.height / 2 });
-    addPart(part, { x: p.x - 60, y: p.y - 40 });
+    const c = screenToFlowPosition({ x: el.left + el.width / 2, y: el.top + el.height / 2 });
+    // Put it near the middle of the view, but never on top of another part.
+    const l = layoutPart(part, 0, false, part.name);
+    const at = freeSpot(useDiagram.getState().nodes, l.width, l.height, { x: c.x - l.width / 2, y: c.y - l.height / 2 });
+    addPart(part, at);
+    useUi.getState().setDrawer(null);
+    // If that spot is off-screen, bring it into view.
+    const tl = flowToScreenPosition(at);
+    const br = flowToScreenPosition({ x: at.x + l.width, y: at.y + l.height });
+    if (tl.x < el.left || tl.y < el.top || br.x > el.right || br.y > el.bottom)
+      setCenter(at.x + l.width / 2, at.y + l.height / 2, { zoom: getZoom(), duration: 250 });
   };
 
   return (

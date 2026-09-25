@@ -17,6 +17,7 @@ import {
 } from '@xyflow/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { exportBlueprint } from '../app/commands';
+import { useTouch } from '../app/media';
 import { useUi } from '../app/uiStore';
 import { categoryStrong, WIRE_COLORS } from '../model/format';
 import { GRID } from '../geometry/partLayout';
@@ -106,11 +107,25 @@ export function Canvas() {
   const diagramId = useDiagram((s) => s.diagramId);
   const tool = useUi((s) => s.tool);
   const modalOpen = useUi((s) => s.partMaker !== null);
+  const touch = useTouch();
   const setTool = useUi((s) => s.setTool);
   const { screenToFlowPosition, fitView } = useReactFlow();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [popover, setPopover] = useState<PopoverTarget | null>(null);
   const connecting = useConnection((c) => c.inProgress);
+
+  // Touch: a finger that starts on a pin is drawing a wire, so stop the
+  // browser from also treating it as its own gesture. Without this, the next
+  // tap after drawing a wire can be swallowed.
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => {
+      if ((e.target as Element | null)?.closest?.('.react-flow__handle, .wire-handle')) e.preventDefault();
+    };
+    el.addEventListener('touchstart', onTouchStart, { passive: false });
+    return () => el.removeEventListener('touchstart', onTouchStart);
+  }, []);
 
   const geometry = useMemo(() => computeWireGeometry(nodes, edges), [nodes, edges]);
 
@@ -246,8 +261,10 @@ export function Canvas() {
           deleteKeyCode={modalOpen ? null : ['Delete', 'Backspace']}
           multiSelectionKeyCode={['Shift', 'Control', 'Meta']}
           selectionKeyCode={null}
-          selectionOnDrag
-          panOnDrag={[1, 2]}
+          // Mouse: drag empty canvas to box-select, right/middle-drag to pan.
+          // Touch: one finger pans, two fingers pinch-zoom.
+          selectionOnDrag={!touch}
+          panOnDrag={touch ? true : [1, 2]}
           panActivationKeyCode="Space"
           onPaneContextMenu={(e) => e.preventDefault()}
           elevateNodesOnSelect={false}

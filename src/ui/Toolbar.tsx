@@ -98,9 +98,9 @@ function WireColorPicker() {
   const ref = useClickOutside(open, () => setOpen(false));
   return (
     <div className="menu" ref={ref}>
-      <button className="btn" onClick={() => setOpen(!open)} title="Color for the next wire you draw">
+      <button aria-label="New wire" className="btn" onClick={() => setOpen(!open)} title="Color for the next wire you draw">
         <span className={`swatch inline${color === 'white' ? ' white' : ''}`} style={{ background: WIRE_COLORS[color].hex }} />
-        New wire ▾
+        <span className="tb-label">New wire</span> ▾
       </button>
       {open && (
         <div className="menu-panel swatch-panel">
@@ -132,6 +132,8 @@ export function Toolbar() {
   const route = useDiagram((s) => s.defaultRoute);
   const tool = useUi((s) => s.tool);
   const setTool = useUi((s) => s.setTool);
+  const drawer = useUi((s) => s.drawer);
+  const setDrawer = useUi((s) => s.setDrawer);
   const { screenToFlowPosition } = useReactFlow();
 
   const center = () => {
@@ -141,33 +143,42 @@ export function Toolbar() {
 
   return (
     <header className="toolbar">
+      <button
+        className={`btn compact-only${drawer === 'parts' ? ' active' : ''}`}
+        onClick={() => setDrawer(drawer === 'parts' ? null : 'parts')}
+        title="Parts"
+        aria-label="Parts"
+      >
+        ☰ <span className="tb-label">Parts</span>
+      </button>
       <div className="brand" title="Blueprint — wiring diagrams">
         <img src="./favicon.svg" alt="" width={22} height={22} />
-        Blueprint
+        <span className="tb-label">Blueprint</span>
       </div>
+      <div className="tb-scroll">
       <FileMenu />
       <div className="tb-sep" />
-      <button className="btn icon" disabled={!canUndo} onClick={() => st.getState().undo()} title="Undo (Ctrl+Z)">
+      <button className="btn icon" disabled={!canUndo} onClick={() => st.getState().undo()} title="Undo (Ctrl+Z)" aria-label="Undo">
         ↶
       </button>
-      <button className="btn icon" disabled={!canRedo} onClick={() => st.getState().redo()} title="Redo (Ctrl+Y)">
+      <button className="btn icon" disabled={!canRedo} onClick={() => st.getState().redo()} title="Redo (Ctrl+Y)" aria-label="Redo">
         ↷
       </button>
       <div className="tb-sep" />
-      <button className="btn" disabled={!hasPartSelected} onClick={() => st.getState().rotateSelection()} title="Rotate 90° (R)">
-        ⟳ Rotate
+      <button aria-label="Rotate" className="btn" disabled={!hasPartSelected} onClick={() => st.getState().rotateSelection()} title="Rotate 90° (R)">
+        ⟳ <span className="tb-label">Rotate</span>
       </button>
-      <button className="btn" disabled={!hasPartSelected} onClick={() => st.getState().flipSelection()} title="Flip horizontally (F)">
-        ⇋ Flip
+      <button aria-label="Flip" className="btn" disabled={!hasPartSelected} onClick={() => st.getState().flipSelection()} title="Flip horizontally (F)">
+        ⇋ <span className="tb-label">Flip</span>
       </button>
-      <button className="btn" disabled={!hasSelection} onClick={() => st.getState().duplicateSelection()} title="Duplicate (Ctrl+D)">
-        Duplicate
+      <button aria-label="Duplicate" className="btn" disabled={!hasSelection} onClick={() => st.getState().duplicateSelection()} title="Duplicate (Ctrl+D)">
+        ⧉ <span className="tb-label">Duplicate</span>
       </button>
-      <button className="btn" disabled={!hasSelection} onClick={() => st.getState().deleteSelection()} title="Delete (Del)">
-        Delete
+      <button aria-label="Delete" className="btn" disabled={!hasSelection} onClick={() => st.getState().deleteSelection()} title="Delete (Del)">
+        ✕ <span className="tb-label">Delete</span>
       </button>
       <div className="tb-sep" />
-      <button
+      <button aria-label="Section"
         className={`btn${tool === 'section' ? ' active' : ''}`}
         onClick={() => {
           if (st.getState().wrapSelectionInSection()) return;
@@ -175,25 +186,34 @@ export function Toolbar() {
         }}
         title="Draw a labeled section. With parts selected, wraps them in a section."
       >
-        ▭ Section
+        ▭ <span className="tb-label">Section</span>
       </button>
-      <button className="btn" onClick={() => st.getState().addNote({ x: center().x - 90, y: center().y - 40 })} title="Add a note">
-        ✎ Note
+      <button aria-label="Note" className="btn" onClick={() => st.getState().addNote({ x: center().x - 90, y: center().y - 40 })} title="Add a note">
+        ✎ <span className="tb-label">Note</span>
       </button>
       <div className="tb-sep" />
       <WireColorPicker />
       <div className="segmented" title="Routing for new wires">
-        <button className={route === 'orthogonal' ? 'active' : ''} onClick={() => st.getState().setDefaultRoute('orthogonal')}>
-          ┐ Right-angle
+        <button aria-label="Right-angle" className={route === 'orthogonal' ? 'active' : ''} onClick={() => st.getState().setDefaultRoute('orthogonal')}>
+          ┐ <span className="tb-label">Right-angle</span>
         </button>
-        <button className={route === 'straight' ? 'active' : ''} onClick={() => st.getState().setDefaultRoute('straight')}>
-          ╱ Straight
+        <button aria-label="Straight" className={route === 'straight' ? 'active' : ''} onClick={() => st.getState().setDefaultRoute('straight')}>
+          ╱ <span className="tb-label">Straight</span>
         </button>
       </div>
       <label className="toggle" title="Snap parts and wire bends to the grid">
         <input type="checkbox" checked={snap} onChange={(e) => st.getState().setSnapToGrid(e.target.checked)} />
-        Snap
+        <span className="tb-label">Snap</span>
       </label>
+      </div>
+      <button
+        className={`btn compact-only${drawer === 'panel' ? ' active' : ''}`}
+        onClick={() => setDrawer(drawer === 'panel' ? null : 'panel')}
+        title="Title block & connections"
+        aria-label="Title block and connections"
+      >
+        ☷ <span className="tb-label">Info</span>
+      </button>
     </header>
   );
 }

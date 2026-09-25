@@ -95,6 +95,7 @@ function TitleBlockTab() {
         <li>Double-click a part's title to rename it.</li>
         <li>Drag on empty canvas to box-select; right-drag or Space-drag to pan; wheel to zoom.</li>
         <li>R rotate · F flip · Ctrl+D duplicate · Ctrl+S export.</li>
+        <li>On a phone or tablet: ☰ opens the parts (tap one to add it), one finger pans, two fingers zoom, double-tap a title to rename.</li>
       </ul>
       <p className="stats">
         {partCount} parts · {wireCount} wires · autosaved in this browser

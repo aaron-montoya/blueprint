@@ -17,7 +17,7 @@ import {
   type PartDraft,
 } from '../library/partMaker';
 import { PIN_SIDES, PIN_TYPE_INFO, PIN_TYPES, type PartDefinition, type PinSide, type PinType } from '../model/format';
-import { useDiagram } from '../store/diagramStore';
+import { freeSpot, useDiagram } from '../store/diagramStore';
 
 const SIDE_LABEL: Record<PinSide, string> = {
   left: 'Left side (top → bottom)',
@@ -246,7 +246,9 @@ function Editor({ req }: { req: PartMakerRequest }) {
       const vp = document.querySelector<HTMLElement>('.react-flow__viewport');
       if (el && vp) {
         const m = new DOMMatrix(getComputedStyle(vp).transform);
-        addPart(part, { x: (el.width / 2 - m.e) / m.a - 60, y: (el.height / 2 - m.f) / m.d - 40 });
+        const l = layoutPart(part, 0, false, part.name);
+        const c = { x: (el.width / 2 - m.e) / m.a - l.width / 2, y: (el.height / 2 - m.f) / m.d - l.height / 2 };
+        addPart(part, freeSpot(useDiagram.getState().nodes, l.width, l.height, c));
       }
     }
     close();

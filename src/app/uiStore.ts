@@ -15,6 +15,9 @@ interface UiState {
   setTool(tool: UiState['tool']): void;
   partMaker: PartMakerRequest | null;
   openPartMaker(req: PartMakerRequest | null): void;
+  /** Small screens: which slide-out drawer is open. */
+  drawer: 'parts' | 'panel' | null;
+  setDrawer(drawer: UiState['drawer']): void;
 }
 
 let nextToast = 1;
@@ -32,7 +35,9 @@ export const useUi = create<UiState>()((set, get) => ({
   tool: 'select',
   setTool: (tool) => set({ tool }),
   partMaker: null,
-  openPartMaker: (partMaker) => set({ partMaker }),
+  openPartMaker: (partMaker) => set({ partMaker, drawer: null }),
+  drawer: null,
+  setDrawer: (drawer) => set({ drawer }),
 }));
 
 export const toast = (text: string, kind?: 'info' | 'error') => useUi.getState().toast(text, kind);

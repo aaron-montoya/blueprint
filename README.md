@@ -32,6 +32,12 @@ no server, and diagrams never leave your machine unless you export them.
 selection, right-drag / middle-drag / Space-drag to pan, wheel to zoom, and the ⛶ button under the zoom controls to fit
 the whole diagram. Snap to grid can be turned off in the toolbar.
 
+**Phones and tablets:** on narrow screens the parts list and the right panel
+become slide-out drawers — ☰ (top left) for parts, ☷ (top right) for the title
+block and connections. Tap a part to add it, drag from pin to pin with a finger
+to wire, one finger pans, two fingers zoom, double-tap a title to rename. The
+toolbar scrolls sideways if it doesn't fit.
+
 **Shortcuts:** `Ctrl+Z` undo · `Ctrl+Y` redo · `Del` delete · `Ctrl+C`/`Ctrl+V`
 copy/paste · `Ctrl+D` duplicate · `Ctrl+A` select all · `Ctrl+S` export
 `.blueprint` · `R` rotate · `F` flip · `F2` rename · `Esc` deselect.

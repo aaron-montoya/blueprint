@@ -123,6 +123,27 @@ export function nodeRect(n: DiagramNode): Rect {
   };
 }
 
+/**
+ * Nearest spot to `at` where a w×h part doesn't touch any other part or
+ * note (sections are fine to land in). Searches outward in rings.
+ */
+export function freeSpot(nodes: DiagramNode[], w: number, h: number, at: XY, gap = 30): XY {
+  const rects = nodes.filter((n) => n.type !== 'section').map(nodeRect);
+  const clear = (x: number, y: number) =>
+    rects.every((r) => x + w + gap <= r.x || x >= r.x + r.width + gap || y + h + gap <= r.y || y >= r.y + r.height + gap);
+  const step = 40;
+  for (let ring = 0; ring < 40; ring++) {
+    const spots: XY[] = [];
+    for (let i = -ring; i <= ring; i++)
+      for (let j = -ring; j <= ring; j++)
+        if (Math.max(Math.abs(i), Math.abs(j)) === ring) spots.push({ x: at.x + i * step, y: at.y + j * step });
+    spots.sort((a, b) => Math.hypot(a.x - at.x, a.y - at.y) - Math.hypot(b.x - at.x, b.y - at.y));
+    const hit = spots.find((p) => clear(p.x, p.y));
+    if (hit) return { x: snapV(hit.x), y: snapV(hit.y) };
+  }
+  return at;
+}
+
 const inside = (inner: Rect, outer: Rect) =>
   inner.x >= outer.x &&
   inner.y >= outer.y &&

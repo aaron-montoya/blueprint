@@ -2,6 +2,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { importBlueprintFile } from './app/commands';
 import { restoreSession, startAutosave } from './app/session';
+import { useCompact } from './app/media';
 import { useUi } from './app/uiStore';
 import { Canvas } from './canvas/Canvas';
 import { useLibrary } from './library/libraryStore';
@@ -72,19 +73,31 @@ export default function App() {
     };
   }, []);
 
+  // Small screens: the parts sidebar and the right panel are slide-out drawers.
+  const compact = useCompact();
+  const drawer = useUi((s) => s.drawer);
+  const setDrawer = useUi((s) => s.setDrawer);
+  useEffect(() => {
+    if (!compact) setDrawer(null);
+  }, [compact, setDrawer]);
+  const showPanel = compact ? drawer === 'panel' : panelOpen;
+
   return (
     <ReactFlowProvider>
-      <div className={`app${panelOpen ? ' with-panel' : ''}`}>
+      <div className={`app${showPanel ? ' with-panel' : ''}${compact ? ' compact' : ''}${drawer ? ` drawer-${drawer}` : ''}`}>
         <Toolbar />
         <Sidebar />
         <main className="main">{ready ? <Canvas /> : <div className="loading">Loading…</div>}</main>
-        {panelOpen ? (
-          <SidePanel onHide={() => setPanelOpen(false)} />
+        {showPanel ? (
+          <SidePanel onHide={() => (compact ? setDrawer(null) : setPanelOpen(false))} />
         ) : (
-          <button className="panel-reopen" onClick={() => setPanelOpen(true)} title="Show the title block and connection list">
-            <span>« Title block · Connections</span>
-          </button>
+          !compact && (
+            <button className="panel-reopen" onClick={() => setPanelOpen(true)} title="Show the title block and connection list">
+              <span>« Title block · Connections</span>
+            </button>
+          )
         )}
+        {compact && drawer && <div className="drawer-backdrop" onClick={() => setDrawer(null)} />}
       </div>
       <PartMaker />
       <Toasts />
