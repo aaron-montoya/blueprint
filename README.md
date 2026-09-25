@@ -23,13 +23,13 @@ no server, and diagrams never leave your machine unless you export them.
 | Rotate / flip | `R` / `F`, or the toolbar. Pins move with the part. |
 | Group parts | Select them and click **Section** (or click Section with nothing selected and draw a box). Drag the section's tab to move it and everything inside. |
 | Notes | **Note** in the toolbar; double-click to edit. |
-| Title block | Right panel → **Title block** tab: room, prop, firmware, wired by, updated. |
-| Connection list | Right panel → **Connections** tab: every wire as from pin → color → to pin → label. Click a row to find the wire. It's also printed on page 2 of the PDF. |
+| Title block | Right panel → **Title block** tab: room, prop, firmware, wired by, updated. Hide the panel with **»** at its top right; bring it back with the strip on the right edge. |
+| Connection list | Right panel → **Connections** tab: every wire as from pin → color → to pin → label. Click a row to find the wire, click its color to recolor or relabel it, × to delete it. It's also printed on page 2 of the PDF. |
 | Make a part | **+ New part** (bottom of the sidebar) opens the Part Maker: name, category, pins per side with label and type, reorder with ↑/↓, live preview. Hover any part in the sidebar for **⧉** (new part from a copy) or **✎** (edit one of your own parts). |
 
 **Canvas:** drag on empty space to box-select, Shift/Ctrl-click to add to the
-selection, right-drag / middle-drag / Space-drag to pan, wheel to zoom, **Fit**
-to see everything. Snap to grid can be turned off in the toolbar.
+selection, right-drag / middle-drag / Space-drag to pan, wheel to zoom, and the ⛶ button under the zoom controls to fit
+the whole diagram. Snap to grid can be turned off in the toolbar.
 
 **Shortcuts:** `Ctrl+Z` undo · `Ctrl+Y` redo · `Del` delete · `Ctrl+C`/`Ctrl+V`
 copy/paste · `Ctrl+D` duplicate · `Ctrl+A` select all · `Ctrl+S` export

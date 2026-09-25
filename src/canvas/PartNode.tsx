@@ -1,6 +1,6 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { memo, useEffect, useRef, useState } from 'react';
-import { PIN_TYPE_INFO, type PartDefinition, type PinSide } from '../model/format';
+import { categoryFill, PIN_TYPE_INFO, type PartDefinition, type PinSide } from '../model/format';
 import { layoutPart, PIN_SIZE, type LaidOutPin, type PartLayout } from '../geometry/partLayout';
 import { useDiagram } from '../store/diagramStore';
 import type { PartNode as PartNodeType } from '../store/types';
@@ -135,7 +135,7 @@ export function PartBody({
   return (
     <div
       className={`part${selected ? ' selected' : ''}`}
-      style={{ width: layout.width, height: layout.height }}
+      style={{ width: layout.width, height: layout.height, background: categoryFill(def.category) }}
       data-category={def.category}
     >
       <div

@@ -49,6 +49,27 @@ export interface PartDefinition {
 
 export const DEFAULT_CATEGORIES = ['Boards', 'Inputs', 'Outputs', 'Inline Parts', 'Power & Wiring'];
 
+/** Body fill per sidebar category (canvas, minimap, exports). Other categories use the default. */
+export const CATEGORY_FILL: Record<string, string> = {
+  Boards: '#E8F0FE',
+  Inputs: '#E6F4EA',
+  Outputs: '#FEF3E0',
+  'Inline Parts': '#F3F3F3',
+  'Power & Wiring': '#FDECEC',
+};
+export const DEFAULT_PART_FILL = '#FBFCFE';
+export const categoryFill = (category: string) => CATEGORY_FILL[category] ?? DEFAULT_PART_FILL;
+
+/** Stronger version of each category color, for small views like the minimap. */
+const CATEGORY_STRONG: Record<string, string> = {
+  Boards: '#6E9BEA',
+  Inputs: '#6FBF84',
+  Outputs: '#F0B04F',
+  'Inline Parts': '#A8A8A8',
+  'Power & Wiring': '#E57373',
+};
+export const categoryStrong = (category: string) => CATEGORY_STRONG[category] ?? '#8FA3B8';
+
 export interface PartsLibraryFile {
   formatVersion: number;
   name: string;

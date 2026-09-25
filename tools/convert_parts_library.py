@@ -85,14 +85,30 @@ def _auto_width(part):
                (max(len(part.top), len(part.bottom)) + 1) * 30)
 
 
-def flag(name, pin_label, side, kind, subtitle):
+def ground_flag():
+    """The script's GND flag symbol, as a one-pin ground reference."""
     return {
         "formatVersion": 1,
-        "id": slug(f"{name} symbol"),
-        "name": f"{name} symbol",
-        "subtitle": subtitle,
+        "id": "gnd",
+        "name": "GND",
+        "subtitle": "ground reference",
         "category": "Power & Wiring",
-        "pins": [{"id": pin_label, "label": pin_label, "side": side, "index": 0, "type": kind}],
+        "pins": [{"id": "GND", "label": "GND", "side": "top", "index": 0, "type": "gnd"}],
+    }
+
+
+def supply(volts):
+    """The script's 3.3V/5V/12V flag symbols, as supplies with + and − pins."""
+    return {
+        "formatVersion": 1,
+        "id": slug(f"supply {volts}"),
+        "name": f"{volts} Supply",
+        "subtitle": "power rail",
+        "category": "Power & Wiring",
+        "pins": [
+            {"id": "+", "label": "+", "side": "right", "index": 0, "type": "power"},
+            {"id": "−", "label": "−", "side": "right", "index": 1, "type": "gnd"},
+        ],
     }
 
 
@@ -102,10 +118,10 @@ def main():
         for p in group_parts:
             cat = "Inline Parts" if p.title in INLINE else GROUP_CATEGORY[group]
             parts.append(convert(p, cat))
-    # The script's power/ground flag symbols, as one-pin parts.
-    parts.append(flag("GND", "GND", "top", "gnd", "ground flag"))
+    # The script's power/ground flag symbols.
+    parts.append(ground_flag())
     for v in ("3.3V", "5V", "12V"):
-        parts.append(flag(v, v, "bottom", "power", "power flag"))
+        parts.append(supply(v))
 
     ids = [p["id"] for p in parts]
     assert len(ids) == len(set(ids)), "duplicate part ids"

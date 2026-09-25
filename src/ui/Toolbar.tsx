@@ -122,7 +122,7 @@ function WireColorPicker() {
   );
 }
 
-export function Toolbar({ panelOpen, togglePanel }: { panelOpen: boolean; togglePanel: () => void }) {
+export function Toolbar() {
   const st = useDiagram;
   const canUndo = useDiagram((s) => s.past.length > 0);
   const canRedo = useDiagram((s) => s.future.length > 0);
@@ -132,7 +132,7 @@ export function Toolbar({ panelOpen, togglePanel }: { panelOpen: boolean; toggle
   const route = useDiagram((s) => s.defaultRoute);
   const tool = useUi((s) => s.tool);
   const setTool = useUi((s) => s.setTool);
-  const { screenToFlowPosition, fitView } = useReactFlow();
+  const { screenToFlowPosition } = useReactFlow();
 
   const center = () => {
     const el = document.querySelector('.react-flow')!.getBoundingClientRect();
@@ -194,13 +194,6 @@ export function Toolbar({ panelOpen, togglePanel }: { panelOpen: boolean; toggle
         <input type="checkbox" checked={snap} onChange={(e) => st.getState().setSnapToGrid(e.target.checked)} />
         Snap
       </label>
-      <button className="btn" onClick={() => fitView({ padding: 0.15, maxZoom: 1.25, duration: 200 })} title="Fit diagram to screen">
-        ⤢ Fit
-      </button>
-      <div className="tb-spacer" />
-      <button className={`btn${panelOpen ? ' active' : ''}`} onClick={togglePanel} title="Title block, legend and connection list">
-        Side panel
-      </button>
     </header>
   );
 }

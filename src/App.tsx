@@ -27,7 +27,21 @@ function Toasts() {
 
 export default function App() {
   const [ready, setReady] = useState(false);
-  const [panelOpen, setPanelOpen] = useState(true);
+  const [panelOpen, setPanelOpenState] = useState(() => {
+    try {
+      return localStorage.getItem('blueprint:panel') !== 'hidden';
+    } catch {
+      return true;
+    }
+  });
+  const setPanelOpen = (open: boolean) => {
+    setPanelOpenState(open);
+    try {
+      localStorage.setItem('blueprint:panel', open ? 'shown' : 'hidden');
+    } catch {
+      /* private window: just don't remember */
+    }
+  };
 
   useEffect(() => {
     let stop = () => {};
@@ -61,10 +75,16 @@ export default function App() {
   return (
     <ReactFlowProvider>
       <div className={`app${panelOpen ? ' with-panel' : ''}`}>
-        <Toolbar panelOpen={panelOpen} togglePanel={() => setPanelOpen((v) => !v)} />
+        <Toolbar />
         <Sidebar />
         <main className="main">{ready ? <Canvas /> : <div className="loading">Loading…</div>}</main>
-        {panelOpen && <SidePanel />}
+        {panelOpen ? (
+          <SidePanel onHide={() => setPanelOpen(false)} />
+        ) : (
+          <button className="panel-reopen" onClick={() => setPanelOpen(true)} title="Show the title block and connection list">
+            <span>« Title block · Connections</span>
+          </button>
+        )}
       </div>
       <PartMaker />
       <Toasts />

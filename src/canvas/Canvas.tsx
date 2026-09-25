@@ -12,12 +12,13 @@ import {
   type Edge,
   type EdgeMouseHandler,
   type IsValidConnection,
+  type Node,
   type OnNodeDrag,
 } from '@xyflow/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { exportBlueprint } from '../app/commands';
 import { useUi } from '../app/uiStore';
-import { WIRE_COLORS } from '../model/format';
+import { categoryStrong, WIRE_COLORS } from '../model/format';
 import { GRID } from '../geometry/partLayout';
 import { computeWireGeometry } from '../geometry/wireGeometry';
 import { allParts, useLibrary } from '../library/libraryStore';
@@ -33,6 +34,15 @@ import { WireGeometryContext } from './wireContext';
 
 const nodeTypes = { part: PartNode, note: NoteNode, section: SectionNode };
 const edgeTypes = { wire: WireEdge };
+
+/** Minimap shows each node in the color it has on the canvas. */
+function minimapFill(n: Node): string {
+  const node = n as DiagramNode;
+  if (node.type === 'part') return categoryStrong(node.data.def.category);
+  if (node.type === 'section') return node.data.color;
+  if (node.type === 'note') return '#F2E27A';
+  return '#ddd';
+}
 
 export const PART_DRAG_TYPE = 'application/x-blueprint-part';
 
@@ -249,7 +259,12 @@ export function Canvas() {
           <Background id="minor" variant={BackgroundVariant.Lines} gap={GRID} color="#f1f3f6" />
           <Background id="major" variant={BackgroundVariant.Lines} gap={GRID * 10} color="#e2e6ec" />
           <Controls showInteractive={false} />
-          <MiniMap pannable zoomable nodeColor={(n) => (n.type === 'section' ? '#e3e8ef' : '#9fb3c8')} />
+          <MiniMap
+            pannable
+            zoomable
+            nodeColor={minimapFill}
+            nodeBorderRadius={3}
+          />
         </ReactFlow>
       </WireGeometryContext.Provider>
       {tool === 'section' && <SectionDrawOverlay />}

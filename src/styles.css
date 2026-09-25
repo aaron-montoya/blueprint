@@ -45,9 +45,34 @@ kbd {
   grid-template-areas: 'toolbar toolbar' 'sidebar main';
   height: 100%;
 }
+.app,
 .app.with-panel {
   grid-template-columns: 250px 1fr auto;
   grid-template-areas: 'toolbar toolbar toolbar' 'sidebar main panel';
+}
+.panel-hide {
+  margin-left: auto;
+  font-size: 18px !important;
+  line-height: 1;
+}
+.panel-reopen {
+  grid-area: panel;
+  width: 28px;
+  border: none;
+  border-left: 1px solid var(--border);
+  background: var(--panel);
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 10px 0;
+}
+.panel-reopen:hover {
+  background: #f0f3f7;
+  color: var(--text);
+}
+.panel-reopen span {
+  writing-mode: vertical-rl;
+  white-space: nowrap;
 }
 .toolbar {
   grid-area: toolbar;
@@ -617,21 +642,6 @@ table.connections tr.selected {
   border-radius: 4px;
   pointer-events: none;
 }
-.part[data-category='Boards'] {
-  background: #e8f0fe;
-}
-.part[data-category='Inputs'] {
-  background: #e6f4ea;
-}
-.part[data-category='Outputs'] {
-  background: #fef3e0;
-}
-.part[data-category='Power & Wiring'] {
-  background: #fdecec;
-}
-.part[data-category='Inline Parts'] {
-  background: #f3f3f3;
-}
 .part.selected {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
 }
@@ -1178,4 +1188,72 @@ table.connections tr.selected {
   font-size: 11px;
   color: var(--muted);
   border-top: 1px solid var(--border);
+}
+
+/* Connection list: inline editing */
+.conn-color-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 5px;
+  padding: 2px 4px;
+  margin: -3px -5px;
+  cursor: pointer;
+}
+.conn-color-btn:hover,
+tr.editing .conn-color-btn {
+  border-color: var(--border);
+  background: #fff;
+}
+.conn-color-btn .caret {
+  font-size: 9px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.conn-actions {
+  width: 22px;
+  text-align: right;
+}
+.conn-actions .icon-btn {
+  opacity: 0.45;
+}
+tr:hover .conn-actions .icon-btn,
+tr.selected .conn-actions .icon-btn {
+  opacity: 1;
+}
+.conn-actions .icon-btn:hover {
+  color: var(--danger);
+}
+tr.conn-editor,
+tr.conn-editor:hover {
+  background: #f7f9fc;
+  cursor: default;
+}
+.conn-editor-row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+.conn-editor-row .field-label {
+  margin: 0;
+}
+.conn-editor-row .swatches {
+  gap: 4px;
+}
+.swatch.small-md {
+  width: 18px;
+  height: 18px;
+}
+.conn-editor .swatch.none {
+  width: 18px;
+  height: 18px;
+  line-height: 14px;
+  font-size: 10px;
+}
+.conn-editor-done {
+  text-align: right;
 }

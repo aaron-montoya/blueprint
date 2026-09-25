@@ -6,7 +6,7 @@ import { ConnectionsPanel } from './ConnectionsPanel';
 type Tab = 'title' | 'connections';
 
 /** Right-hand panel: title block & legend, or the connection list. */
-export function SidePanel() {
+export function SidePanel({ onHide }: { onHide: () => void }) {
   const [tab, setTab] = useState<Tab>('title');
   const wireCount = useDiagram((s) => s.edges.length);
   return (
@@ -22,6 +22,9 @@ export function SidePanel() {
           onClick={() => setTab('connections')}
         >
           Connections <span className="count">{wireCount}</span>
+        </button>
+        <button className="panel-hide" onClick={onHide} title="Hide this panel">
+          »
         </button>
       </div>
       {tab === 'title' ? <TitleBlockTab /> : <ConnectionsPanel />}

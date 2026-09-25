@@ -40,6 +40,15 @@ describe('built-in library', () => {
       expect(part(n).note).toBe('flyback diode across coil');
   });
 
+  it('has power supplies with + and − and no "symbol" names', () => {
+    expect(BUILTIN_PARTS.filter((p) => /symbol/i.test(p.name))).toEqual([]);
+    for (const v of ['3.3V', '5V', '12V']) {
+      const s = part(`${v} Supply`);
+      expect(s.pins.map((p) => [p.label, p.type])).toEqual([['+', 'power'], ['−', 'gnd']]);
+    }
+    expect(part('GND').pins.map((p) => p.type)).toEqual(['gnd']);
+  });
+
   it('files parts into the starting sections', () => {
     const cats = new Set(BUILTIN_PARTS.map((p) => p.category));
     expect([...cats].sort()).toEqual(['Boards', 'Inline Parts', 'Inputs', 'Outputs', 'Power & Wiring']);

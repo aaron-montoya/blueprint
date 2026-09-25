@@ -3427,9 +3427,9 @@
   },
   {
    "formatVersion": 1,
-   "id": "gnd-symbol",
-   "name": "GND symbol",
-   "subtitle": "ground flag",
+   "id": "gnd",
+   "name": "GND",
+   "subtitle": "ground reference",
    "category": "Power & Wiring",
    "pins": [
     {
@@ -3443,49 +3443,70 @@
   },
   {
    "formatVersion": 1,
-   "id": "3-3v-symbol",
-   "name": "3.3V symbol",
-   "subtitle": "power flag",
+   "id": "supply-3-3v",
+   "name": "3.3V Supply",
+   "subtitle": "power rail",
    "category": "Power & Wiring",
    "pins": [
     {
-     "id": "3.3V",
-     "label": "3.3V",
-     "side": "bottom",
+     "id": "+",
+     "label": "+",
+     "side": "right",
      "index": 0,
      "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
     }
    ]
   },
   {
    "formatVersion": 1,
-   "id": "5v-symbol",
-   "name": "5V symbol",
-   "subtitle": "power flag",
+   "id": "supply-5v",
+   "name": "5V Supply",
+   "subtitle": "power rail",
    "category": "Power & Wiring",
    "pins": [
     {
-     "id": "5V",
-     "label": "5V",
-     "side": "bottom",
+     "id": "+",
+     "label": "+",
+     "side": "right",
      "index": 0,
      "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
     }
    ]
   },
   {
    "formatVersion": 1,
-   "id": "12v-symbol",
-   "name": "12V symbol",
-   "subtitle": "power flag",
+   "id": "supply-12v",
+   "name": "12V Supply",
+   "subtitle": "power rail",
    "category": "Power & Wiring",
    "pins": [
     {
-     "id": "12V",
-     "label": "12V",
-     "side": "bottom",
+     "id": "+",
+     "label": "+",
+     "side": "right",
      "index": 0,
      "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
     }
    ]
   }

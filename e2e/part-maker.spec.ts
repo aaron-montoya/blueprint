@@ -67,14 +67,20 @@ test('make a part, copy a part, wire them, see the connection list and PDF', asy
 
   // ---- connection list
   await page.getByRole('tab', { name: /Connections/ }).click();
-  const row = page.locator('table.connections tbody tr');
+  const row = page.locator('table.connections tbody tr:not(.conn-editor)');
   await expect(row).toHaveCount(1);
   await expect(row).toContainText('Test Light Sensor');
   await expect(row).toContainText('OUT');
   await expect(row).toContainText('Green');
   await expect(row).toContainText('Test Reed (NC)');
   await expect(row).toContainText('sensor → reed');
+  // Recolor from the list; the wire on the canvas follows.
+  await row.getByTitle('Change color or label').click();
+  await page.locator('tr.conn-editor .swatches').first().getByTitle('Orange').click();
+  await expect(row).toContainText('Orange');
+  await expect(page.locator('g.wire .wire-core')).toHaveAttribute('stroke', '#F57C00');
   await page.screenshot({ path: testInfo.outputPath('connections.png') });
+  await page.getByRole('button', { name: 'Done' }).click();
 
   // ---- PDF has the diagram page plus a connections page
   await page.getByRole('button', { name: 'File ▾' }).click();
@@ -83,6 +89,19 @@ test('make a part, copy a part, wire them, see the connection list and PDF', asy
   await pdf.saveAs(pdfPath);
   const text = fs.readFileSync(pdfPath, 'latin1');
   expect(text.match(/\/Type \/Page\b/g)?.length).toBe(2);
+
+  // ---- delete from the list, undo brings it back
+  await row.getByRole('button', { name: 'Delete wire' }).click();
+  await expect(page.locator('table.connections tbody tr')).toHaveCount(0);
+  await expect(page.locator('g.wire')).toHaveCount(0);
+  await page.keyboard.press('Control+z');
+  await expect(page.locator('g.wire')).toHaveCount(1);
+
+  // ---- the side panel hides and comes back
+  await page.getByTitle('Hide this panel').click();
+  await expect(page.locator('.title-panel')).toHaveCount(0);
+  await page.getByTitle('Show the title block and connection list').click();
+  await expect(page.locator('.title-panel')).toBeVisible();
 
   // ---- custom parts survive a reload
   await page.reload();
