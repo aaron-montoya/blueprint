@@ -20,7 +20,9 @@
         "formatVersion": 1,
         "id": "esp32-devkit-v1-30",
         "name": "ESP32 DevKit V1",
+        "subtitle": "30-pin · Elegoo",
         "category": "Boards",
+        "width": 190,
         "pins": [
           {
             "id": "EN",
@@ -232,10 +234,7 @@
             "index": 14,
             "type": "power"
           }
-        ],
-        "subtitle": "30-pin · Elegoo",
-        "width": 190,
-        "note": "blue = input only · orange = boot/strapping pin"
+        ]
       }
     },
     {
@@ -249,6 +248,7 @@
         "formatVersion": 1,
         "id": "xlr-jack",
         "name": "XLR Jack",
+        "subtitle": "3-pin",
         "category": "Inputs",
         "pins": [
           {
@@ -272,8 +272,7 @@
             "index": 2,
             "type": "other"
           }
-        ],
-        "subtitle": "3-pin"
+        ]
       }
     },
     {
@@ -287,6 +286,7 @@
         "formatVersion": 1,
         "id": "xlr-jack",
         "name": "XLR Jack",
+        "subtitle": "3-pin",
         "category": "Inputs",
         "pins": [
           {
@@ -310,8 +310,7 @@
             "index": 2,
             "type": "other"
           }
-        ],
-        "subtitle": "3-pin"
+        ]
       }
     },
     {
@@ -325,6 +324,7 @@
         "formatVersion": 1,
         "id": "xlr-jack",
         "name": "XLR Jack",
+        "subtitle": "3-pin",
         "category": "Inputs",
         "pins": [
           {
@@ -348,8 +348,7 @@
             "index": 2,
             "type": "other"
           }
-        ],
-        "subtitle": "3-pin"
+        ]
       }
     },
     {
@@ -363,6 +362,7 @@
         "formatVersion": 1,
         "id": "xlr-jack",
         "name": "XLR Jack",
+        "subtitle": "3-pin",
         "category": "Inputs",
         "pins": [
           {
@@ -386,8 +386,7 @@
             "index": 2,
             "type": "other"
           }
-        ],
-        "subtitle": "3-pin"
+        ]
       }
     },
     {
@@ -401,6 +400,7 @@
         "formatVersion": 1,
         "id": "xlr-jack",
         "name": "XLR Jack",
+        "subtitle": "3-pin",
         "category": "Inputs",
         "pins": [
           {
@@ -424,8 +424,7 @@
             "index": 2,
             "type": "other"
           }
-        ],
-        "subtitle": "3-pin"
+        ]
       }
     },
     {
@@ -439,6 +438,7 @@
         "formatVersion": 1,
         "id": "xlr-jack",
         "name": "XLR Jack",
+        "subtitle": "3-pin",
         "category": "Inputs",
         "pins": [
           {
@@ -462,8 +462,7 @@
             "index": 2,
             "type": "other"
           }
-        ],
-        "subtitle": "3-pin"
+        ]
       }
     },
     {
@@ -477,6 +476,7 @@
         "formatVersion": 1,
         "id": "resistor",
         "name": "Resistor",
+        "subtitle": "220Ω",
         "category": "Inline Parts",
         "pins": [
           {
@@ -493,8 +493,7 @@
             "index": 0,
             "type": "other"
           }
-        ],
-        "subtitle": "220Ω"
+        ]
       }
     },
     {
@@ -508,6 +507,7 @@
         "formatVersion": 1,
         "id": "led",
         "name": "LED",
+        "subtitle": "long leg = +",
         "category": "Outputs",
         "pins": [
           {
@@ -524,8 +524,7 @@
             "index": 0,
             "type": "power"
           }
-        ],
-        "subtitle": "long leg = +"
+        ]
       }
     },
     {
@@ -539,6 +538,7 @@
         "formatVersion": 1,
         "id": "resistor",
         "name": "Resistor",
+        "subtitle": "220Ω",
         "category": "Inline Parts",
         "pins": [
           {
@@ -555,8 +555,7 @@
             "index": 0,
             "type": "other"
           }
-        ],
-        "subtitle": "220Ω"
+        ]
       }
     },
     {
@@ -570,6 +569,7 @@
         "formatVersion": 1,
         "id": "led",
         "name": "LED",
+        "subtitle": "long leg = +",
         "category": "Outputs",
         "pins": [
           {
@@ -586,8 +586,7 @@
             "index": 0,
             "type": "power"
           }
-        ],
-        "subtitle": "long leg = +"
+        ]
       }
     },
     {
@@ -601,6 +600,7 @@
         "formatVersion": 1,
         "id": "resistor",
         "name": "Resistor",
+        "subtitle": "220Ω",
         "category": "Inline Parts",
         "pins": [
           {
@@ -617,8 +617,7 @@
             "index": 0,
             "type": "other"
           }
-        ],
-        "subtitle": "220Ω"
+        ]
       }
     },
     {
@@ -632,6 +631,7 @@
         "formatVersion": 1,
         "id": "led",
         "name": "LED",
+        "subtitle": "long leg = +",
         "category": "Outputs",
         "pins": [
           {
@@ -648,8 +648,7 @@
             "index": 0,
             "type": "power"
           }
-        ],
-        "subtitle": "long leg = +"
+        ]
       }
     }
   ],

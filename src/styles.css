@@ -1527,3 +1527,21 @@ tr.conn-editor:hover {
     opacity: 1;
   }
 }
+
+/* Parts in this diagram are older than the library */
+.update-notice {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 14;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(460px, calc(100% - 20px));
+  padding: 8px 10px 8px 14px;
+  background: #fff8e1;
+  border: 1px solid #f0c36d;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(20, 30, 50, 0.14);
+  font-size: 12px;
+}

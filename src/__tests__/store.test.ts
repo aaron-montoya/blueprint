@@ -147,3 +147,28 @@ describe('IndexedDB persistence', () => {
     expect(back!.file.parts).toHaveLength(2);
   });
 });
+
+describe('updating placed parts to the library version', () => {
+  it('finds outdated parts, updates them, keeps renames and wires, drops wires to removed pins', async () => {
+    const { outdatedParts } = await import('../library/partUpdates');
+    const old = { ...def('XLR Jack'), subtitle: 'old', pins: [...def('XLR Jack').pins, { id: '4', label: '4', side: 'left' as const, index: 3, type: 'other' as const }] };
+    st().load({ nodes: [], edges: [], title: { ...EMPTY_TITLE } }, 'upd');
+    const esp = st().addPart(def('ESP32 DevKit V1'), { x: 0, y: 0 });
+    const a = st().addPart(old, { x: 400, y: 0 });
+    const b = st().addPart(old, { x: 400, y: 200 });
+    st().setPartLabel(b, 'Top XLR 1');
+    st().connect({ source: esp, sourceHandle: 'D23', target: a, targetHandle: '1' });
+    st().connect({ source: esp, sourceHandle: 'D22', target: b, targetHandle: '4' });
+
+    const outdated = outdatedParts(st().nodes, BUILTIN_PARTS);
+    expect(outdated.map((o) => o.node.id).sort()).toEqual([a, b].sort());
+    const removed = st().updateParts(outdated);
+    expect(removed).toBe(1); // the wire on pin 4, which the library part doesn't have
+    expect(st().edges).toHaveLength(1);
+    const labels = st().nodes.filter((n) => n.type === 'part').map((n) => n.type === 'part' && n.data.label);
+    expect(labels).toContain('Top XLR 1'); // rename kept
+    expect(outdatedParts(st().nodes, BUILTIN_PARTS)).toEqual([]);
+    st().undo();
+    expect(st().edges).toHaveLength(2);
+  });
+});

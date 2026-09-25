@@ -9,7 +9,6 @@
    "subtitle": "30-pin · Elegoo",
    "category": "Boards",
    "width": 190,
-   "note": "blue = input only · orange = boot/strapping pin",
    "pins": [
     {
      "id": "EN",

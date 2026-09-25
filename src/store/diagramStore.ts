@@ -21,6 +21,7 @@ import { GRID } from '../geometry/partLayout';
 import { partLayoutOf, partRect } from '../geometry/wireGeometry';
 import type { Rect } from '../geometry/routing';
 import type { DiagramContent } from './convert';
+import { applyPartUpdates } from '../library/partUpdates';
 import {
   SECTION_DRAG_HANDLE,
   SECTION_Z,
@@ -84,6 +85,8 @@ export interface DiagramState extends Snapshot {
   /** Live update while dragging a wire segment (checkpoint first). */
   setWirePoints(id: string, points: XY[] | undefined): void;
   deleteWire(id: string): void;
+  /** Replace placed parts with their latest library definitions. Returns wires removed. */
+  updateParts(updates: { node: PartNode; latest: PartDefinition }[]): number;
   /** Move one end of a wire to another pin. Returns false if that isn't allowed. */
   reconnectWire(id: string, end: 'source' | 'target', part: string, pin: string): boolean;
   deleteSelection(): void;
@@ -393,6 +396,17 @@ export const useDiagram = create<DiagramState>()((set, get) => {
         edges: s.edges.map((e) => (e.id === id ? { ...next, data: { ...next.data!, points: undefined } } : e)),
       }));
       return true;
+    },
+
+    updateParts(updates) {
+      if (!updates.length) return 0;
+      let removed = 0;
+      commit((s) => {
+        const r = applyPartUpdates(s.nodes, s.edges, updates);
+        removed = r.removedWires;
+        return { nodes: r.nodes, edges: r.edges };
+      });
+      return removed;
     },
 
     deleteWire(id) {

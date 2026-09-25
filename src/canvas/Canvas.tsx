@@ -27,6 +27,7 @@ import { useDiagram } from '../store/diagramStore';
 import type { DiagramNode, PartNode as PartNodeType } from '../store/types';
 import { NoteNode } from './NoteNode';
 import { PartNode } from './PartNode';
+import { PartUpdateNotice } from './PartUpdateNotice';
 import { SectionNode } from './SectionNode';
 import { WireEdge } from './WireEdge';
 import { WireBar } from './WireBar';
@@ -285,6 +286,7 @@ export function Canvas() {
         </ReactFlow>
       </WireGeometryContext.Provider>
       {tool === 'section' && <SectionDrawOverlay />}
+      <PartUpdateNotice />
       {popover ? (
         <WirePopover target={popover} onClose={closePopover} />
       ) : (
