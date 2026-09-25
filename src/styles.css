@@ -737,9 +737,16 @@ kbd {
   width: 140px;
 }
 .section-colors {
+  position: absolute;
+  top: 6px;
+  right: 6px;
   display: inline-flex;
   gap: 3px;
-  cursor: default;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  pointer-events: all;
 }
 .react-flow__node-section .react-flow__resize-control {
   pointer-events: all;
@@ -868,4 +875,42 @@ kbd {
 }
 .toast.error {
   background: var(--danger);
+}
+
+/* Wire bar: docked at the top of the canvas while one wire is selected. */
+.wire-bar {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(20, 30, 50, 0.14);
+  padding: 6px 10px;
+  max-width: calc(100% - 20px);
+}
+.wire-bar .swatches {
+  flex-wrap: nowrap;
+  gap: 4px;
+}
+.wire-bar .swatch {
+  width: 20px;
+  height: 20px;
+}
+.wire-bar .text-input {
+  width: 150px;
+  height: 26px;
+}
+.wire-bar-ends {
+  font-size: 11px;
+  color: var(--muted);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

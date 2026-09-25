@@ -52,23 +52,23 @@ function SectionNodeView({ id, data, selected }: NodeProps<SectionNodeType>) {
         ) : (
           <span>{data.label || 'Section'}</span>
         )}
-        {selected && !editing && (
-          <span className="section-colors nodrag">
-            {SECTION_COLORS.map((c) => (
-              <button
-                key={c}
-                className={`swatch small${c === data.color ? ' active' : ''}`}
-                style={{ background: c }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSection(id, { color: c });
-                }}
-                title="Section color"
-              />
-            ))}
-          </span>
-        )}
       </div>
+      {selected && !editing && (
+        <span className="section-colors nodrag">
+          {SECTION_COLORS.map((c) => (
+            <button
+              key={c}
+              className={`swatch small${c === data.color ? ' active' : ''}`}
+              style={{ background: c }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSection(id, { color: c });
+              }}
+              title="Section color"
+            />
+          ))}
+        </span>
+      )}
     </div>
   );
 }

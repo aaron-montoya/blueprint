@@ -1,0 +1,856 @@
+{
+  "formatVersion": 1,
+  "kind": "blueprint-diagram",
+  "title": {
+    "room": "Example (made-up)",
+    "prop": "XLR + LED demo",
+    "firmware": "demo-fw v0.1",
+    "wiredBy": "Blueprint example",
+    "updated": "2026-09-25"
+  },
+  "parts": [
+    {
+      "id": "p_k8c0ce6yh",
+      "x": 550,
+      "y": 230,
+      "rotation": 0,
+      "flip": false,
+      "label": "ESP32 DevKit V1",
+      "part": {
+        "formatVersion": 1,
+        "id": "esp32-devkit-v1-30",
+        "name": "ESP32 DevKit V1",
+        "category": "Boards",
+        "pins": [
+          {
+            "id": "EN",
+            "label": "EN",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "VP",
+            "label": "VP · 36",
+            "side": "left",
+            "index": 1,
+            "type": "input"
+          },
+          {
+            "id": "VN",
+            "label": "VN · 39",
+            "side": "left",
+            "index": 2,
+            "type": "input"
+          },
+          {
+            "id": "D34",
+            "label": "D34",
+            "side": "left",
+            "index": 3,
+            "type": "input"
+          },
+          {
+            "id": "D35",
+            "label": "D35",
+            "side": "left",
+            "index": 4,
+            "type": "input"
+          },
+          {
+            "id": "D32",
+            "label": "D32",
+            "side": "left",
+            "index": 5,
+            "type": "io"
+          },
+          {
+            "id": "D33",
+            "label": "D33",
+            "side": "left",
+            "index": 6,
+            "type": "io"
+          },
+          {
+            "id": "D25",
+            "label": "D25",
+            "side": "left",
+            "index": 7,
+            "type": "io"
+          },
+          {
+            "id": "D26",
+            "label": "D26",
+            "side": "left",
+            "index": 8,
+            "type": "io"
+          },
+          {
+            "id": "D27",
+            "label": "D27",
+            "side": "left",
+            "index": 9,
+            "type": "io"
+          },
+          {
+            "id": "D14",
+            "label": "D14",
+            "side": "left",
+            "index": 10,
+            "type": "io"
+          },
+          {
+            "id": "D12",
+            "label": "D12",
+            "side": "left",
+            "index": 11,
+            "type": "strap"
+          },
+          {
+            "id": "D13",
+            "label": "D13",
+            "side": "left",
+            "index": 12,
+            "type": "io"
+          },
+          {
+            "id": "GND",
+            "label": "GND",
+            "side": "left",
+            "index": 13,
+            "type": "gnd"
+          },
+          {
+            "id": "VIN",
+            "label": "VIN",
+            "side": "left",
+            "index": 14,
+            "type": "power"
+          },
+          {
+            "id": "D23",
+            "label": "D23 · MOSI",
+            "side": "right",
+            "index": 0,
+            "type": "io"
+          },
+          {
+            "id": "D22",
+            "label": "D22 · SCL",
+            "side": "right",
+            "index": 1,
+            "type": "io"
+          },
+          {
+            "id": "TX0",
+            "label": "TX0",
+            "side": "right",
+            "index": 2,
+            "type": "other"
+          },
+          {
+            "id": "RX0",
+            "label": "RX0",
+            "side": "right",
+            "index": 3,
+            "type": "other"
+          },
+          {
+            "id": "D21",
+            "label": "D21 · SDA",
+            "side": "right",
+            "index": 4,
+            "type": "io"
+          },
+          {
+            "id": "D19",
+            "label": "D19 · MISO",
+            "side": "right",
+            "index": 5,
+            "type": "io"
+          },
+          {
+            "id": "D18",
+            "label": "D18 · SCK",
+            "side": "right",
+            "index": 6,
+            "type": "io"
+          },
+          {
+            "id": "D5",
+            "label": "D5 · SS",
+            "side": "right",
+            "index": 7,
+            "type": "strap"
+          },
+          {
+            "id": "D17",
+            "label": "D17",
+            "side": "right",
+            "index": 8,
+            "type": "io"
+          },
+          {
+            "id": "D16",
+            "label": "D16",
+            "side": "right",
+            "index": 9,
+            "type": "io"
+          },
+          {
+            "id": "D4",
+            "label": "D4",
+            "side": "right",
+            "index": 10,
+            "type": "io"
+          },
+          {
+            "id": "D2",
+            "label": "D2",
+            "side": "right",
+            "index": 11,
+            "type": "strap"
+          },
+          {
+            "id": "D15",
+            "label": "D15",
+            "side": "right",
+            "index": 12,
+            "type": "strap"
+          },
+          {
+            "id": "GND.right",
+            "label": "GND",
+            "side": "right",
+            "index": 13,
+            "type": "gnd"
+          },
+          {
+            "id": "3V3",
+            "label": "3V3",
+            "side": "right",
+            "index": 14,
+            "type": "power"
+          }
+        ],
+        "subtitle": "30-pin · Elegoo",
+        "width": 190,
+        "note": "blue = input only · orange = boot/strapping pin"
+      }
+    },
+    {
+      "id": "p_5l9y6c73i",
+      "x": 1000,
+      "y": 70,
+      "rotation": 0,
+      "flip": false,
+      "label": "Top XLR 1",
+      "part": {
+        "formatVersion": 1,
+        "id": "xlr-jack",
+        "name": "XLR Jack",
+        "category": "Inputs",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "left",
+            "index": 1,
+            "type": "other"
+          },
+          {
+            "id": "3",
+            "label": "3",
+            "side": "left",
+            "index": 2,
+            "type": "other"
+          }
+        ],
+        "subtitle": "3-pin"
+      }
+    },
+    {
+      "id": "p_r4b78o79y",
+      "x": 1000,
+      "y": 260,
+      "rotation": 0,
+      "flip": false,
+      "label": "Top XLR 2",
+      "part": {
+        "formatVersion": 1,
+        "id": "xlr-jack",
+        "name": "XLR Jack",
+        "category": "Inputs",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "left",
+            "index": 1,
+            "type": "other"
+          },
+          {
+            "id": "3",
+            "label": "3",
+            "side": "left",
+            "index": 2,
+            "type": "other"
+          }
+        ],
+        "subtitle": "3-pin"
+      }
+    },
+    {
+      "id": "p_8bghqw7g1",
+      "x": 1000,
+      "y": 450,
+      "rotation": 0,
+      "flip": false,
+      "label": "Top XLR 3",
+      "part": {
+        "formatVersion": 1,
+        "id": "xlr-jack",
+        "name": "XLR Jack",
+        "category": "Inputs",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "left",
+            "index": 1,
+            "type": "other"
+          },
+          {
+            "id": "3",
+            "label": "3",
+            "side": "left",
+            "index": 2,
+            "type": "other"
+          }
+        ],
+        "subtitle": "3-pin"
+      }
+    },
+    {
+      "id": "p_pxinhh7mx",
+      "x": 1250,
+      "y": 70,
+      "rotation": 0,
+      "flip": false,
+      "label": "Bottom XLR 1",
+      "part": {
+        "formatVersion": 1,
+        "id": "xlr-jack",
+        "name": "XLR Jack",
+        "category": "Inputs",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "left",
+            "index": 1,
+            "type": "other"
+          },
+          {
+            "id": "3",
+            "label": "3",
+            "side": "left",
+            "index": 2,
+            "type": "other"
+          }
+        ],
+        "subtitle": "3-pin"
+      }
+    },
+    {
+      "id": "p_e2sshf7sh",
+      "x": 1250,
+      "y": 260,
+      "rotation": 0,
+      "flip": false,
+      "label": "Bottom XLR 2",
+      "part": {
+        "formatVersion": 1,
+        "id": "xlr-jack",
+        "name": "XLR Jack",
+        "category": "Inputs",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "left",
+            "index": 1,
+            "type": "other"
+          },
+          {
+            "id": "3",
+            "label": "3",
+            "side": "left",
+            "index": 2,
+            "type": "other"
+          }
+        ],
+        "subtitle": "3-pin"
+      }
+    },
+    {
+      "id": "p_8nflsq7yi",
+      "x": 1250,
+      "y": 450,
+      "rotation": 0,
+      "flip": false,
+      "label": "Bottom XLR 3",
+      "part": {
+        "formatVersion": 1,
+        "id": "xlr-jack",
+        "name": "XLR Jack",
+        "category": "Inputs",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "left",
+            "index": 1,
+            "type": "other"
+          },
+          {
+            "id": "3",
+            "label": "3",
+            "side": "left",
+            "index": 2,
+            "type": "other"
+          }
+        ],
+        "subtitle": "3-pin"
+      }
+    },
+    {
+      "id": "p_472r1y9kg",
+      "x": 320,
+      "y": 380,
+      "rotation": 0,
+      "flip": false,
+      "label": "R1",
+      "part": {
+        "formatVersion": 1,
+        "id": "resistor",
+        "name": "Resistor",
+        "category": "Inline Parts",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "right",
+            "index": 0,
+            "type": "other"
+          }
+        ],
+        "subtitle": "220Ω"
+      }
+    },
+    {
+      "id": "p_rbqmqa9rd",
+      "x": 60,
+      "y": 380,
+      "rotation": 0,
+      "flip": false,
+      "label": "LED 1",
+      "part": {
+        "formatVersion": 1,
+        "id": "led",
+        "name": "LED",
+        "category": "Outputs",
+        "pins": [
+          {
+            "id": "− (K)",
+            "label": "− (K)",
+            "side": "left",
+            "index": 0,
+            "type": "gnd"
+          },
+          {
+            "id": "+ (A)",
+            "label": "+ (A)",
+            "side": "right",
+            "index": 0,
+            "type": "power"
+          }
+        ],
+        "subtitle": "long leg = +"
+      }
+    },
+    {
+      "id": "p_dtammm9y0",
+      "x": 320,
+      "y": 510,
+      "rotation": 0,
+      "flip": false,
+      "label": "R2",
+      "part": {
+        "formatVersion": 1,
+        "id": "resistor",
+        "name": "Resistor",
+        "category": "Inline Parts",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "right",
+            "index": 0,
+            "type": "other"
+          }
+        ],
+        "subtitle": "220Ω"
+      }
+    },
+    {
+      "id": "p_tlzwafa57",
+      "x": 60,
+      "y": 510,
+      "rotation": 0,
+      "flip": false,
+      "label": "LED 2",
+      "part": {
+        "formatVersion": 1,
+        "id": "led",
+        "name": "LED",
+        "category": "Outputs",
+        "pins": [
+          {
+            "id": "− (K)",
+            "label": "− (K)",
+            "side": "left",
+            "index": 0,
+            "type": "gnd"
+          },
+          {
+            "id": "+ (A)",
+            "label": "+ (A)",
+            "side": "right",
+            "index": 0,
+            "type": "power"
+          }
+        ],
+        "subtitle": "long leg = +"
+      }
+    },
+    {
+      "id": "p_1t0y4eabq",
+      "x": 320,
+      "y": 640,
+      "rotation": 0,
+      "flip": false,
+      "label": "R3",
+      "part": {
+        "formatVersion": 1,
+        "id": "resistor",
+        "name": "Resistor",
+        "category": "Inline Parts",
+        "pins": [
+          {
+            "id": "1",
+            "label": "1",
+            "side": "left",
+            "index": 0,
+            "type": "other"
+          },
+          {
+            "id": "2",
+            "label": "2",
+            "side": "right",
+            "index": 0,
+            "type": "other"
+          }
+        ],
+        "subtitle": "220Ω"
+      }
+    },
+    {
+      "id": "p_g6woxsak2",
+      "x": 60,
+      "y": 640,
+      "rotation": 0,
+      "flip": false,
+      "label": "LED 3",
+      "part": {
+        "formatVersion": 1,
+        "id": "led",
+        "name": "LED",
+        "category": "Outputs",
+        "pins": [
+          {
+            "id": "− (K)",
+            "label": "− (K)",
+            "side": "left",
+            "index": 0,
+            "type": "gnd"
+          },
+          {
+            "id": "+ (A)",
+            "label": "+ (A)",
+            "side": "right",
+            "index": 0,
+            "type": "power"
+          }
+        ],
+        "subtitle": "long leg = +"
+      }
+    }
+  ],
+  "wires": [
+    {
+      "id": "w_12titl89p",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D23"
+      },
+      "to": {
+        "part": "p_5l9y6c73i",
+        "pin": "1"
+      },
+      "color": "red",
+      "route": "orthogonal",
+      "label": "D23 → Top XLR 1"
+    },
+    {
+      "id": "w_41agmg8iy",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D22"
+      },
+      "to": {
+        "part": "p_r4b78o79y",
+        "pin": "1"
+      },
+      "color": "yellow",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_tvbosr8ra",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D21"
+      },
+      "to": {
+        "part": "p_8bghqw7g1",
+        "pin": "1"
+      },
+      "color": "green",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_n5w3lw8zl",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D18"
+      },
+      "to": {
+        "part": "p_pxinhh7mx",
+        "pin": "1"
+      },
+      "color": "blue",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_r4vr2k97g",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D17"
+      },
+      "to": {
+        "part": "p_e2sshf7sh",
+        "pin": "1"
+      },
+      "color": "orange",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_4lo51e9fv",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D16"
+      },
+      "to": {
+        "part": "p_8nflsq7yi",
+        "pin": "1"
+      },
+      "color": "purple",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_edeoiqaur",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D4"
+      },
+      "to": {
+        "part": "p_472r1y9kg",
+        "pin": "2"
+      },
+      "color": "white",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_1nu1vnb1b",
+      "from": {
+        "part": "p_472r1y9kg",
+        "pin": "1"
+      },
+      "to": {
+        "part": "p_rbqmqa9rd",
+        "pin": "+ (A)"
+      },
+      "color": "white",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_7o6s2lbai",
+      "from": {
+        "part": "p_rbqmqa9rd",
+        "pin": "− (K)"
+      },
+      "to": {
+        "part": "p_k8c0ce6yh",
+        "pin": "GND"
+      },
+      "color": "black",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_r1vgljbj8",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D13"
+      },
+      "to": {
+        "part": "p_dtammm9y0",
+        "pin": "2"
+      },
+      "color": "brown",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_wytz67bpr",
+      "from": {
+        "part": "p_dtammm9y0",
+        "pin": "1"
+      },
+      "to": {
+        "part": "p_tlzwafa57",
+        "pin": "+ (A)"
+      },
+      "color": "brown",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_pie67ebyl",
+      "from": {
+        "part": "p_tlzwafa57",
+        "pin": "− (K)"
+      },
+      "to": {
+        "part": "p_k8c0ce6yh",
+        "pin": "GND"
+      },
+      "color": "black",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_9cm0d5c7u",
+      "from": {
+        "part": "p_k8c0ce6yh",
+        "pin": "D14"
+      },
+      "to": {
+        "part": "p_1t0y4eabq",
+        "pin": "2"
+      },
+      "color": "gray",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_pc17h5cdu",
+      "from": {
+        "part": "p_1t0y4eabq",
+        "pin": "1"
+      },
+      "to": {
+        "part": "p_g6woxsak2",
+        "pin": "+ (A)"
+      },
+      "color": "gray",
+      "route": "orthogonal"
+    },
+    {
+      "id": "w_4ro654cmm",
+      "from": {
+        "part": "p_g6woxsak2",
+        "pin": "− (K)"
+      },
+      "to": {
+        "part": "p_k8c0ce6yh",
+        "pin": "GND"
+      },
+      "color": "black",
+      "route": "orthogonal"
+    }
+  ],
+  "notes": [],
+  "sections": []
+}

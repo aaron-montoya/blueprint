@@ -27,6 +27,7 @@ import { NoteNode } from './NoteNode';
 import { PartNode } from './PartNode';
 import { SectionNode } from './SectionNode';
 import { WireEdge } from './WireEdge';
+import { WireBar } from './WireBar';
 import { WirePopover, type PopoverTarget } from './WirePopover';
 import { WireGeometryContext } from './wireContext';
 
@@ -102,9 +103,12 @@ export function Canvas() {
 
   const geometry = useMemo(() => computeWireGeometry(nodes, edges), [nodes, edges]);
 
-  // Fit the view whenever a different diagram is opened.
+  // Fit the view whenever a different diagram is opened (not when the first
+  // part lands on an empty canvas — the view shouldn't jump under the cursor).
   useEffect(() => {
-    const t = setTimeout(() => fitView({ padding: 0.15, maxZoom: 1.25, duration: 0 }), 50);
+    const t = setTimeout(() => {
+      if (useDiagram.getState().nodes.length) fitView({ padding: 0.15, maxZoom: 1.25, duration: 0 });
+    }, 50);
     return () => clearTimeout(t);
   }, [diagramId, fitView]);
 
@@ -120,6 +124,7 @@ export function Canvas() {
     );
   }, [s]);
 
+  // A new wire comes out selected, so the wire bar offers its color right away.
   const onConnect = useCallback((c: Connection) => void s().connect(c), [s]);
 
   const onNodeDragStart: OnNodeDrag<DiagramNode> = useCallback(
@@ -199,6 +204,7 @@ export function Canvas() {
           onNodesChange={(c) => s().onNodesChange(c)}
           onEdgesChange={(c) => s().onEdgesChange(c as never)}
           onConnect={onConnect}
+          onConnectStart={closePopover}
           isValidConnection={isValidConnection}
           connectionMode={ConnectionMode.Loose}
           connectionRadius={16}
@@ -237,7 +243,7 @@ export function Canvas() {
           elevateEdgesOnSelect
           minZoom={0.1}
           maxZoom={4}
-          fitView
+          defaultViewport={{ x: 40, y: 40, zoom: 1 }}
         >
           <Background id="minor" variant={BackgroundVariant.Lines} gap={GRID} color="#f1f3f6" />
           <Background id="major" variant={BackgroundVariant.Lines} gap={GRID * 10} color="#e2e6ec" />
@@ -246,7 +252,16 @@ export function Canvas() {
         </ReactFlow>
       </WireGeometryContext.Provider>
       {tool === 'section' && <SectionDrawOverlay />}
-      {popover && <WirePopover target={popover} onClose={closePopover} />}
+      {popover ? (
+        <WirePopover target={popover} onClose={closePopover} />
+      ) : (
+        <WireBar
+          onMore={(id) => {
+            const r = wrapperRef.current!.getBoundingClientRect();
+            setPopover({ wireId: id, x: r.width / 2 - 150, y: 40, bounds: { width: r.width, height: r.height } });
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -1,8 +1,6 @@
 /** User commands shared by the toolbar, menus and keyboard shortcuts. */
 import { DIAGRAM_EXTENSION, FormatError, type PartDefinition } from '../model/format';
 import { downloadBlob, downloadJson, pickFile, readJsonFile, safeFilename } from '../export/files';
-import { renderPdf } from '../export/pdf';
-import { renderPng } from '../export/render';
 import { makeLibraryFile, useLibrary } from '../library/libraryStore';
 import { toFile } from '../store/convert';
 import { currentContent } from '../store/diagramStore';
@@ -37,6 +35,7 @@ export async function importBlueprint() {
 export async function exportPng() {
   try {
     toast('Rendering PNG…');
+    const { renderPng } = await import('../export/render');
     downloadBlob(await renderPng(currentContent()), `${baseName()}.png`);
   } catch (e) {
     toast(`PNG export failed: ${describe(e)}`, 'error');
@@ -46,6 +45,7 @@ export async function exportPng() {
 export async function exportPdf() {
   try {
     toast('Rendering PDF…');
+    const { renderPdf } = await import('../export/pdf');
     downloadBlob(await renderPdf(currentContent()), `${baseName()}.pdf`);
   } catch (e) {
     toast(`PDF export failed: ${describe(e)}`, 'error');

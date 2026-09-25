@@ -13,14 +13,14 @@ export interface PopoverTarget {
   bounds: { width: number; height: number };
 }
 
-function pinName(nodes: DiagramNode[], partId: string, pinId: string | null | undefined) {
+export function pinName(nodes: DiagramNode[], partId: string, pinId: string | null | undefined) {
   const n = nodes.find((x) => x.id === partId);
   if (!n || !isPartNode(n)) return '?';
   const pin = n.data.def.pins.find((p) => p.id === pinId);
   return `${n.data.label} · ${pin?.label ?? pinId}`;
 }
 
-function Swatches({ value, onPick, allowNone }: { value?: WireColor; onPick: (c?: WireColor) => void; allowNone?: boolean }) {
+export function Swatches({ value, onPick, allowNone }: { value?: WireColor; onPick: (c?: WireColor) => void; allowNone?: boolean }) {
   return (
     <div className="swatches">
       {allowNone && (
@@ -57,7 +57,7 @@ export function WirePopover({ target, onClose }: { target: PopoverTarget; onClos
   const d = wire.data;
 
   // Keep the popover inside the canvas.
-  const w = 272;
+  const w = 300;
   const left = Math.max(8, Math.min(target.x + 12, target.bounds.width - w - 8));
   const top = Math.max(8, Math.min(target.y + 12, target.bounds.height - 340));
 

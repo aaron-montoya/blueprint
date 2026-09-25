@@ -11,7 +11,8 @@
     "typecheck": "tsc -b",
     "test": "vitest run",
     "test:watch": "vitest",
-    "library": "python3 tools/convert_parts_library.py"
+    "library": "python3 tools/convert_parts_library.py",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@xyflow/react": "^12.12.0",
