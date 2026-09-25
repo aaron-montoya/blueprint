@@ -1,4 +1,4 @@
-import { BUILTIN_PARTS } from '../library/builtin';
+import { ADDED_PARTS, BUILTIN_PARTS, GENERATED_PARTS } from '../library/builtin';
 
 const part = (name: string) => {
   const p = BUILTIN_PARTS.find((x) => x.name === name);
@@ -38,6 +38,12 @@ describe('built-in library', () => {
     expect(part('RFID RC522').note).toBe('3.3V only — use AMS1117');
     for (const n of ['Maglock', 'Solenoid Lock', 'Push-Pull Solenoid'])
       expect(part(n).note).toBe('flyback diode across coil');
+  });
+
+  it('keeps promoted parts separate from generated ones, with no id clashes', () => {
+    const generated = new Set(GENERATED_PARTS.map((p) => p.id));
+    for (const p of ADDED_PARTS) expect(generated.has(p.id), `${p.name} reuses generated id ${p.id}`).toBe(false);
+    expect(BUILTIN_PARTS.length).toBe(GENERATED_PARTS.length + ADDED_PARTS.length);
   });
 
   it('has power supplies with + and − and no "symbol" names', () => {

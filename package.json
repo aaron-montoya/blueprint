@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "library": "python3 tools/convert_parts_library.py",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "add-parts": "node tools/add-parts.mjs"
   },
   "dependencies": {
     "@xyflow/react": "^12.12.0",

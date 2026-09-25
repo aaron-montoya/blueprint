@@ -28,6 +28,7 @@ src/
 tools/
   eit_parts_library_build.py   ← Aaron's original script (source of truth)
   convert_parts_library.py     ← converts it to src/library/default-library.json
+  add-parts.mjs                ← promotes exported parts into src/library/added-parts.json
 examples/                      ← made-up props only (the repo is public)
 ```
 

@@ -60,6 +60,33 @@ original draw.io script, the source of truth). To regenerate after editing it:
 npm run library   # writes src/library/default-library.json
 ```
 
+Promoted parts (see below) live in `src/library/added-parts.json`, which the
+converter never touches.
+
+### Adding a part to the built-in library
+
+When a part made in the Part Maker turns out to be needed across many props,
+promote it so it's in everyone's sidebar without importing:
+
+1. Whoever made it exports it: sidebar ⤓ on its section, or **Export mine**.
+2. Add it to `src/library/added-parts.json`:
+   ```sh
+   npm run add-parts -- path/to/Custom-parts.parts.json                 # every part in the file
+   npm run add-parts -- path/to/file.parts.json --only "Knock Sensor"   # just this one
+   ```
+   Running it again with a newer export updates the part instead of adding a
+   copy. (No local setup? Paste the part's `{ … }` entry into the `parts` list
+   of `added-parts.json` directly on GitHub.)
+3. `npm test`, then push to `main`; the site redeploys with the part built in.
+
+`added-parts.json` is separate from the generated `default-library.json`, so
+regenerating from the Python script never removes promoted parts. Diagrams
+that already use the part are unaffected (they carry their own copy). Anyone
+who also imported the part keeps their local copy until they remove it with
+× in the sidebar.
+
+### Importing and exporting parts
+
 Parts you make in the Part Maker or bring in with **Import…** (sidebar) are
 kept in this browser, like diagrams. Share them as files: the ⤓ button on a
 sidebar section exports that section as a parts library, and **Export mine**
