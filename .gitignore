@@ -1,0 +1,9 @@
+node_modules
+dist
+*.local
+.DS_Store
+coverage
+# Never commit real room diagrams. Keep made-up examples in examples/ only.
+*.blueprint
+!examples/*.blueprint
+!src/**/__fixtures__/*.blueprint

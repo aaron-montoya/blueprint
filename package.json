@@ -1,0 +1,35 @@
+{
+  "name": "blueprint",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Browser-based wiring diagram editor for escape room props",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "library": "python3 tools/convert_parts_library.py"
+  },
+  "dependencies": {
+    "@xyflow/react": "^12.12.0",
+    "html-to-image": "1.11.11",
+    "idb": "^8.0.3",
+    "jspdf": "^4.2.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^30.1.1",
+    "typescript": "~5.9",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}

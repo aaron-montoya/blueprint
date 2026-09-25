@@ -1,0 +1,3493 @@
+{
+ "formatVersion": 1,
+ "name": "EIT default parts",
+ "parts": [
+  {
+   "formatVersion": 1,
+   "id": "esp32-devkit-v1-30",
+   "name": "ESP32 DevKit V1",
+   "subtitle": "30-pin · Elegoo",
+   "category": "Boards",
+   "width": 190,
+   "note": "blue = input only · orange = boot/strapping pin",
+   "pins": [
+    {
+     "id": "EN",
+     "label": "EN",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "VP",
+     "label": "VP · 36",
+     "side": "left",
+     "index": 1,
+     "type": "input"
+    },
+    {
+     "id": "VN",
+     "label": "VN · 39",
+     "side": "left",
+     "index": 2,
+     "type": "input"
+    },
+    {
+     "id": "D34",
+     "label": "D34",
+     "side": "left",
+     "index": 3,
+     "type": "input"
+    },
+    {
+     "id": "D35",
+     "label": "D35",
+     "side": "left",
+     "index": 4,
+     "type": "input"
+    },
+    {
+     "id": "D32",
+     "label": "D32",
+     "side": "left",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "D33",
+     "label": "D33",
+     "side": "left",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "D25",
+     "label": "D25",
+     "side": "left",
+     "index": 7,
+     "type": "io"
+    },
+    {
+     "id": "D26",
+     "label": "D26",
+     "side": "left",
+     "index": 8,
+     "type": "io"
+    },
+    {
+     "id": "D27",
+     "label": "D27",
+     "side": "left",
+     "index": 9,
+     "type": "io"
+    },
+    {
+     "id": "D14",
+     "label": "D14",
+     "side": "left",
+     "index": 10,
+     "type": "io"
+    },
+    {
+     "id": "D12",
+     "label": "D12",
+     "side": "left",
+     "index": 11,
+     "type": "strap"
+    },
+    {
+     "id": "D13",
+     "label": "D13",
+     "side": "left",
+     "index": 12,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 13,
+     "type": "gnd"
+    },
+    {
+     "id": "VIN",
+     "label": "VIN",
+     "side": "left",
+     "index": 14,
+     "type": "power"
+    },
+    {
+     "id": "D23",
+     "label": "D23 · MOSI",
+     "side": "right",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "D22",
+     "label": "D22 · SCL",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "TX0",
+     "label": "TX0",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "RX0",
+     "label": "RX0",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "D21",
+     "label": "D21 · SDA",
+     "side": "right",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "D19",
+     "label": "D19 · MISO",
+     "side": "right",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "D18",
+     "label": "D18 · SCK",
+     "side": "right",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "D5",
+     "label": "D5 · SS",
+     "side": "right",
+     "index": 7,
+     "type": "strap"
+    },
+    {
+     "id": "D17",
+     "label": "D17",
+     "side": "right",
+     "index": 8,
+     "type": "io"
+    },
+    {
+     "id": "D16",
+     "label": "D16",
+     "side": "right",
+     "index": 9,
+     "type": "io"
+    },
+    {
+     "id": "D4",
+     "label": "D4",
+     "side": "right",
+     "index": 10,
+     "type": "io"
+    },
+    {
+     "id": "D2",
+     "label": "D2",
+     "side": "right",
+     "index": 11,
+     "type": "strap"
+    },
+    {
+     "id": "D15",
+     "label": "D15",
+     "side": "right",
+     "index": 12,
+     "type": "strap"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 13,
+     "type": "gnd"
+    },
+    {
+     "id": "3V3",
+     "label": "3V3",
+     "side": "right",
+     "index": 14,
+     "type": "power"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "raspberry-pi-zero-w",
+   "name": "Raspberry Pi Zero W",
+   "subtitle": "40-pin header (odd pins left)",
+   "category": "Boards",
+   "width": 230,
+   "pins": [
+    {
+     "id": "3V3",
+     "label": "3V3",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GPIO2 SDA",
+     "label": "GPIO2 SDA",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "GPIO3 SCL",
+     "label": "GPIO3 SCL",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "GPIO4",
+     "label": "GPIO4",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 4,
+     "type": "gnd"
+    },
+    {
+     "id": "GPIO17",
+     "label": "GPIO17",
+     "side": "left",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "GPIO27",
+     "label": "GPIO27",
+     "side": "left",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "GPIO22",
+     "label": "GPIO22",
+     "side": "left",
+     "index": 7,
+     "type": "io"
+    },
+    {
+     "id": "3V3.left",
+     "label": "3V3",
+     "side": "left",
+     "index": 8,
+     "type": "power"
+    },
+    {
+     "id": "GPIO10 MOSI",
+     "label": "GPIO10 MOSI",
+     "side": "left",
+     "index": 9,
+     "type": "io"
+    },
+    {
+     "id": "GPIO9 MISO",
+     "label": "GPIO9 MISO",
+     "side": "left",
+     "index": 10,
+     "type": "io"
+    },
+    {
+     "id": "GPIO11 SCLK",
+     "label": "GPIO11 SCLK",
+     "side": "left",
+     "index": 11,
+     "type": "io"
+    },
+    {
+     "id": "GND.left",
+     "label": "GND",
+     "side": "left",
+     "index": 12,
+     "type": "gnd"
+    },
+    {
+     "id": "ID_SD",
+     "label": "ID_SD",
+     "side": "left",
+     "index": 13,
+     "type": "other"
+    },
+    {
+     "id": "GPIO5",
+     "label": "GPIO5",
+     "side": "left",
+     "index": 14,
+     "type": "io"
+    },
+    {
+     "id": "GPIO6",
+     "label": "GPIO6",
+     "side": "left",
+     "index": 15,
+     "type": "io"
+    },
+    {
+     "id": "GPIO13",
+     "label": "GPIO13",
+     "side": "left",
+     "index": 16,
+     "type": "io"
+    },
+    {
+     "id": "GPIO19",
+     "label": "GPIO19",
+     "side": "left",
+     "index": 17,
+     "type": "io"
+    },
+    {
+     "id": "GPIO26",
+     "label": "GPIO26",
+     "side": "left",
+     "index": 18,
+     "type": "io"
+    },
+    {
+     "id": "GND.left.2",
+     "label": "GND",
+     "side": "left",
+     "index": 19,
+     "type": "gnd"
+    },
+    {
+     "id": "5V",
+     "label": "5V",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "5V.right",
+     "label": "5V",
+     "side": "right",
+     "index": 1,
+     "type": "power"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 2,
+     "type": "gnd"
+    },
+    {
+     "id": "GPIO14 TXD",
+     "label": "GPIO14 TXD",
+     "side": "right",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "GPIO15 RXD",
+     "label": "GPIO15 RXD",
+     "side": "right",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "GPIO18",
+     "label": "GPIO18",
+     "side": "right",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "GND.right.2",
+     "label": "GND",
+     "side": "right",
+     "index": 6,
+     "type": "gnd"
+    },
+    {
+     "id": "GPIO23",
+     "label": "GPIO23",
+     "side": "right",
+     "index": 7,
+     "type": "io"
+    },
+    {
+     "id": "GPIO24",
+     "label": "GPIO24",
+     "side": "right",
+     "index": 8,
+     "type": "io"
+    },
+    {
+     "id": "GND.right.3",
+     "label": "GND",
+     "side": "right",
+     "index": 9,
+     "type": "gnd"
+    },
+    {
+     "id": "GPIO25",
+     "label": "GPIO25",
+     "side": "right",
+     "index": 10,
+     "type": "io"
+    },
+    {
+     "id": "GPIO8 CE0",
+     "label": "GPIO8 CE0",
+     "side": "right",
+     "index": 11,
+     "type": "io"
+    },
+    {
+     "id": "GPIO7 CE1",
+     "label": "GPIO7 CE1",
+     "side": "right",
+     "index": 12,
+     "type": "io"
+    },
+    {
+     "id": "ID_SC",
+     "label": "ID_SC",
+     "side": "right",
+     "index": 13,
+     "type": "other"
+    },
+    {
+     "id": "GND.right.4",
+     "label": "GND",
+     "side": "right",
+     "index": 14,
+     "type": "gnd"
+    },
+    {
+     "id": "GPIO12",
+     "label": "GPIO12",
+     "side": "right",
+     "index": 15,
+     "type": "io"
+    },
+    {
+     "id": "GND.right.5",
+     "label": "GND",
+     "side": "right",
+     "index": 16,
+     "type": "gnd"
+    },
+    {
+     "id": "GPIO16",
+     "label": "GPIO16",
+     "side": "right",
+     "index": 17,
+     "type": "io"
+    },
+    {
+     "id": "GPIO20",
+     "label": "GPIO20",
+     "side": "right",
+     "index": 18,
+     "type": "io"
+    },
+    {
+     "id": "GPIO21",
+     "label": "GPIO21",
+     "side": "right",
+     "index": 19,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "reed-switch",
+   "name": "Reed Switch",
+   "category": "Inputs",
+   "note": "EIT std: COM→GND, NO→GPIO",
+   "pins": [
+    {
+     "id": "COM",
+     "label": "COM",
+     "side": "right",
+     "index": 0,
+     "type": "gnd"
+    },
+    {
+     "id": "NO",
+     "label": "NO",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "NC",
+     "label": "NC",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "reed-switch-2-wire",
+   "name": "Reed Switch (2-wire)",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "A",
+     "label": "A",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "B",
+     "label": "B",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "rfid-rc522",
+   "name": "RFID RC522",
+   "subtitle": "SPI · 13.56MHz",
+   "category": "Inputs",
+   "note": "3.3V only — use AMS1117",
+   "pins": [
+    {
+     "id": "SDA/SS",
+     "label": "SDA/SS",
+     "side": "left",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "SCK",
+     "label": "SCK",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "MOSI",
+     "label": "MOSI",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "MISO",
+     "label": "MISO",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "IRQ",
+     "label": "IRQ",
+     "side": "left",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 5,
+     "type": "gnd"
+    },
+    {
+     "id": "RST",
+     "label": "RST",
+     "side": "left",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "3.3V",
+     "label": "3.3V",
+     "side": "left",
+     "index": 7,
+     "type": "power"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "rfid-pn532",
+   "name": "RFID PN532",
+   "subtitle": "I2C / SPI · NTAG215",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "SDA",
+     "label": "SDA",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "SCL",
+     "label": "SCL",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "SCK",
+     "label": "SCK",
+     "side": "right",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "MISO",
+     "label": "MISO",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "MOSI",
+     "label": "MOSI",
+     "side": "right",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "SS",
+     "label": "SS",
+     "side": "right",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "IRQ",
+     "label": "IRQ",
+     "side": "right",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "RSTO",
+     "label": "RSTO",
+     "side": "right",
+     "index": 5,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "push-button",
+   "name": "Push Button",
+   "subtitle": "momentary",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "illuminated-button",
+   "name": "Illuminated Button",
+   "subtitle": "arcade / lit",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "COM",
+     "label": "COM",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "NO",
+     "label": "NO",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "NC",
+     "label": "NC",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "LED+",
+     "label": "LED+",
+     "side": "right",
+     "index": 3,
+     "type": "power"
+    },
+    {
+     "id": "LED−",
+     "label": "LED−",
+     "side": "right",
+     "index": 4,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "toggle-switch-spst",
+   "name": "Toggle Switch SPST",
+   "subtitle": "toggle / rocker",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "toggle-switch-spdt",
+   "name": "Toggle Switch SPDT",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "A",
+     "label": "A",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "COM",
+     "label": "COM",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "B",
+     "label": "B",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "key-switch",
+   "name": "Key Switch",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "microswitch-limit",
+   "name": "Microswitch / Limit",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "COM",
+     "label": "COM",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "NO",
+     "label": "NO",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "NC",
+     "label": "NC",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "rotary-encoder",
+   "name": "Rotary Encoder",
+   "subtitle": "KY-040",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "CLK",
+     "label": "CLK",
+     "side": "right",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "DT",
+     "label": "DT",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "SW",
+     "label": "SW",
+     "side": "right",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "+",
+     "label": "+",
+     "side": "right",
+     "index": 3,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 4,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "potentiometer",
+   "name": "Potentiometer",
+   "subtitle": "rotary / slide",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "1 (GND)",
+     "label": "1 (GND)",
+     "side": "right",
+     "index": 0,
+     "type": "gnd"
+    },
+    {
+     "id": "W (wiper)",
+     "label": "W (wiper)",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "3 (VCC)",
+     "label": "3 (VCC)",
+     "side": "right",
+     "index": 2,
+     "type": "power"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "keypad-4x4",
+   "name": "Keypad 4x4",
+   "category": "Inputs",
+   "width": 260,
+   "pins": [
+    {
+     "id": "R1",
+     "label": "R1",
+     "side": "bottom",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "R2",
+     "label": "R2",
+     "side": "bottom",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "R3",
+     "label": "R3",
+     "side": "bottom",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "R4",
+     "label": "R4",
+     "side": "bottom",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "C1",
+     "label": "C1",
+     "side": "bottom",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "C2",
+     "label": "C2",
+     "side": "bottom",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "C3",
+     "label": "C3",
+     "side": "bottom",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "C4",
+     "label": "C4",
+     "side": "bottom",
+     "index": 7,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "keypad-3x4",
+   "name": "Keypad 3x4",
+   "category": "Inputs",
+   "width": 230,
+   "pins": [
+    {
+     "id": "R1",
+     "label": "R1",
+     "side": "bottom",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "R2",
+     "label": "R2",
+     "side": "bottom",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "R3",
+     "label": "R3",
+     "side": "bottom",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "R4",
+     "label": "R4",
+     "side": "bottom",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "C1",
+     "label": "C1",
+     "side": "bottom",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "C2",
+     "label": "C2",
+     "side": "bottom",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "C3",
+     "label": "C3",
+     "side": "bottom",
+     "index": 6,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "hall-sensor",
+   "name": "Hall Sensor",
+   "subtitle": "A3144 module",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "OUT",
+     "label": "OUT",
+     "side": "right",
+     "index": 2,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "ir-break-beam-tx",
+   "name": "IR Break-Beam TX",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "ir-break-beam-rx",
+   "name": "IR Break-Beam RX",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "OUT",
+     "label": "OUT",
+     "side": "right",
+     "index": 2,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "pir-motion",
+   "name": "PIR Motion",
+   "subtitle": "HC-SR501",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "OUT",
+     "label": "OUT",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 2,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "touch-sensor",
+   "name": "Touch Sensor",
+   "subtitle": "TTP223",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "I/O",
+     "label": "I/O",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 2,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "light-sensor",
+   "name": "Light Sensor",
+   "subtitle": "LDR module",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "DO",
+     "label": "DO",
+     "side": "right",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "AO",
+     "label": "AO",
+     "side": "right",
+     "index": 3,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "xlr-jack",
+   "name": "XLR Jack",
+   "subtitle": "3-pin",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "3-5mm-jack",
+   "name": "3.5mm Jack",
+   "subtitle": "TRS",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "T",
+     "label": "T",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "R",
+     "label": "R",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "S",
+     "label": "S",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "banana-jack",
+   "name": "Banana Jack",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "led",
+   "name": "LED",
+   "subtitle": "long leg = +",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "− (K)",
+     "label": "− (K)",
+     "side": "left",
+     "index": 0,
+     "type": "gnd"
+    },
+    {
+     "id": "+ (A)",
+     "label": "+ (A)",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "rgb-led",
+   "name": "RGB LED",
+   "subtitle": "common cathode",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "R",
+     "label": "R",
+     "side": "left",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "G",
+     "label": "G",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "B",
+     "label": "B",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "− (K)",
+     "label": "− (K)",
+     "side": "left",
+     "index": 3,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "led-strip-ws2812b",
+   "name": "LED Strip WS2812B",
+   "subtitle": "addressable",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "5V",
+     "label": "5V",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "DIN",
+     "label": "DIN",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 2,
+     "type": "gnd"
+    },
+    {
+     "id": "5V.right",
+     "label": "5V",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "DOUT",
+     "label": "DOUT",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 2,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "led-strip-12v",
+   "name": "LED Strip 12V",
+   "subtitle": "single color",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "+12V",
+     "label": "+12V",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "relay-module-1-ch",
+   "name": "Relay Module 1-ch",
+   "subtitle": "5V coil",
+   "category": "Outputs",
+   "note": "check H/L trigger jumper",
+   "pins": [
+    {
+     "id": "DC+",
+     "label": "DC+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "DC−",
+     "label": "DC−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "IN",
+     "label": "IN",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "COM",
+     "label": "COM",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "NO",
+     "label": "NO",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "NC",
+     "label": "NC",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "relay-module-2-ch",
+   "name": "Relay Module 2-ch",
+   "subtitle": "5V coil",
+   "category": "Outputs",
+   "note": "check H/L trigger jumper",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "IN1",
+     "label": "IN1",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "IN2",
+     "label": "IN2",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "NO1",
+     "label": "NO1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "COM1",
+     "label": "COM1",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "NC1",
+     "label": "NC1",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "NO2",
+     "label": "NO2",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "COM2",
+     "label": "COM2",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "NC2",
+     "label": "NC2",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "relay-module-4-ch",
+   "name": "Relay Module 4-ch",
+   "subtitle": "5V coil",
+   "category": "Outputs",
+   "note": "check H/L trigger jumper",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "IN1",
+     "label": "IN1",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "IN2",
+     "label": "IN2",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "IN3",
+     "label": "IN3",
+     "side": "left",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "IN4",
+     "label": "IN4",
+     "side": "left",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "NO1",
+     "label": "NO1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "COM1",
+     "label": "COM1",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "NC1",
+     "label": "NC1",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "NO2",
+     "label": "NO2",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "COM2",
+     "label": "COM2",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "NC2",
+     "label": "NC2",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "NO3",
+     "label": "NO3",
+     "side": "right",
+     "index": 6,
+     "type": "other"
+    },
+    {
+     "id": "COM3",
+     "label": "COM3",
+     "side": "right",
+     "index": 7,
+     "type": "other"
+    },
+    {
+     "id": "NC3",
+     "label": "NC3",
+     "side": "right",
+     "index": 8,
+     "type": "other"
+    },
+    {
+     "id": "NO4",
+     "label": "NO4",
+     "side": "right",
+     "index": 9,
+     "type": "other"
+    },
+    {
+     "id": "COM4",
+     "label": "COM4",
+     "side": "right",
+     "index": 10,
+     "type": "other"
+    },
+    {
+     "id": "NC4",
+     "label": "NC4",
+     "side": "right",
+     "index": 11,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "relay-module-8-ch",
+   "name": "Relay Module 8-ch",
+   "subtitle": "5V coil",
+   "category": "Outputs",
+   "note": "check H/L trigger jumper",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "IN1",
+     "label": "IN1",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "IN2",
+     "label": "IN2",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "IN3",
+     "label": "IN3",
+     "side": "left",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "IN4",
+     "label": "IN4",
+     "side": "left",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "IN5",
+     "label": "IN5",
+     "side": "left",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "IN6",
+     "label": "IN6",
+     "side": "left",
+     "index": 7,
+     "type": "io"
+    },
+    {
+     "id": "IN7",
+     "label": "IN7",
+     "side": "left",
+     "index": 8,
+     "type": "io"
+    },
+    {
+     "id": "IN8",
+     "label": "IN8",
+     "side": "left",
+     "index": 9,
+     "type": "io"
+    },
+    {
+     "id": "NO1",
+     "label": "NO1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "COM1",
+     "label": "COM1",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "NC1",
+     "label": "NC1",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "NO2",
+     "label": "NO2",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "COM2",
+     "label": "COM2",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "NC2",
+     "label": "NC2",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "NO3",
+     "label": "NO3",
+     "side": "right",
+     "index": 6,
+     "type": "other"
+    },
+    {
+     "id": "COM3",
+     "label": "COM3",
+     "side": "right",
+     "index": 7,
+     "type": "other"
+    },
+    {
+     "id": "NC3",
+     "label": "NC3",
+     "side": "right",
+     "index": 8,
+     "type": "other"
+    },
+    {
+     "id": "NO4",
+     "label": "NO4",
+     "side": "right",
+     "index": 9,
+     "type": "other"
+    },
+    {
+     "id": "COM4",
+     "label": "COM4",
+     "side": "right",
+     "index": 10,
+     "type": "other"
+    },
+    {
+     "id": "NC4",
+     "label": "NC4",
+     "side": "right",
+     "index": 11,
+     "type": "other"
+    },
+    {
+     "id": "NO5",
+     "label": "NO5",
+     "side": "right",
+     "index": 12,
+     "type": "other"
+    },
+    {
+     "id": "COM5",
+     "label": "COM5",
+     "side": "right",
+     "index": 13,
+     "type": "other"
+    },
+    {
+     "id": "NC5",
+     "label": "NC5",
+     "side": "right",
+     "index": 14,
+     "type": "other"
+    },
+    {
+     "id": "NO6",
+     "label": "NO6",
+     "side": "right",
+     "index": 15,
+     "type": "other"
+    },
+    {
+     "id": "COM6",
+     "label": "COM6",
+     "side": "right",
+     "index": 16,
+     "type": "other"
+    },
+    {
+     "id": "NC6",
+     "label": "NC6",
+     "side": "right",
+     "index": 17,
+     "type": "other"
+    },
+    {
+     "id": "NO7",
+     "label": "NO7",
+     "side": "right",
+     "index": 18,
+     "type": "other"
+    },
+    {
+     "id": "COM7",
+     "label": "COM7",
+     "side": "right",
+     "index": 19,
+     "type": "other"
+    },
+    {
+     "id": "NC7",
+     "label": "NC7",
+     "side": "right",
+     "index": 20,
+     "type": "other"
+    },
+    {
+     "id": "NO8",
+     "label": "NO8",
+     "side": "right",
+     "index": 21,
+     "type": "other"
+    },
+    {
+     "id": "COM8",
+     "label": "COM8",
+     "side": "right",
+     "index": 22,
+     "type": "other"
+    },
+    {
+     "id": "NC8",
+     "label": "NC8",
+     "side": "right",
+     "index": 23,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "solid-state-relay",
+   "name": "Solid State Relay",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "DC+ (3)",
+     "label": "DC+ (3)",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "DC− (4)",
+     "label": "DC− (4)",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "Load 1",
+     "label": "Load 1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "Load 2",
+     "label": "Load 2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "mosfet-module",
+   "name": "MOSFET Module",
+   "subtitle": "12V load switch",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "TRIG",
+     "label": "TRIG",
+     "side": "left",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "VIN+",
+     "label": "VIN+",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "VIN−",
+     "label": "VIN−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "OUT+",
+     "label": "OUT+",
+     "side": "right",
+     "index": 2,
+     "type": "power"
+    },
+    {
+     "id": "OUT−",
+     "label": "OUT−",
+     "side": "right",
+     "index": 3,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "maglock",
+   "name": "Maglock",
+   "subtitle": "12V",
+   "category": "Outputs",
+   "note": "flyback diode across coil",
+   "pins": [
+    {
+     "id": "+12V",
+     "label": "+12V",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "solenoid-lock",
+   "name": "Solenoid Lock",
+   "subtitle": "12V",
+   "category": "Outputs",
+   "note": "flyback diode across coil",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "push-pull-solenoid",
+   "name": "Push-Pull Solenoid",
+   "category": "Outputs",
+   "note": "flyback diode across coil",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "servo",
+   "name": "Servo",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "GND (brn)",
+     "label": "GND (brn)",
+     "side": "left",
+     "index": 0,
+     "type": "gnd"
+    },
+    {
+     "id": "+5V (red)",
+     "label": "+5V (red)",
+     "side": "left",
+     "index": 1,
+     "type": "power"
+    },
+    {
+     "id": "SIG (org)",
+     "label": "SIG (org)",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "stepper-driver-a4988",
+   "name": "Stepper Driver A4988",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "EN",
+     "label": "EN",
+     "side": "left",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "MS1",
+     "label": "MS1",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "MS2",
+     "label": "MS2",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "MS3",
+     "label": "MS3",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "RST",
+     "label": "RST",
+     "side": "left",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "SLP",
+     "label": "SLP",
+     "side": "left",
+     "index": 5,
+     "type": "io"
+    },
+    {
+     "id": "STEP",
+     "label": "STEP",
+     "side": "left",
+     "index": 6,
+     "type": "io"
+    },
+    {
+     "id": "DIR",
+     "label": "DIR",
+     "side": "left",
+     "index": 7,
+     "type": "io"
+    },
+    {
+     "id": "VMOT",
+     "label": "VMOT",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "2B",
+     "label": "2B",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "2A",
+     "label": "2A",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "1A",
+     "label": "1A",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "1B",
+     "label": "1B",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "VDD",
+     "label": "VDD",
+     "side": "right",
+     "index": 6,
+     "type": "power"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 7,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "stepper-motor",
+   "name": "Stepper Motor",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "A+",
+     "label": "A+",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "A−",
+     "label": "A−",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "B+",
+     "label": "B+",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "B−",
+     "label": "B−",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "dc-motor",
+   "name": "DC Motor",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "buzzer",
+   "name": "Buzzer",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "dfplayer-mini",
+   "name": "DFPlayer Mini",
+   "subtitle": "MP3 player",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "RX",
+     "label": "RX",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "TX",
+     "label": "TX",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "DAC_R",
+     "label": "DAC_R",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "DAC_L",
+     "label": "DAC_L",
+     "side": "left",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "SPK1",
+     "label": "SPK1",
+     "side": "left",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 6,
+     "type": "gnd"
+    },
+    {
+     "id": "SPK2",
+     "label": "SPK2",
+     "side": "left",
+     "index": 7,
+     "type": "other"
+    },
+    {
+     "id": "BUSY",
+     "label": "BUSY",
+     "side": "right",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "USB−",
+     "label": "USB−",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "USB+",
+     "label": "USB+",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "ADKEY2",
+     "label": "ADKEY2",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "ADKEY1",
+     "label": "ADKEY1",
+     "side": "right",
+     "index": 4,
+     "type": "other"
+    },
+    {
+     "id": "IO2",
+     "label": "IO2",
+     "side": "right",
+     "index": 5,
+     "type": "other"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 6,
+     "type": "gnd"
+    },
+    {
+     "id": "IO1",
+     "label": "IO1",
+     "side": "right",
+     "index": 7,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "speaker",
+   "name": "Speaker",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "7-segment-tm1637",
+   "name": "7-Segment TM1637",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "CLK",
+     "label": "CLK",
+     "side": "left",
+     "index": 0,
+     "type": "io"
+    },
+    {
+     "id": "DIO",
+     "label": "DIO",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 2,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 3,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "lcd-16x2-i2c",
+   "name": "LCD 16x2 I2C",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 0,
+     "type": "gnd"
+    },
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 1,
+     "type": "power"
+    },
+    {
+     "id": "SDA",
+     "label": "SDA",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "SCL",
+     "label": "SCL",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "oled-ssd1306",
+   "name": "OLED SSD1306",
+   "subtitle": "I2C 128x64",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 0,
+     "type": "gnd"
+    },
+    {
+     "id": "VCC",
+     "label": "VCC",
+     "side": "left",
+     "index": 1,
+     "type": "power"
+    },
+    {
+     "id": "SCL",
+     "label": "SCL",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "SDA",
+     "label": "SDA",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "uv-light-ac-load",
+   "name": "UV Light / AC Load",
+   "subtitle": "generic load",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "L / +",
+     "label": "L / +",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "N / −",
+     "label": "N / −",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "ams1117-3-3",
+   "name": "AMS1117-3.3",
+   "subtitle": "3.3V regulator",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "VIN",
+     "label": "VIN",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "VOUT 3.3V",
+     "label": "VOUT 3.3V",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "buck-converter",
+   "name": "Buck Converter",
+   "subtitle": "LM2596 / mini-360",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "IN+",
+     "label": "IN+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "IN−",
+     "label": "IN−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "OUT+",
+     "label": "OUT+",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "OUT−",
+     "label": "OUT−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "boost-converter",
+   "name": "Boost Converter",
+   "subtitle": "MT3608",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "VIN+",
+     "label": "VIN+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "VIN−",
+     "label": "VIN−",
+     "side": "left",
+     "index": 1,
+     "type": "gnd"
+    },
+    {
+     "id": "VOUT+",
+     "label": "VOUT+",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "VOUT−",
+     "label": "VOUT−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "power-supply-12v",
+   "name": "Power Supply 12V",
+   "subtitle": "wall adapter",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "+12V",
+     "label": "+12V",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "power-supply-5v",
+   "name": "Power Supply 5V",
+   "subtitle": "wall adapter",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "+5V",
+     "label": "+5V",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "psu-brick",
+   "name": "PSU Brick",
+   "subtitle": "LRS / enclosed",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "L",
+     "label": "L",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "N",
+     "label": "N",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "⏚ Earth",
+     "label": "⏚ Earth",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "+V",
+     "label": "+V",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "+V.right",
+     "label": "+V",
+     "side": "right",
+     "index": 1,
+     "type": "power"
+    },
+    {
+     "id": "−V",
+     "label": "−V",
+     "side": "right",
+     "index": 2,
+     "type": "gnd"
+    },
+    {
+     "id": "−V.right",
+     "label": "−V",
+     "side": "right",
+     "index": 3,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "dc-barrel-jack",
+   "name": "DC Barrel Jack",
+   "subtitle": "5.5x2.1",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "kasa-ep10-smart-plug",
+   "name": "Kasa EP10 Smart Plug",
+   "subtitle": "outlet #__",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "AC out",
+     "label": "AC out",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "fuse-holder",
+   "name": "Fuse Holder",
+   "subtitle": "__A",
+   "category": "Inline Parts",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "flyback-diode",
+   "name": "Flyback Diode",
+   "subtitle": "1N4007 · stripe = K",
+   "category": "Inline Parts",
+   "pins": [
+    {
+     "id": "A",
+     "label": "A",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "K (stripe)",
+     "label": "K (stripe)",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "capacitor",
+   "name": "Capacitor",
+   "subtitle": "__µF",
+   "category": "Inline Parts",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "−",
+     "label": "−",
+     "side": "right",
+     "index": 0,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "logic-level-shifter",
+   "name": "Logic Level Shifter",
+   "subtitle": "4-ch",
+   "category": "Inline Parts",
+   "pins": [
+    {
+     "id": "LV",
+     "label": "LV",
+     "side": "left",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "LV1",
+     "label": "LV1",
+     "side": "left",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "LV2",
+     "label": "LV2",
+     "side": "left",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "LV3",
+     "label": "LV3",
+     "side": "left",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "LV4",
+     "label": "LV4",
+     "side": "left",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "left",
+     "index": 5,
+     "type": "gnd"
+    },
+    {
+     "id": "HV",
+     "label": "HV",
+     "side": "right",
+     "index": 0,
+     "type": "power"
+    },
+    {
+     "id": "HV1",
+     "label": "HV1",
+     "side": "right",
+     "index": 1,
+     "type": "io"
+    },
+    {
+     "id": "HV2",
+     "label": "HV2",
+     "side": "right",
+     "index": 2,
+     "type": "io"
+    },
+    {
+     "id": "HV3",
+     "label": "HV3",
+     "side": "right",
+     "index": 3,
+     "type": "io"
+    },
+    {
+     "id": "HV4",
+     "label": "HV4",
+     "side": "right",
+     "index": 4,
+     "type": "io"
+    },
+    {
+     "id": "GND.right",
+     "label": "GND",
+     "side": "right",
+     "index": 5,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "resistor",
+   "name": "Resistor",
+   "subtitle": "220Ω",
+   "category": "Inline Parts",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "terminal-block-2-pos",
+   "name": "Terminal Block 2-pos",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "terminal-block-4-pos",
+   "name": "Terminal Block 4-pos",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "wago-3-way",
+   "name": "Wago 3-way",
+   "subtitle": "all pins joined",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "a",
+     "label": "a",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "b",
+     "label": "b",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "c",
+     "label": "c",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jst-2-pin",
+   "name": "JST 2-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jst-3-pin",
+   "name": "JST 3-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jst-4-pin",
+   "name": "JST 4-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "dupont-header-4-pin",
+   "name": "Dupont Header 4-pin",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "1",
+     "label": "1",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2",
+     "label": "2",
+     "side": "left",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3",
+     "label": "3",
+     "side": "left",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4",
+     "label": "4",
+     "side": "left",
+     "index": 3,
+     "type": "other"
+    },
+    {
+     "id": "1.right",
+     "label": "1",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "2.right",
+     "label": "2",
+     "side": "right",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "3.right",
+     "label": "3",
+     "side": "right",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "4.right",
+     "label": "4",
+     "side": "right",
+     "index": 3,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "gnd-symbol",
+   "name": "GND symbol",
+   "subtitle": "ground flag",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "GND",
+     "label": "GND",
+     "side": "top",
+     "index": 0,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "3-3v-symbol",
+   "name": "3.3V symbol",
+   "subtitle": "power flag",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "3.3V",
+     "label": "3.3V",
+     "side": "bottom",
+     "index": 0,
+     "type": "power"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "5v-symbol",
+   "name": "5V symbol",
+   "subtitle": "power flag",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "5V",
+     "label": "5V",
+     "side": "bottom",
+     "index": 0,
+     "type": "power"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "12v-symbol",
+   "name": "12V symbol",
+   "subtitle": "power flag",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "12V",
+     "label": "12V",
+     "side": "bottom",
+     "index": 0,
+     "type": "power"
+    }
+   ]
+  }
+ ]
+}
