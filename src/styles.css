@@ -1306,3 +1306,15 @@ tr.conn-editor:hover {
 .is-reconnecting .wire-handle.end {
   pointer-events: none;
 }
+
+/* Sidebar sections take their category's color, matching the parts on the canvas. */
+.sidebar-section header {
+  background: var(--cat-fill, #f7f8fa);
+  border-left: 4px solid var(--cat-strong, #c5ced9);
+}
+.sidebar-section .part-tile {
+  border-left: 3px solid var(--cat-strong, #e4e8ee);
+}
+.sidebar-section .part-tile:hover {
+  background: var(--cat-fill, #f7faff);
+}

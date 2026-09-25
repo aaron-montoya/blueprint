@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { exportLibrary, importLibrary } from '../app/commands';
 import { useUi } from '../app/uiStore';
 import { PART_DRAG_TYPE } from '../canvas/Canvas';
-import { PIN_TYPE_INFO, type PartDefinition } from '../model/format';
+import { categoryFill, categoryStrong, PIN_TYPE_INFO, type PartDefinition } from '../model/format';
 import { allParts, categoriesOf, isCustom, useLibrary } from '../library/libraryStore';
 import { useDiagram } from '../store/diagramStore';
 
@@ -117,7 +117,11 @@ export function Sidebar() {
           if (!list.length && (q || !parts.some((p) => p.category === cat))) return null;
           const open = q ? true : !collapsed[cat];
           return (
-            <section key={cat} className="sidebar-section">
+            <section
+              key={cat}
+              className="sidebar-section"
+              style={{ '--cat-fill': categoryFill(cat), '--cat-strong': categoryStrong(cat) } as React.CSSProperties}
+            >
               <header onClick={() => setCollapsed((c) => ({ ...c, [cat]: open }))}>
                 <span className={`chevron${open ? ' open' : ''}`}>▸</span>
                 <span className="sidebar-section-title">{cat}</span>
