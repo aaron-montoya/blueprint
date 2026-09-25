@@ -147,7 +147,7 @@ export const EMPTY_TITLE: TitleBlock = { heading: DEFAULT_HEADING, room: '', pro
 export const TITLE_FIELDS: { key: Exclude<keyof TitleBlock, 'heading'>; label: string; placeholder?: string }[] = [
   { key: 'room', label: 'Room' },
   { key: 'prop', label: 'Prop' },
-  { key: 'firmware', label: 'ID', placeholder: 'e.g. pz-elementCombo' },
+  { key: 'firmware', label: 'ID', placeholder: 'pz- or dv-' },
   { key: 'wiredBy', label: 'Wired by' },
   { key: 'updated', label: 'Updated' },
 ];
