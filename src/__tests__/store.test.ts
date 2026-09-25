@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import { BUILTIN_PARTS } from '../library/builtin';
-import { validateDiagram } from '../model/format';
+import { EMPTY_TITLE, validateDiagram } from '../model/format';
 import { fromFile, toFile } from '../store/convert';
 import { useDiagram } from '../store/diagramStore';
 import { listDiagrams, loadDiagram, saveDiagram } from '../store/persistence';
@@ -10,7 +10,7 @@ const def = (name: string) => BUILTIN_PARTS.find((p) => p.name === name)!;
 const st = () => useDiagram.getState();
 
 function setup() {
-  st().load({ nodes: [], edges: [], title: { room: '', prop: '', firmware: '', wiredBy: '', updated: '' } }, 'test');
+  st().load({ nodes: [], edges: [], title: { ...EMPTY_TITLE } }, 'test');
   const esp = st().addPart(def('ESP32 DevKit V1'), { x: 100, y: 100 });
   const xlr = st().addPart(def('XLR Jack'), { x: 500, y: 100 });
   const wire = st().connect({ source: esp, sourceHandle: 'D23', target: xlr, targetHandle: '1' })!;
@@ -103,6 +103,15 @@ describe('diagram store', () => {
     const again = toFile(fromFile(validateDiagram(json)));
     expect(again).toEqual(file);
     expect(file.parts[0].part.pins.length).toBe(30); // full definition embedded
+  });
+
+  it('keeps a custom heading and defaults it for older files', () => {
+    setup();
+    st().setTitle('heading', 'MY SHOP — WIRING');
+    const file = JSON.parse(JSON.stringify(toFile(st())));
+    expect(validateDiagram(file).title.heading).toBe('MY SHOP — WIRING');
+    delete file.title.heading;
+    expect(validateDiagram(file).title.heading).toBe('ESCAPES IN TIME — WIRING');
   });
 
   it('rejects wires that point at missing pins', () => {

@@ -2,7 +2,7 @@
  * The diagram session: which diagram is open, autosave to IndexedDB, and
  * opening/creating/importing diagrams.
  */
-import { EMPTY_TITLE, validateDiagram, type DiagramFile } from '../model/format';
+import { DEFAULT_HEADING, EMPTY_TITLE, TITLE_FIELDS, validateDiagram, type DiagramFile } from '../model/format';
 import { newId } from '../model/ids';
 import { fromFile, toFile, type DiagramContent } from '../store/convert';
 import { useDiagram } from '../store/diagramStore';
@@ -22,7 +22,24 @@ export function onSaved(fn: () => void) {
 }
 
 const isEmpty = (c: DiagramContent) =>
-  c.nodes.length === 0 && c.edges.length === 0 && Object.values(c.title).every((v) => !v.trim());
+  c.nodes.length === 0 && c.edges.length === 0 && TITLE_FIELDS.every((f) => !c.title[f.key].trim());
+
+const HEADING_KEY = 'blueprint:heading';
+/** New diagrams start with the heading you used last. */
+export function rememberHeading(heading: string) {
+  try {
+    localStorage.setItem(HEADING_KEY, heading);
+  } catch {
+    /* ignore */
+  }
+}
+function lastHeading(): string {
+  try {
+    return localStorage.getItem(HEADING_KEY) ?? DEFAULT_HEADING;
+  } catch {
+    return DEFAULT_HEADING;
+  }
+}
 
 export async function flushSave() {
   if (timer) clearTimeout(timer);
@@ -59,7 +76,7 @@ async function open(content: DiagramContent, id: string) {
 }
 
 export async function newDiagram() {
-  await open({ nodes: [], edges: [], title: { ...EMPTY_TITLE } }, newId('d'));
+  await open({ nodes: [], edges: [], title: { ...EMPTY_TITLE, heading: lastHeading() } }, newId('d'));
 }
 
 export async function openDiagram(id: string) {

@@ -63,7 +63,6 @@ export async function renderDiagram(content: DiagramContent, targetPx: number) {
   }
 }
 
-export const APP_HEADER = 'ESCAPES IN TIME — WIRING';
 
 export const legendEntries = () => PIN_TYPES.map((t) => ({ label: PIN_TYPE_INFO[t].label, color: PIN_TYPE_INFO[t].color }));
 
@@ -102,7 +101,7 @@ export async function renderPng(content: DiagramContent): Promise<Blob> {
   ctx.strokeRect(20 * s, y0, 330 * s, 165 * s);
   ctx.fillStyle = '#111';
   ctx.font = font(14, true);
-  ctx.fillText(APP_HEADER, 32 * s, y0 + 24 * s);
+  ctx.fillText(content.title.heading, 32 * s, y0 + 24 * s);
   titleRows(content.title).forEach((r, i) => {
     const y = y0 + (50 + i * 25) * s;
     ctx.font = font(12, true);

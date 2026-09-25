@@ -1,5 +1,5 @@
 import { useReactFlow, type EdgeProps } from '@xyflow/react';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { WIRE_COLORS, type XY } from '../model/format';
 import { GRID, isHorizontalSide } from '../geometry/partLayout';
 import { coordsFromPoints, dragOrthoSegment, interior, normalizeCoords, orthoSegments, pathFromCoords } from '../geometry/routing';
@@ -46,6 +46,8 @@ function WireEdgeView({ id, data, selected }: EdgeProps<WireEdgeType>) {
   const checkpoint = useDiagram((s) => s.checkpoint);
   const setWirePoints = useDiagram((s) => s.setWirePoints);
   const snapToGrid = useDiagram((s) => s.snapToGrid);
+  const reconnectWire = useDiagram((s) => s.reconnectWire);
+  const [endDrag, setEndDrag] = useState<{ end: 'source' | 'target'; at: XY } | null>(null);
   if (!geo || !data) return null;
 
   const strokes = wireStrokes(data.color, data.stripe);
@@ -101,8 +103,40 @@ function WireEdgeView({ id, data, selected }: EdgeProps<WireEdgeType>) {
     setWirePoints(id, next.length ? next : undefined);
   };
 
+  // ---- move an end to another pin: drag the grip next to the pin
+  const onEndDown = (end: 'source' | 'target') => (e: React.PointerEvent) => {
+    if (e.button !== 0) return;
+    // Find the pin under the pointer on release (listener goes first, before cleanup).
+    const onUp = (ev: PointerEvent) => {
+      window.removeEventListener('pointerup', onUp);
+      const pin = document.elementFromPoint(ev.clientX, ev.clientY)?.closest<HTMLElement>('.react-flow__handle');
+      const part = pin?.dataset.nodeid;
+      const handle = pin?.dataset.handleid;
+      if (part && handle) reconnectWire(id, end, part, handle);
+    };
+    window.addEventListener('pointerup', onUp);
+    const wrap = document.querySelector('.canvas-wrap');
+    wrap?.classList.add('is-connecting', 'is-reconnecting');
+    startDrag(
+      e,
+      (p) => setEndDrag({ end, at: p }),
+      () => {
+        wrap?.classList.remove('is-connecting', 'is-reconnecting');
+        setEndDrag(null);
+      },
+    );
+  };
+  const grip = (end: 'source' | 'target') => {
+    const pts = end === 'source' ? geo.points : [...geo.points].reverse();
+    const a = pts[0];
+    const b = pts[1] ?? a;
+    const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    const d = Math.min(14, len / 2);
+    return { x: a.x + ((b.x - a.x) / len) * d, y: a.y + ((b.y - a.y) / len) * d };
+  };
+
   return (
-    <g className={`wire${selected ? ' selected' : ''}`} data-wire-id={id}>
+    <g className={`wire${selected ? ' selected' : ''}${endDrag ? ' moving-end' : ''}`} data-wire-id={id}>
       <path d={geo.d} className="react-flow__edge-interaction" fill="none" stroke="transparent" strokeWidth={14} />
       {selected && <path d={geo.d} className="wire-glow" fill="none" />}
       <path d={geo.d} className="wire-casing" fill="none" stroke={strokes.casing} strokeWidth={WIRE_WIDTH + 2} strokeLinejoin="round" />
@@ -121,6 +155,33 @@ function WireEdgeView({ id, data, selected }: EdgeProps<WireEdgeType>) {
           {data.label}
         </text>
       )}
+
+      {endDrag && (
+        <line
+          className="wire-end-preview"
+          x1={endDrag.end === 'source' ? T.x : S.x}
+          y1={endDrag.end === 'source' ? T.y : S.y}
+          x2={endDrag.at.x}
+          y2={endDrag.at.y}
+          stroke={strokes.base === '#FFFFFF' ? '#777' : strokes.base}
+        />
+      )}
+      {selected &&
+        (['source', 'target'] as const).map((end) => {
+          const g = endDrag?.end === end ? endDrag.at : grip(end);
+          return (
+            <circle
+              key={end}
+              className="wire-handle end nodrag nopan"
+              cx={g.x}
+              cy={g.y}
+              r={5}
+              onPointerDown={onEndDown(end)}
+            >
+              <title>Drag onto another pin to move this end of the wire</title>
+            </circle>
+          );
+        })}
 
       {selected && data.route === 'orthogonal' &&
         orthoSegments(geo.raw).map((seg) => {

@@ -2,7 +2,7 @@ import { jsPDF } from 'jspdf';
 import { connectionRows } from '../model/connections';
 import { WIRE_COLORS } from '../model/format';
 import type { DiagramContent } from '../store/convert';
-import { APP_HEADER, diagramBounds, legendEntries, renderDiagram, titleRows } from './render';
+import { diagramBounds, legendEntries, renderDiagram, titleRows } from './render';
 
 /**
  * jsPDF's built-in fonts only cover WinAnsi. Map the symbols our part and
@@ -52,7 +52,7 @@ export async function renderPdf(content: DiagramContent): Promise<Blob> {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.setTextColor(20);
-  doc.text(pdfText(APP_HEADER), M + 10, fy + 18);
+  doc.text(doc.splitTextToSize(pdfText(content.title.heading), 360)[0] ?? '', M + 10, fy + 18);
   const rows = titleRows(content.title);
   rows.forEach((r, i) => {
     const col = i < 3 ? 0 : 1;

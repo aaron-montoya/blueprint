@@ -1257,3 +1257,25 @@ tr.conn-editor:hover {
 .conn-editor-done {
   text-align: right;
 }
+
+/* Moving a wire end */
+.wire-handle.end {
+  fill: var(--accent);
+  stroke: #fff;
+  stroke-width: 2;
+  cursor: grab;
+}
+.wire-handle.end:hover {
+  fill: #1d4fd0;
+}
+.wire.moving-end > path {
+  opacity: 0.35;
+}
+.wire-end-preview {
+  stroke-width: 3;
+  stroke-dasharray: 6 4;
+  pointer-events: none;
+}
+.is-reconnecting .wire-handle.end {
+  pointer-events: none;
+}

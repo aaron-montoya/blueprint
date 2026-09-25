@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { rememberHeading } from '../app/session';
 import { PIN_TYPE_INFO, PIN_TYPES, TITLE_FIELDS } from '../model/format';
 import { useDiagram } from '../store/diagramStore';
 import { ConnectionsPanel } from './ConnectionsPanel';
@@ -41,6 +42,20 @@ function TitleBlockTab() {
   return (
     <>
       <h3>Title block</h3>
+      <label className="tb-field tb-heading">
+        <span>Heading</span>
+        <input
+          className="text-input"
+          value={title.heading}
+          placeholder="Printed at the top of the title block"
+          title="Printed at the top of the title block on PDF and PNG exports"
+          onChange={(e) => {
+            setTitle('heading', e.target.value);
+            rememberHeading(e.target.value);
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
+        />
+      </label>
       {TITLE_FIELDS.map((f) => (
         <label key={f.key} className="tb-field">
           <span>{f.label}</span>

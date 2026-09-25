@@ -84,6 +84,8 @@ export interface DiagramState extends Snapshot {
   /** Live update while dragging a wire segment (checkpoint first). */
   setWirePoints(id: string, points: XY[] | undefined): void;
   deleteWire(id: string): void;
+  /** Move one end of a wire to another pin. Returns false if that isn't allowed. */
+  reconnectWire(id: string, end: 'source' | 'target', part: string, pin: string): boolean;
   deleteSelection(): void;
   rotateSelection(): void;
   flipSelection(): void;
@@ -348,6 +350,28 @@ export const useDiagram = create<DiagramState>()((set, get) => {
       set((s) => ({
         edges: s.edges.map((e) => (e.id === id && e.data ? { ...e, data: { ...e.data, points } } : e)),
       }));
+    },
+
+    reconnectWire(id, end, part, pin) {
+      const s = get();
+      const w = s.edges.find((e) => e.id === id);
+      if (!w) return false;
+      const next = end === 'source' ? { ...w, source: part, sourceHandle: pin } : { ...w, target: part, targetHandle: pin };
+      if (next.source === w.source && next.sourceHandle === w.sourceHandle && next.target === w.target && next.targetHandle === w.targetHandle)
+        return false; // dropped back where it was
+      if (next.source === next.target && next.sourceHandle === next.targetHandle) return false;
+      const dup = s.edges.some(
+        (e) =>
+          e.id !== id &&
+          ((e.source === next.source && e.sourceHandle === next.sourceHandle && e.target === next.target && e.targetHandle === next.targetHandle) ||
+            (e.source === next.target && e.sourceHandle === next.targetHandle && e.target === next.source && e.targetHandle === next.sourceHandle)),
+      );
+      if (dup) return false;
+      // The old bends were shaped for the old pin; re-route.
+      commit((s) => ({
+        edges: s.edges.map((e) => (e.id === id ? { ...next, data: { ...next.data!, points: undefined } } : e)),
+      }));
+      return true;
     },
 
     deleteWire(id) {

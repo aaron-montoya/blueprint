@@ -129,7 +129,11 @@ export function wireColorName(w: Pick<WireRecord, 'color' | 'stripe'>): string {
 
 export type Rotation = 0 | 90 | 180 | 270;
 
+/** Printed at the top of the title block on PDF/PNG exports; editable per diagram. */
+export const DEFAULT_HEADING = 'ESCAPES IN TIME — WIRING';
+
 export interface TitleBlock {
+  heading: string;
   room: string;
   prop: string;
   firmware: string;
@@ -137,9 +141,9 @@ export interface TitleBlock {
   updated: string;
 }
 
-export const EMPTY_TITLE: TitleBlock = { room: '', prop: '', firmware: '', wiredBy: '', updated: '' };
+export const EMPTY_TITLE: TitleBlock = { heading: DEFAULT_HEADING, room: '', prop: '', firmware: '', wiredBy: '', updated: '' };
 
-export const TITLE_FIELDS: { key: keyof TitleBlock; label: string }[] = [
+export const TITLE_FIELDS: { key: Exclude<keyof TitleBlock, 'heading'>; label: string }[] = [
   { key: 'room', label: 'Room' },
   { key: 'prop', label: 'Prop' },
   { key: 'firmware', label: 'Firmware' },
@@ -293,6 +297,8 @@ export function validateDiagram(raw: unknown): DiagramFile {
   const t = isObj(raw.title) ? raw.title : {};
   const title: TitleBlock = { ...EMPTY_TITLE };
   for (const { key } of TITLE_FIELDS) title[key] = str(t[key] ?? '', `title.${key}`)!;
+  // Files from before the heading was editable get the default.
+  title.heading = str(t.heading ?? DEFAULT_HEADING, 'title.heading')!;
 
   const parts = arr(raw.parts ?? [], 'parts').map((p, i): PartInstanceRecord => {
     const pp = `parts[${i}]`;

@@ -18,12 +18,13 @@ no server, and diagrams never leave your machine unless you export them.
 | Add a part | Drag it from the left sidebar (or double-click it). Search covers names, pins and notes. |
 | Wire two pins | Drag from one pin to another. Valid targets light up. |
 | Set a wire's color | New wires come out selected: click a color in the bar at the top of the canvas. Or click any wire for the full popover (color, two-color stripe, label, routing, delete). |
+| Move a wire's end | Select the wire, then drag the blue dot at either end onto another pin. |
 | Reshape a wire | Select it and drag the small handles on its segments. Your shape stays put when parts move. **Reset route** in the popover goes back to automatic routing. |
 | Rename a part | Double-click its title (or select it and press F2), e.g. "XLR Jack" → "Top XLR 1". |
 | Rotate / flip | `R` / `F`, or the toolbar. Pins move with the part. |
 | Group parts | Select them and click **Section** (or click Section with nothing selected and draw a box). Drag the section's tab to move it and everything inside. |
 | Notes | **Note** in the toolbar; double-click to edit. |
-| Title block | Right panel → **Title block** tab: room, prop, firmware, wired by, updated. Hide the panel with **»** at its top right; bring it back with the strip on the right edge. |
+| Title block | Right panel → **Title block** tab: heading (printed at the top of the PDF/PNG title block), room, prop, firmware, wired by, updated. Hide the panel with **»** at its top right; bring it back with the strip on the right edge. |
 | Connection list | Right panel → **Connections** tab: every wire as from pin → color → to pin → label. Click a row to find the wire, click its color to recolor or relabel it, × to delete it. It's also printed on page 2 of the PDF. |
 | Make a part | **+ New part** (bottom of the sidebar) opens the Part Maker: name, category, pins per side with label and type, reorder with ↑/↓, live preview. Hover any part in the sidebar for **⧉** (new part from a copy) or **✎** (edit one of your own parts). |
 
