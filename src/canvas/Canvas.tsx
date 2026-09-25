@@ -95,6 +95,7 @@ export function Canvas() {
   const wireColor = useDiagram((s) => s.wireColor);
   const diagramId = useDiagram((s) => s.diagramId);
   const tool = useUi((s) => s.tool);
+  const modalOpen = useUi((s) => s.partMaker !== null);
   const setTool = useUi((s) => s.setTool);
   const { screenToFlowPosition, fitView } = useReactFlow();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -164,7 +165,7 @@ export function Canvas() {
   // Keyboard shortcuts (Delete/Backspace are handled by React Flow).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (isTyping(e.target)) return;
+      if (isTyping(e.target) || useUi.getState().partMaker) return;
       const mod = e.ctrlKey || e.metaKey;
       const k = e.key.toLowerCase();
       const st = s();
@@ -232,7 +233,7 @@ export function Canvas() {
           }}
           snapToGrid={snapToGrid}
           snapGrid={[GRID, GRID]}
-          deleteKeyCode={['Delete', 'Backspace']}
+          deleteKeyCode={modalOpen ? null : ['Delete', 'Backspace']}
           multiSelectionKeyCode={['Shift', 'Control', 'Meta']}
           selectionKeyCode={null}
           selectionOnDrag

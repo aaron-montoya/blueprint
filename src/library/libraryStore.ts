@@ -17,6 +17,8 @@ interface LibraryState {
   /** Merge a library file into the sidebar. Returns how many parts were added/updated. */
   importLibrary(raw: unknown): Promise<number>;
   removeCustom(id: string): Promise<void>;
+  /** Save one part made or edited in the Part Maker. */
+  saveCustom(part: PartDefinition): Promise<void>;
 }
 
 export const useLibrary = create<LibraryState>()((set, get) => ({
@@ -36,6 +38,10 @@ export const useLibrary = create<LibraryState>()((set, get) => ({
     for (const p of lib.parts) byId.set(p.id, p);
     set({ custom: [...byId.values()] });
     return lib.parts.length;
+  },
+  async saveCustom(part) {
+    await putCustomParts([part]);
+    set({ custom: [...get().custom.filter((p) => p.id !== part.id), part] });
   },
   async removeCustom(id) {
     await deleteCustomPart(id);

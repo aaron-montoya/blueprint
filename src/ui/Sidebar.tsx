@@ -1,6 +1,7 @@
 import { useReactFlow } from '@xyflow/react';
 import { useMemo, useState } from 'react';
 import { exportLibrary, importLibrary } from '../app/commands';
+import { useUi } from '../app/uiStore';
 import { PART_DRAG_TYPE } from '../canvas/Canvas';
 import { PIN_TYPE_INFO, type PartDefinition } from '../model/format';
 import { allParts, categoriesOf, isCustom, useLibrary } from '../library/libraryStore';
@@ -8,6 +9,7 @@ import { useDiagram } from '../store/diagramStore';
 
 function PartTile({ part, custom, onAdd }: { part: PartDefinition; custom: boolean; onAdd: () => void }) {
   const removeCustom = useLibrary((s) => s.removeCustom);
+  const openPartMaker = useUi((s) => s.openPartMaker);
   const types = [...new Set(part.pins.map((p) => p.type))];
   return (
     <div
@@ -30,10 +32,34 @@ function PartTile({ part, custom, onAdd }: { part: PartDefinition; custom: boole
         ))}
         {part.pins.length}
       </span>
+      <span className="part-tile-actions">
+        {custom && (
+          <button
+            className="icon-btn tiny"
+            title="Edit this part"
+            onClick={(e) => {
+              e.stopPropagation();
+              openPartMaker({ mode: 'edit', source: part });
+            }}
+          >
+            ✎
+          </button>
+        )}
+        <button
+          className="icon-btn tiny"
+          title="Make a new part starting from a copy of this one"
+          onClick={(e) => {
+            e.stopPropagation();
+            openPartMaker({ mode: 'copy', source: part });
+          }}
+        >
+          ⧉
+        </button>
+      </span>
       {custom && (
         <button
           className="icon-btn tiny"
-          title="Remove this imported part from the sidebar"
+          title="Remove this part from your sidebar"
           onClick={(e) => {
             e.stopPropagation();
             if (confirm(`Remove "${part.name}" from your parts?`)) void removeCustom(part.id);
@@ -115,8 +141,11 @@ export function Sidebar() {
         {q && !parts.some(matches) && <p className="empty">No parts match “{query}”.</p>}
       </div>
       <div className="sidebar-foot">
+        <button className="btn small primary" onClick={() => useUi.getState().openPartMaker({ mode: 'new' })} title="Make a new part in the Part Maker">
+          + New part
+        </button>
         <button className="btn small" onClick={() => void importLibrary()} title="Merge a parts library JSON file into the sidebar">
-          Import parts…
+          Import…
         </button>
         <button
           className="btn small"
@@ -124,7 +153,7 @@ export function Sidebar() {
           onClick={() => exportLibrary('Custom parts', custom)}
           title="Export every part you imported as one library file"
         >
-          Export custom
+          Export mine
         </button>
       </div>
     </aside>

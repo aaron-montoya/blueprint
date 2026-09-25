@@ -23,7 +23,9 @@ no server, and diagrams never leave your machine unless you export them.
 | Rotate / flip | `R` / `F`, or the toolbar. Pins move with the part. |
 | Group parts | Select them and click **Section** (or click Section with nothing selected and draw a box). Drag the section's tab to move it and everything inside. |
 | Notes | **Note** in the toolbar; double-click to edit. |
-| Title block | Right panel: room, prop, firmware, wired by, updated. |
+| Title block | Right panel → **Title block** tab: room, prop, firmware, wired by, updated. |
+| Connection list | Right panel → **Connections** tab: every wire as from pin → color → to pin → label. Click a row to find the wire. It's also printed on page 2 of the PDF. |
+| Make a part | **+ New part** (bottom of the sidebar) opens the Part Maker: name, category, pins per side with label and type, reorder with ↑/↓, live preview. Hover any part in the sidebar for **⧉** (new part from a copy) or **✎** (edit one of your own parts). |
 
 **Canvas:** drag on empty space to box-select, Shift/Ctrl-click to add to the
 selection, right-drag / middle-drag / Space-drag to pan, wheel to zoom, **Fit**
@@ -43,7 +45,8 @@ copy/paste · `Ctrl+D` duplicate · `Ctrl+A` select all · `Ctrl+S` export
   keep editing. Every part's full definition is embedded in the file, so it
   opens even on a machine that doesn't have the part library.
 * **Export PNG** and **Export PDF** render the whole diagram with the title
-  block and pin-color legend. The PDF is a single landscape Letter page.
+  block and pin-color legend. The PDF puts the diagram on one landscape Letter
+  page and the connection list on the page(s) after it.
 
 Clearing browser data deletes local copies, so export anything you want to keep.
 
@@ -56,10 +59,11 @@ original draw.io script, the source of truth). To regenerate after editing it:
 npm run library   # writes src/library/default-library.json
 ```
 
-**Import parts…** (sidebar) merges a parts library JSON file into the sidebar;
-imported parts are kept in this browser. The ⤓ button on a sidebar section
-exports that section as a library file; **Export custom** exports every part you
-imported.
+Parts you make in the Part Maker or bring in with **Import…** (sidebar) are
+kept in this browser, like diagrams. Share them as files: the ⤓ button on a
+sidebar section exports that section as a parts library, and **Export mine**
+exports every part you made or imported. Editing a part changes it for new
+placements only; diagrams keep the copy of the part they were drawn with.
 
 ## File formats
 

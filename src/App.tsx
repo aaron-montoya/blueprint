@@ -7,7 +7,8 @@ import { Canvas } from './canvas/Canvas';
 import { useLibrary } from './library/libraryStore';
 import { DIAGRAM_EXTENSION } from './model/format';
 import { Sidebar } from './ui/Sidebar';
-import { TitlePanel } from './ui/TitlePanel';
+import { PartMaker } from './ui/PartMaker';
+import { SidePanel } from './ui/TitlePanel';
 import { Toolbar } from './ui/Toolbar';
 
 function Toasts() {
@@ -63,8 +64,9 @@ export default function App() {
         <Toolbar panelOpen={panelOpen} togglePanel={() => setPanelOpen((v) => !v)} />
         <Sidebar />
         <main className="main">{ready ? <Canvas /> : <div className="loading">Loading…</div>}</main>
-        {panelOpen && <TitlePanel />}
+        {panelOpen && <SidePanel />}
       </div>
+      <PartMaker />
       <Toasts />
     </ReactFlowProvider>
   );

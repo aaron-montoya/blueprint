@@ -198,8 +198,8 @@ export function Toolbar({ panelOpen, togglePanel }: { panelOpen: boolean; toggle
         ⤢ Fit
       </button>
       <div className="tb-spacer" />
-      <button className={`btn${panelOpen ? ' active' : ''}`} onClick={togglePanel} title="Title block & legend">
-        Title block
+      <button className={`btn${panelOpen ? ' active' : ''}`} onClick={togglePanel} title="Title block, legend and connection list">
+        Side panel
       </button>
     </header>
   );

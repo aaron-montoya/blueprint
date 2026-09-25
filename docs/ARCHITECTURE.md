@@ -121,20 +121,22 @@ See `src/model/format.ts` for the canonical TypeScript types.
   }
   ```
 
-## v1.5 designs (not built yet)
+## v1.5: Part Maker and connection list (built)
 
-**Part Maker.** A modal with a form on the left and a live `PartNode` preview
-on the right. It edits a `PartDefinition` object directly: name, subtitle,
+**Part Maker** (`src/ui/PartMaker.tsx`, model in `src/library/partMaker.ts`).
+A modal with a form on the left and a live preview on the right, drawn by the
+same `PartBody` component the canvas uses. It edits a `PartDefinition` object directly: name, subtitle,
 category (free text with suggestions), width, note, and four pin lists (one per
 side) where each row is label + type with drag-to-reorder. `index` is written
 from list order on save. "Edit a copy" clones an existing definition with a
 new id. Saving goes through the same `validatePart()` used by library import
 and stores into the IndexedDB `parts` store, so the sidebar picks it up.
 
-**Connection list.** A derived view: `wires.map(w => from part/pin, color,
-to part/pin, label)` sorted by from-part. It needs no new data. It would render
-as a collapsible side panel and as a table on a second PDF page (or beside
-the diagram if it fits).
+**Connection list** (`src/model/connections.ts`, `src/ui/ConnectionsPanel.tsx`).
+A derived view: `wires.map(w => from part/pin, color,
+to part/pin, label)` sorted by from-part. It needs no new data. It renders
+as the Connections tab of the right panel and as a table on the PDF page(s)
+after the diagram. Rows read from the board outward and follow pin order.
 
 ## Build steps
 

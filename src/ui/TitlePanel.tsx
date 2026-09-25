@@ -1,14 +1,42 @@
+import { useState } from 'react';
 import { PIN_TYPE_INFO, PIN_TYPES, TITLE_FIELDS } from '../model/format';
 import { useDiagram } from '../store/diagramStore';
+import { ConnectionsPanel } from './ConnectionsPanel';
 
-export function TitlePanel() {
+type Tab = 'title' | 'connections';
+
+/** Right-hand panel: title block & legend, or the connection list. */
+export function SidePanel() {
+  const [tab, setTab] = useState<Tab>('title');
+  const wireCount = useDiagram((s) => s.edges.length);
+  return (
+    <aside className={`title-panel${tab === 'connections' ? ' wide' : ''}`}>
+      <div className="panel-tabs" role="tablist">
+        <button role="tab" aria-selected={tab === 'title'} className={tab === 'title' ? 'active' : ''} onClick={() => setTab('title')}>
+          Title block
+        </button>
+        <button
+          role="tab"
+          aria-selected={tab === 'connections'}
+          className={tab === 'connections' ? 'active' : ''}
+          onClick={() => setTab('connections')}
+        >
+          Connections <span className="count">{wireCount}</span>
+        </button>
+      </div>
+      {tab === 'title' ? <TitleBlockTab /> : <ConnectionsPanel />}
+    </aside>
+  );
+}
+
+function TitleBlockTab() {
   const title = useDiagram((s) => s.title);
   const setTitle = useDiagram((s) => s.setTitle);
   const partCount = useDiagram((s) => s.nodes.filter((n) => n.type === 'part').length);
   const wireCount = useDiagram((s) => s.edges.length);
 
   return (
-    <aside className="title-panel">
+    <>
       <h3>Title block</h3>
       {TITLE_FIELDS.map((f) => (
         <label key={f.key} className="tb-field">
@@ -53,6 +81,6 @@ export function TitlePanel() {
       <p className="stats">
         {partCount} parts · {wireCount} wires · autosaved in this browser
       </p>
-    </aside>
+    </>
   );
 }

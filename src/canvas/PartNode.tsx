@@ -1,7 +1,7 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { memo, useEffect, useRef, useState } from 'react';
-import { PIN_TYPE_INFO, type PinSide } from '../model/format';
-import { layoutPart, PIN_SIZE, type LaidOutPin } from '../geometry/partLayout';
+import { PIN_TYPE_INFO, type PartDefinition, type PinSide } from '../model/format';
+import { layoutPart, PIN_SIZE, type LaidOutPin, type PartLayout } from '../geometry/partLayout';
 import { useDiagram } from '../store/diagramStore';
 import type { PartNode as PartNodeType } from '../store/types';
 
@@ -72,22 +72,12 @@ function PartNodeView({ id, data, selected }: NodeProps<PartNodeType>) {
   };
 
   return (
-    <div
-      className={`part${selected ? ' selected' : ''}`}
-      style={{ width: layout.width, height: layout.height }}
-      data-category={data.def.category}
-    >
-      <div
-        className="part-header"
-        style={{ top: layout.headerTop, height: layout.headerHeight }}
-        onDoubleClick={(e) => {
-          e.stopPropagation();
-          setDraft(data.label);
-          setEditing(true);
-        }}
-        title="Double-click to rename this part"
-      >
-        {editing ? (
+    <PartBody
+      layout={layout}
+      def={data.def}
+      selected={selected}
+      header={
+        editing ? (
           <input
             ref={inputRef}
             className="part-title-input nodrag"
@@ -100,38 +90,82 @@ function PartNodeView({ id, data, selected }: NodeProps<PartNodeType>) {
               if (e.key === 'Escape') finish(false);
             }}
           />
-        ) : (
-          <div className="part-title">{layout.titleLine}</div>
-        )}
-        {layout.subtitleLine && <div className="part-subtitle">{layout.subtitleLine}</div>}
-      </div>
-
-      {layout.note && (
-        <div className="part-note" style={{ top: layout.note.top, height: layout.note.height }}>
-          {data.def.note}
-        </div>
-      )}
-
-      {layout.pins.map((pin) => (
-        <PinLabel key={`l-${pin.def.id}`} pin={pin} />
-      ))}
-      {layout.pins.map((pin) => (
+        ) : undefined
+      }
+      onHeaderDoubleClick={(e) => {
+        e.stopPropagation();
+        setDraft(data.label);
+        setEditing(true);
+      }}
+      renderPin={(pin, style) => (
         <Handle
           key={pin.def.id}
           id={pin.def.id}
           type="source"
           position={POSITION[pin.side]}
           className={`pin pin-${pin.def.type}`}
-          style={{
-            left: pin.x,
-            top: pin.y,
-            width: PIN_SIZE,
-            height: PIN_SIZE,
-            background: PIN_TYPE_INFO[pin.def.type].color,
-          }}
+          style={style}
           title={`${pin.def.label} — ${PIN_TYPE_INFO[pin.def.type].label}`}
         />
+      )}
+    />
+  );
+}
+
+/**
+ * The drawn part: body, header, note, pin labels and pins. Shared by the
+ * canvas node (pins are React Flow handles) and the Part Maker preview.
+ */
+export function PartBody({
+  layout,
+  def,
+  selected,
+  header,
+  onHeaderDoubleClick,
+  renderPin,
+}: {
+  layout: PartLayout;
+  def: PartDefinition;
+  selected?: boolean;
+  /** Replaces the title line (e.g. with a rename input). */
+  header?: React.ReactNode;
+  onHeaderDoubleClick?: (e: React.MouseEvent) => void;
+  renderPin: (pin: LaidOutPin, style: React.CSSProperties) => React.ReactNode;
+}) {
+  return (
+    <div
+      className={`part${selected ? ' selected' : ''}`}
+      style={{ width: layout.width, height: layout.height }}
+      data-category={def.category}
+    >
+      <div
+        className="part-header"
+        style={{ top: layout.headerTop, height: layout.headerHeight }}
+        onDoubleClick={onHeaderDoubleClick}
+        title={onHeaderDoubleClick ? 'Double-click to rename this part' : undefined}
+      >
+        {header ?? <div className="part-title">{layout.titleLine}</div>}
+        {layout.subtitleLine && <div className="part-subtitle">{layout.subtitleLine}</div>}
+      </div>
+
+      {layout.note && (
+        <div className="part-note" style={{ top: layout.note.top, height: layout.note.height }}>
+          {def.note}
+        </div>
+      )}
+
+      {layout.pins.map((pin) => (
+        <PinLabel key={`l-${pin.def.id}`} pin={pin} />
       ))}
+      {layout.pins.map((pin) =>
+        renderPin(pin, {
+          left: pin.x,
+          top: pin.y,
+          width: PIN_SIZE,
+          height: PIN_SIZE,
+          background: PIN_TYPE_INFO[pin.def.type].color,
+        }),
+      )}
     </div>
   );
 }

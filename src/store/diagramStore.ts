@@ -88,6 +88,8 @@ export interface DiagramState extends Snapshot {
   rotateSelection(): void;
   flipSelection(): void;
   selectAll(): void;
+  /** Select just this wire. */
+  selectWire(id: string): void;
   clearSelection(): void;
 
   copySelection(): boolean;
@@ -376,6 +378,13 @@ export const useDiagram = create<DiagramState>()((set, get) => {
       set((s) => ({
         nodes: s.nodes.map((n) => (n.selected ? n : { ...n, selected: true })),
         edges: s.edges.map((e) => (e.selected ? e : { ...e, selected: true })),
+      }));
+    },
+
+    selectWire(id) {
+      set((s) => ({
+        nodes: s.nodes.map((n) => (n.selected ? { ...n, selected: false } : n)),
+        edges: s.edges.map((e) => (e.id === id ? { ...e, selected: true } : e.selected ? { ...e, selected: false } : e)),
       }));
     },
 
