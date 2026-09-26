@@ -63,8 +63,8 @@ test('make a part, copy a part, wire them, see the connection list and PDF', asy
   await page.mouse.down();
   await page.mouse.move(b.x, b.y, { steps: 8 });
   await page.mouse.up();
-  await page.locator('.wire-bar [title="Green"]').click();
-  await page.locator('.wire-bar input').fill('sensor → reed');
+  await page.locator('.wire-bar-colors [title="Green"]').click();
+  await page.locator('.wire-bar input#wire-label').fill('sensor → reed');
 
   // ---- connection list
   await page.getByRole('tab', { name: /Connections/ }).click();

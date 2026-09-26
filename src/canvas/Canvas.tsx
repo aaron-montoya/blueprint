@@ -10,7 +10,6 @@ import {
   useReactFlow,
   type Connection,
   type Edge,
-  type EdgeMouseHandler,
   type IsValidConnection,
   type Node,
   type OnNodeDrag,
@@ -31,7 +30,6 @@ import { PartUpdateNotice } from './PartUpdateNotice';
 import { SectionNode } from './SectionNode';
 import { WireEdge } from './WireEdge';
 import { WireBar } from './WireBar';
-import { WirePopover, type PopoverTarget } from './WirePopover';
 import { WireGeometryContext } from './wireContext';
 
 const nodeTypes = { part: PartNode, note: NoteNode, section: SectionNode };
@@ -112,7 +110,6 @@ export function Canvas() {
   const setTool = useUi((s) => s.setTool);
   const { screenToFlowPosition, fitView } = useReactFlow();
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [popover, setPopover] = useState<PopoverTarget | null>(null);
   const connecting = useConnection((c) => c.inProgress);
 
   // Touch: a finger that starts on a pin is drawing a wire, so stop the
@@ -167,13 +164,6 @@ export function Canvas() {
     s().endDrag();
   }, [s]);
 
-  const onEdgeClick: EdgeMouseHandler = useCallback((e, edge) => {
-    const r = wrapperRef.current!.getBoundingClientRect();
-    setPopover({ wireId: edge.id, x: e.clientX - r.left, y: e.clientY - r.top, bounds: { width: r.width, height: r.height } });
-  }, []);
-
-  const closePopover = useCallback(() => setPopover(null), []);
-
   const onDrop = useCallback(
     (e: React.DragEvent) => {
       const id = e.dataTransfer.getData(PART_DRAG_TYPE);
@@ -209,14 +199,13 @@ export function Canvas() {
         if (part) window.dispatchEvent(new CustomEvent('blueprint:rename', { detail: part.id }));
       } else if (e.key === 'Escape') {
         if (useUi.getState().tool !== 'select') setTool('select');
-        else if (popover) setPopover(null);
         else st.clearSelection();
       } else return;
       e.preventDefault();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [s, popover, setTool]);
+  }, [s, setTool]);
 
   const connectionColor = WIRE_COLORS[wireColor].hex;
 
@@ -231,7 +220,6 @@ export function Canvas() {
           onNodesChange={(c) => s().onNodesChange(c)}
           onEdgesChange={(c) => s().onEdgesChange(c as never)}
           onConnect={onConnect}
-          onConnectStart={closePopover}
           isValidConnection={isValidConnection}
           connectionMode={ConnectionMode.Loose}
           connectionRadius={16}
@@ -247,9 +235,6 @@ export function Canvas() {
           onSelectionDragStart={(e, dragged) => onNodeDragStart(e as never, dragged[0], dragged)}
           onSelectionDrag={(e, dragged) => onNodeDrag(e as never, dragged[0], dragged)}
           onSelectionDragStop={(e, dragged) => onNodeDragStop(e as never, dragged[0], dragged)}
-          onEdgeClick={onEdgeClick}
-          onPaneClick={closePopover}
-          onNodeClick={closePopover}
           onDrop={onDrop}
           onDragOver={(e) => {
             if (e.dataTransfer.types.includes(PART_DRAG_TYPE)) {
@@ -287,16 +272,7 @@ export function Canvas() {
       </WireGeometryContext.Provider>
       {tool === 'section' && <SectionDrawOverlay />}
       <PartUpdateNotice />
-      {popover ? (
-        <WirePopover target={popover} onClose={closePopover} />
-      ) : (
-        <WireBar
-          onMore={(id) => {
-            const r = wrapperRef.current!.getBoundingClientRect();
-            setPopover({ wireId: id, x: r.width / 2 - 150, y: 40, bounds: { width: r.width, height: r.height } });
-          }}
-        />
-      )}
+      <WireBar />
     </div>
   );
 }

@@ -51,7 +51,7 @@ test('build a small diagram on a phone', async ({ page }, testInfo) => {
   const to = await center(page.locator('.react-flow__handle[data-handleid="+"]'));
   await touchDrag(page, from, to);
   await expect(page.locator('g.wire')).toHaveCount(1);
-  await page.locator('.wire-bar [title="Yellow"]').tap();
+  await page.locator('.wire-bar-colors [title="Yellow"]').tap();
   await expect(page.locator('g.wire .wire-core')).toHaveAttribute('stroke', '#F9C80E');
 
   // Info drawer shows the connection; the backdrop closes it.

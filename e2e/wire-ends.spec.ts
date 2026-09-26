@@ -26,8 +26,8 @@ async function dropPart(page: Page, name: string, x: number, y: number) {
 
 test('drag a selected wire end onto another pin; custom heading prints', async ({ page }, testInfo) => {
   await page.goto('/');
-  await dropPart(page, 'ESP32 DevKit V1', 200, 80);
-  await dropPart(page, 'XLR Jack', 650, 80);
+  await dropPart(page, 'ESP32 DevKit V1', 200, 240);
+  await dropPart(page, 'XLR Jack', 650, 240);
   await drag(page, await center(pin(page, 'ESP32 DevKit V1', 'D23')), await center(pin(page, 'XLR Jack', '1')));
   await page.getByRole('tab', { name: /Connections/ }).click();
   const row = page.locator('table.connections tbody tr:not(.conn-editor)');
