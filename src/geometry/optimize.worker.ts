@@ -12,5 +12,5 @@ const ctx = self as unknown as { onmessage: (e: MessageEvent<OptimizeRequest>) =
 ctx.onmessage = (e) => {
   const { nodes, edges, ids } = e.data;
   const r = optimizeWires(nodes, edges, ids && new Set(ids));
-  ctx.postMessage({ points: [...r.points], before: r.before, after: r.after });
+  ctx.postMessage({ ...r, points: [...r.points] });
 };

@@ -1,3 +1,4 @@
+import { computeHops } from '../geometry/hops';
 import { optimizeWires } from '../geometry/optimize';
 import { computeWireGeometry } from '../geometry/wireGeometry';
 import { BUILTIN_PARTS } from '../library/builtin';
@@ -112,4 +113,45 @@ describe('Optimize wires: fans', () => {
     expect(r.after.crossings).toBe(0);
     expect(r.after.overlap).toBe(0);
   });
+});
+
+describe('Optimize wires: a row of readers, each fanning into its own JST', () => {
+  function readers(fans: number[]) {
+    const nodes: DiagramNode[] = [];
+    const edges: WireEdge[] = [];
+    const part = (id: string, name: string, x: number, y: number, rotation: Rotation = 0) =>
+      nodes.push({ id, type: 'part', position: { x, y }, data: { def: def(name), label: id, rotation, flip: false } });
+    const wire = (s: string, sp: string, t: string, tp: string) =>
+      edges.push({
+        id: `w${edges.length}`,
+        type: 'wire',
+        source: s,
+        sourceHandle: sp,
+        target: t,
+        targetHandle: tp,
+        data: { color: 'red', route: 'orthogonal' },
+      });
+    part('esp', 'ESP32 DevKit V1', -400, 0);
+    for (let k = 0; k < 4; k++) {
+      part(`rc${k}`, 'RFID RC522', 120 + k * 240, 108);
+      part(`j${k}`, 'JST 6-pin', 80 + k * 240, 516, 90);
+      wire('esp', ['D21', 'D22', 'D27', 'D32'][k], `rc${k}`, 'SDA/SS');
+    }
+    for (const k of fans)
+      for (const [a, b] of [['SCK', '6'], ['MOSI', '5'], ['MISO', '4'], ['RST', '3'], ['GND', '2'], ['3.3V', '1']])
+        wire(`rc${k}`, a, `j${k}`, b);
+    return { nodes, edges };
+  }
+
+  it('makes every fan equally tidy (only the crossing its pin order forces)', () => {
+    const { nodes, edges } = readers([0, 3]);
+    const r = optimizeWires(nodes, edges);
+    const after = edges.map((e) => (r.points.has(e.id) ? { ...e, data: { ...e.data!, points: r.points.get(e.id) } } : e));
+    const geo = computeWireGeometry(nodes, after);
+    for (const k of [0, 3]) {
+      const fan = after.filter((e) => e.source === `rc${k}`).map((e) => geo.get(e.id)!.points);
+      // GND is above RST on the reader but lands right of it on the JST: one crossing.
+      expect(computeHops(fan).reduce((n, h) => n + h.length, 0)).toBe(1);
+    }
+  }, 20_000);
 });

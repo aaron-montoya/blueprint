@@ -3,7 +3,7 @@ import { DIAGRAM_EXTENSION, FormatError, type PartDefinition, type XY } from '..
 import { downloadBlob, downloadJson, pickFile, readJsonFile, safeFilename } from '../export/files';
 import { makeLibraryFile, useLibrary } from '../library/libraryStore';
 import { toFile } from '../store/convert';
-import { optimizeWires, type OptimizeResult, type OptimizeStats } from '../geometry/optimize';
+import { optimizeWires, type OptimizeResult } from '../geometry/optimize';
 import type { OptimizeRequest } from '../geometry/optimize.worker';
 import { isPartNode, type DiagramNode, type WireEdge } from '../store/types';
 import { currentContent, useDiagram } from '../store/diagramStore';
@@ -79,7 +79,7 @@ function runOptimizer(nodes: DiagramNode[], edges: WireEdge[], ids?: Set<string>
   if (typeof Worker === 'undefined') return Promise.resolve(optimizeWires(nodes, edges, ids));
   return new Promise((resolve, reject) => {
     const worker = new Worker(new URL('../geometry/optimize.worker.ts', import.meta.url), { type: 'module' });
-    worker.onmessage = (e: MessageEvent<{ points: [string, XY[]][]; before: OptimizeStats; after: OptimizeStats }>) => {
+    worker.onmessage = (e: MessageEvent<Omit<OptimizeResult, 'points'> & { points: [string, XY[]][] }>) => {
       worker.terminate();
       resolve({ ...e.data, points: new Map(e.data.points) });
     };
@@ -119,7 +119,8 @@ export async function optimizeWireRoutes() {
   const r = await runOptimizer(nodes, edges, ids);
   const now = useDiagram.getState();
   if (routingKey(now.nodes, now.edges) !== key) return toast('The diagram changed while optimizing — try again', 'error');
-  if (!r.points.size) return toast('Wires are already as tidy as the optimizer can get them');
+  const more = r.timedOut ? ' Big diagram — press Optimize again to keep improving.' : '';
+  if (!r.points.size) return toast(`Wires are already as tidy as the optimizer can get them.${more}`);
   now.setRoutes(r.points);
   const change = (label: string, a: number, b: number) => (a === b ? null : `${label} ${a} → ${b}`);
   const summary = [
@@ -128,5 +129,5 @@ export async function optimizeWireRoutes() {
   ]
     .filter(Boolean)
     .join(', ');
-  toast(`Rerouted ${r.points.size} wire${r.points.size === 1 ? '' : 's'}${summary ? ` — ${summary}` : ''}. Ctrl+Z to undo.`);
+  toast(`Rerouted ${r.points.size} wire${r.points.size === 1 ? '' : 's'}${summary ? ` — ${summary}` : ''}. Ctrl+Z to undo.${more}`);
 }

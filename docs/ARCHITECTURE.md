@@ -87,14 +87,20 @@ order, so early wires never make room for later ones. The optimizer:
    built shortest-first and longest-first, each with bends biased early, late
    or neither (`turnBias`). Crossing/overlap costs are higher and the search
    area wider than in live routing.
-2. Pair repair: for every two wires that still cross, rip up both and
-   reroute them together, both orders × all three biases. This is what
-   untangles a fan (e.g. SCK/MOSI/MISO/RST into a JST) into nested wires,
-   which needs two wires to move at once.
+2. Bundle repair: the wires between the same two parts (a reader and its
+   JST) are ripped up together and rerouted in pin order along either end,
+   and by length, each way round × all three biases. Nesting a fan needs
+   every wire in it to move at once, innermost first, bending early.
+3. Pair repair: any two wires that still cross are rerouted together, both
+   orders × all three biases (e.g. a wire from elsewhere cutting a fan).
+
+The optimizer's A* is exact (heuristic weight 1): the weighted live search is
+greedy enough to ignore the bend bias, which is what makes fans nest.
 
 Layouts are scored on length, bends, overlaps and crossings (repair compares
 only the moved wires' share of the score). The best wins, so it's never worse
-than the current layout; a 2.5 s budget caps huge diagrams. The result is
+than the current layout. A 5 s budget caps huge diagrams (step 1 gets at
+most half); if it runs out, pressing Optimize again continues from there. The result is
 stored as manual bends, in one undo step, and is discarded if the diagram
 changed while the worker ran.
 

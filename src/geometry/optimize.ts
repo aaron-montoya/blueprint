@@ -18,12 +18,16 @@ import { coordsFromPoints, interior, pathFromCoords, simplify, type Anchor } fro
 import { computeWireGeometry, partRect, pinAnchor } from './wireGeometry';
 
 /** Slower, more thorough than live routing: crossings and overlaps matter more. */
-export const OPTIMIZE_COSTS: RouteCosts = { bend: 3, overlap: 20, cross: 5, margin: 150, heuristicWeight: 1.1 };
+export const OPTIMIZE_COSTS: RouteCosts = { bend: 3, overlap: 20, cross: 5, margin: 150, heuristicWeight: 1 };
 const PASSES = 3;
 const TURN_BIAS = 0.05;
 const REPAIR_ROUNDS = 4;
+/** Bundles larger than this are left to the pair repair. */
+const MAX_BUNDLE = 12;
+/** Share of the budget for step 1; the repairs get the rest. */
+const FRESH_SHARE = 0.5;
 /** Stop improving after this long; the best layout so far wins. */
-const TIME_BUDGET_MS = 2500;
+const TIME_BUDGET_MS = 5000;
 
 const same = (a: XY[], b: XY[]) => a.length === b.length && a.every((p, k) => p.x === b[k].x && p.y === b[k].y);
 
@@ -41,6 +45,8 @@ export interface OptimizeResult {
   points: Map<string, XY[]>;
   before: OptimizeStats;
   after: OptimizeStats;
+  /** Ran out of time: running it again can improve things further. */
+  timedOut: boolean;
 }
 
 interface Item {
@@ -182,9 +188,14 @@ export function optimizeWires(
   const evaluate = (layout: Layout) => stats(linesOf(layout));
 
   const before = evaluate(current);
-  if (!items.length) return { points: new Map(), before, after: before };
+  if (!items.length) return { points: new Map(), before, after: before, timedOut: false };
   const started = performance.now();
-  const outOfTime = () => performance.now() - started > budgetMs;
+  let timedOut = false;
+  const outOfTime = (share = 1) => {
+    if (performance.now() - started <= budgetMs * share) return false;
+    if (share === 1) timedOut = true;
+    return true;
+  };
 
   /** Route `order` one at a time with everything else in place; null entries are not routed yet. */
   const reroute = (layout: Layout, order: number[], c: RouteCosts) => {
@@ -218,7 +229,7 @@ export function optimizeWires(
     }
   };
   const improve = (layout: Layout, order: number[], c: RouteCosts) => {
-    for (let pass = 0; pass < PASSES && !outOfTime(); pass++) {
+    for (let pass = 0; pass < PASSES && !outOfTime(FRESH_SHARE); pass++) {
       if (!reroute(layout, order, c)) break;
       consider(layout);
     }
@@ -229,7 +240,8 @@ export function optimizeWires(
   improve(current.map((b) => [...b]), shortFirst, costs);
   for (const turnBias of [0, TURN_BIAS, -TURN_BIAS])
     for (const order of [shortFirst, longFirst]) {
-      if (outOfTime()) break;
+      // Leave the rest of the time for the repairs below.
+      if (outOfTime(FRESH_SHARE)) break;
       const c = { ...costs, turnBias };
       const layout: Layout = items.map(() => null as unknown as XY[]);
       reroute(layout, order, c);
@@ -238,42 +250,74 @@ export function optimizeWires(
       improve(layout, order, c);
     }
 
-  // 2. Repair crossings pair by pair. A crossing often needs both wires to
-  //    move at once (a fan of wires in the wrong nesting order), which the
-  //    one-at-a-time passes can't do: rip up both and reroute them together,
-  //    both ways round, keeping whatever scores better.
   const layout = best.map((b) => [...b]);
   const lines = linesOf(layout);
+
+  /**
+   * Rip up `group` together and reroute it in each of `orders` with bends
+   * biased early, late or neither; keep the best if it beats what's there.
+   */
+  const tryGroup = (group: number[], orders: number[][]) => {
+    let bestLocal = localScore(lines, group, costs);
+    let pick: XY[][] | null = null;
+    const was = group.map((g) => lines[g]);
+    for (const turnBias of [0, TURN_BIAS, -TURN_BIAS])
+      for (const order of orders) {
+        const trial = layout.slice();
+        for (const g of group) trial[g] = null as unknown as XY[];
+        reroute(trial, order, { ...costs, turnBias });
+        if (group.some((g) => !trial[g])) continue;
+        for (const g of group) lines[g] = line(polyline(items[g], trial[g]), items[g].pins);
+        const sc = localScore(lines, group, costs);
+        group.forEach((g, k) => (lines[g] = was[k]));
+        if (sc < bestLocal - 1e-6) {
+          bestLocal = sc;
+          pick = group.map((g) => trial[g]);
+        }
+      }
+    if (!pick) return false;
+    group.forEach((g, k) => {
+      layout[g] = pick![k];
+      lines[g] = line(polyline(items[g], pick![k]), items[g].pins);
+    });
+    return true;
+  };
+
+  // Where a pin sits along its side: the order wires leave a row of pins.
+  const along = (a: Anchor) => (isHorizontalSide(a.side) ? a.y : a.x);
+  const orderings = (group: number[]) => {
+    const by = (key: (i: number) => number) => [...group].sort((a, b) => key(a) - key(b));
+    const out = [
+      by((i) => along(items[i].S)),
+      by((i) => along(items[i].T)),
+      by((i) => dist(items[i])),
+    ];
+    return [...out, ...out.map((o) => [...o].reverse())];
+  };
+  const hasCrossing = (group: number[]) =>
+    group.some((g) => lines.some((l, k) => k !== g && between(lines[g], l).crossings > 0));
+
+  // 2. Bundles: the wires between the same two parts (a reader and its JST)
+  //    should read as one tidy fan. Nesting a fan needs every wire in it to
+  //    move at once, in pin order, so reroute each bundle as a whole.
+  const bundles = new Map<string, number[]>();
+  items.forEach((it, i) => {
+    const key = [it.pins[0].split(':')[0], it.pins[1].split(':')[0]].sort().join('|');
+    bundles.set(key, [...(bundles.get(key) ?? []), i]);
+  });
   for (let round = 0; round < REPAIR_ROUNDS && !outOfTime(); round++) {
     let improved = false;
+    for (const group of bundles.values()) {
+      if (outOfTime()) break;
+      if (group.length < 2 || group.length > MAX_BUNDLE || !hasCrossing(group)) continue;
+      if (tryGroup(group, orderings(group))) improved = true;
+    }
+    // 3. Pairs: any two wires that still cross, rerouted together both ways
+    //    round (e.g. a wire from elsewhere cutting through a fan).
     for (let a = 0; a < items.length && !outOfTime(); a++)
       for (let b = a + 1; b < items.length; b++) {
         if (!between(lines[a], lines[b]).crossings) continue;
-        const pair = [a, b];
-        let bestLocal = localScore(lines, pair, costs);
-        let pick: [XY[], XY[]] | null = null;
-        for (const turnBias of [0, TURN_BIAS, -TURN_BIAS])
-          for (const order of [pair, [b, a]]) {
-            const trial = layout.slice();
-            trial[a] = trial[b] = null as unknown as XY[];
-            reroute(trial, order, { ...costs, turnBias });
-            if (!trial[a] || !trial[b]) continue;
-            const was = [lines[a], lines[b]];
-            lines[a] = line(polyline(items[a], trial[a]), items[a].pins);
-            lines[b] = line(polyline(items[b], trial[b]), items[b].pins);
-            const sc = localScore(lines, pair, costs);
-            [lines[a], lines[b]] = was;
-            if (sc < bestLocal - 1e-6) {
-              bestLocal = sc;
-              pick = [trial[a], trial[b]];
-            }
-          }
-        if (pick) {
-          [layout[a], layout[b]] = pick;
-          lines[a] = line(polyline(items[a], pick[0]), items[a].pins);
-          lines[b] = line(polyline(items[b], pick[1]), items[b].pins);
-          improved = true;
-        }
+        if (tryGroup([a, b], [[a, b], [b, a]])) improved = true;
       }
     if (!improved) break;
   }
@@ -283,5 +327,5 @@ export function optimizeWires(
   items.forEach((it, i) => {
     if (best !== current && !same(best[i], current[i])) points.set(it.id, best[i]);
   });
-  return { points, before, after: best === current ? before : evaluate(best) };
+  return { points, before, after: best === current ? before : evaluate(best), timedOut };
 }
