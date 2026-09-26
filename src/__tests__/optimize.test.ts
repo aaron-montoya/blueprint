@@ -7,7 +7,7 @@ import type { DiagramNode, WireEdge } from '../store/types';
 const def = (name: string) => BUILTIN_PARTS.find((p) => p.name === name)!;
 
 /** An ESP32 driving four RC522 readers through JST "bus" connectors. */
-function rfidScene() {
+export function rfidScene() {
   const nodes: DiagramNode[] = [];
   const edges: WireEdge[] = [];
   const part = (id: string, name: string, x: number, y: number, rotation: Rotation = 0) =>
@@ -63,7 +63,7 @@ describe('Optimize wires', () => {
     const again = optimizeWires(nodes, optimized);
     expect(again.before).toEqual(r.after);
     expect(computeWireGeometry(nodes, optimized).size).toBe(edges.length);
-  });
+  }, 20_000);
 
   it('only touches the wires asked for', () => {
     const { nodes, edges } = rfidScene();
@@ -76,5 +76,40 @@ describe('Optimize wires', () => {
     const { nodes, edges } = rfidScene();
     const straight = edges.map((e) => ({ ...e, data: { ...e.data!, route: 'straight' as const } }));
     expect(optimizeWires(nodes, straight).points.size).toBe(0);
+  });
+});
+
+describe('Optimize wires: fans', () => {
+  /** A reader's SPI pins down into a JST below it, as drawn by hand. */
+  function fan() {
+    const rc = def('RFID RC522');
+    const jst = def('JST 6-pin');
+    const nodes: DiagramNode[] = [
+      { id: 'rc', type: 'part', position: { x: 110, y: 40 }, data: { def: rc, label: 'rc', rotation: 0, flip: false } },
+      { id: 'jst', type: 'part', position: { x: 100, y: 360 }, data: { def: jst, label: 'jst', rotation: 90, flip: false } },
+    ];
+    const edges: WireEdge[] = [
+      ['SCK', '6'],
+      ['MOSI', '5'],
+      ['MISO', '4'],
+      ['RST', '3'],
+    ].map(([a, b], i) => ({
+      id: `w${i}`,
+      type: 'wire',
+      source: 'rc',
+      sourceHandle: a,
+      target: 'jst',
+      targetHandle: b,
+      data: { color: 'red', route: 'orthogonal' },
+    }));
+    return { nodes, edges };
+  }
+
+  it('nests the wires instead of crossing them', () => {
+    const { nodes, edges } = fan();
+    const r = optimizeWires(nodes, edges);
+    console.log('fan', r.before, '→', r.after);
+    expect(r.after.crossings).toBe(0);
+    expect(r.after.overlap).toBe(0);
   });
 });

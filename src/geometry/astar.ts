@@ -26,6 +26,12 @@ export interface RouteCosts {
   margin: number;
   /** >1 trades optimality for speed. */
   heuristicWeight: number;
+  /**
+   * Tie-breaker for where bends go, per grid step: > 0 prefers bending early
+   * (near the source), < 0 late (near the target). The optimizer tries both,
+   * so wires fanning out of a row of pins can nest instead of crossing.
+   */
+  turnBias?: number;
 }
 /** Live routing (runs on every drag frame): fast. */
 export const LIVE_COSTS: RouteCosts = { bend: 3, overlap: 12, cross: 1, margin: MARGIN, heuristicWeight: 1.3 };
@@ -213,6 +219,7 @@ function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin:
   const G = gen;
   const heap = new Heap();
   const h = (i: number, j: number) => (Math.abs(xs[i] - T.x) + Math.abs(ys[j] - T.y)) / GRID;
+  const bias = costs.turnBias ?? 0;
 
   const start = (sj * nx + si) * 4 + startDir;
   g[start] = 0;
@@ -253,7 +260,11 @@ function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin:
       const horizontal = nd < 2;
       const nc = nj * nx + ni;
       let cost = (Math.abs(xs[ni] - xs[i]) + Math.abs(ys[nj] - ys[j])) / GRID;
-      if (nd !== dir) cost += costs.bend;
+      if (nd !== dir) {
+        cost += costs.bend;
+        if (bias > 0) cost += bias * (Math.abs(xs[i] - S.x) + Math.abs(ys[j] - S.y)) / GRID;
+        else if (bias < 0) cost -= bias * h(i, j);
+      }
       if (horizontal ? stepH[j * nx + Math.min(i, ni)] : stepV[Math.min(j, nj) * nx + i]) cost += costs.overlap;
       if (horizontal ? crossForH[nc] : crossForV[nc]) cost += costs.cross;
       const ns = nc * 4 + nd;

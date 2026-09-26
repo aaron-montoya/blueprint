@@ -36,14 +36,9 @@ function OptimizeButton() {
       disabled={!hasWires || busy}
       onClick={() => {
         setBusy(true);
-        // Let the button repaint before the (up to a second or two) reroute.
-        setTimeout(() => {
-          try {
-            optimizeWireRoutes();
-          } finally {
-            setBusy(false);
-          }
-        }, 30);
+        optimizeWireRoutes()
+          .catch((e) => toast(String(e instanceof Error ? e.message : e), 'error'))
+          .finally(() => setBusy(false));
       }}
       title={
         scoped

@@ -78,14 +78,25 @@ recomputed from the current pin positions. Consequences:
   re-routes a frozen wire except "Reset route", "Optimize wires", or
   rotating/flipping one of its parts (which changes which way the pin faces).
 
-**Optimize wires** (`geometry/optimize.ts`): the live router places wires one
-at a time in drawing order, so early wires never make room for later ones.
-The optimizer does rip-up-and-reroute: every wire is rerouted with all the
-others in place, for a few passes, starting from both the current layout and
-a fresh shortest-wire-first layout, with higher crossing/overlap costs and a
-wider search area than live routing. Layouts are scored on length, bends,
-overlaps and crossings and the best one wins (never worse than the current
-layout). The result is stored as manual bends, in one undo step.
+**Optimize wires** (`geometry/optimize.ts`, run in a Web Worker by
+`optimize.worker.ts`): the live router places wires one at a time in drawing
+order, so early wires never make room for later ones. The optimizer:
+
+1. Rip-up and reroute: every wire is rerouted with all the others in place,
+   for a few passes, starting from the current layout and from fresh layouts
+   built shortest-first and longest-first, each with bends biased early, late
+   or neither (`turnBias`). Crossing/overlap costs are higher and the search
+   area wider than in live routing.
+2. Pair repair: for every two wires that still cross, rip up both and
+   reroute them together, both orders × all three biases. This is what
+   untangles a fan (e.g. SCK/MOSI/MISO/RST into a JST) into nested wires,
+   which needs two wires to move at once.
+
+Layouts are scored on length, bends, overlaps and crossings (repair compares
+only the moved wires' share of the score). The best wins, so it's never worse
+than the current layout; a 2.5 s budget caps huge diagrams. The result is
+stored as manual bends, in one undo step, and is discarded if the diagram
+changed while the worker ran.
 
 **Straight wires** are a polyline through the points; dragging a segment
 inserts a bend.
