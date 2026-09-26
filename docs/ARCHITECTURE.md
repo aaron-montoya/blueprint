@@ -73,7 +73,12 @@ recomputed from the current pin positions. Consequences:
   segment stays horizontal or vertical** and every manual bend stays put.
 * Dragging a middle segment changes exactly one coordinate. Dragging a
   first/last segment (the ones bound to pins) inserts a jog.
-* With no points the wire is auto-routed each render. The moment the user
+* With no points the wire is auto-routed each render by an A* search over
+  grid lines (`geometry/astar.ts`). Part bodies (plus 8px) are walls. Bends,
+  running on another wire, crossing one, passing right in front of a pin the
+  wire doesn't connect to, and squeezing through a one-line gap between two
+  parts all cost extra, so wires never look connected to pins they aren't
+  on and take open space over cramped gaps. The moment the user
   drags a segment the current route is frozen into points. Nothing ever
   re-routes a frozen wire except "Reset route", "Optimize wires", or
   rotating/flipping one of its parts (which changes which way the pin faces).
@@ -97,8 +102,9 @@ order, so early wires never make room for later ones. The optimizer:
 The optimizer's A* is exact (heuristic weight 1): the weighted live search is
 greedy enough to ignore the bend bias, which is what makes fans nest.
 
-Layouts are scored on length, bends, overlaps and crossings (repair compares
-only the moved wires' share of the score). The best wins, so it's never worse
+Layouts are scored on the same things (a wire's corner sitting on another
+wire counts as two crossings: it reads as a junction). Repair compares
+only the moved wires' share of the score. The best wins, so it's never worse
 than the current layout. A 5 s budget caps huge diagrams (step 1 gets at
 most half); if it runs out, pressing Optimize again continues from there. The result is
 stored as manual bends, in one undo step, and is discarded if the diagram

@@ -1,6 +1,6 @@
 import { computeHops } from '../geometry/hops';
 import { optimizeWires } from '../geometry/optimize';
-import { computeWireGeometry } from '../geometry/wireGeometry';
+import { computeWireGeometry, partRect } from '../geometry/wireGeometry';
 import { BUILTIN_PARTS } from '../library/builtin';
 import type { Rotation } from '../model/format';
 import type { DiagramNode, WireEdge } from '../store/types';
@@ -133,8 +133,8 @@ describe('Optimize wires: a row of readers, each fanning into its own JST', () =
       });
     part('esp', 'ESP32 DevKit V1', -400, 0);
     for (let k = 0; k < 4; k++) {
-      part(`rc${k}`, 'RFID RC522', 120 + k * 240, 108);
-      part(`j${k}`, 'JST 6-pin', 80 + k * 240, 516, 90);
+      part(`rc${k}`, 'RFID RC522', 120 + k * 360, 108);
+      part(`j${k}`, 'JST 6-pin', 80 + k * 360, 516, 90);
       wire('esp', ['D21', 'D22', 'D27', 'D32'][k], `rc${k}`, 'SDA/SS');
     }
     for (const k of fans)
@@ -154,4 +154,43 @@ describe('Optimize wires: a row of readers, each fanning into its own JST', () =
       expect(computeHops(fan).reduce((n, h) => n + h.length, 0)).toBe(1);
     }
   }, 20_000);
+});
+
+describe('Optimize wires: pins', () => {
+  it("never runs a wire right past the pins of a part it doesn't connect to", () => {
+    const node = (id: string, name: string, x: number, y: number, rotation: Rotation = 0): DiagramNode => ({
+      id,
+      type: 'part',
+      position: { x, y },
+      data: { def: def(name), label: id, rotation, flip: false },
+    });
+    const j5 = node('j5', 'JST 5-pin', 130, 70);
+    const j5Bottom = partRect(j5 as never).y + partRect(j5 as never).height;
+    // The regulator sits just under the JST, one free grid line between them.
+    const nodes = [node('esp', 'ESP32 DevKit V1', -500, 0), j5, node('ams', 'AMS1117-3.3', 190, j5Bottom + 20, 270), node('j6', 'JST 6-pin', 330, 60)];
+    const wire = (id: string, s: string, sp: string, t: string, tp: string): WireEdge => ({
+      id,
+      type: 'wire',
+      source: s,
+      sourceHandle: sp,
+      target: t,
+      targetHandle: tp,
+      data: { color: 'black', route: 'orthogonal' },
+    });
+    const edges = [
+      wire('vout', 'ams', 'VOUT 3.3V', 'j5', '5.right'),
+      wire('agnd', 'ams', 'GND.right', 'j6', '1'),
+      wire('gnd', 'esp', 'GND.right', 'j6', '2'),
+    ];
+    // Live routing already keeps clear…
+    const live = computeWireGeometry(nodes, edges);
+    const amsTop = partRect(nodes[2] as never).y;
+    const nearAmsPins = (pts: { x: number; y: number }[]) =>
+      pts.some((a, i) => i > 0 && a.y === pts[i - 1].y && a.y < amsTop && a.y > amsTop - 13 && Math.max(a.x, pts[i - 1].x) > 190);
+    expect(nearAmsPins(live.get('gnd')!.points)).toBe(false);
+    // …and so does the optimizer.
+    const r = optimizeWires(nodes, edges);
+    expect(r.after.pinPasses).toBe(0);
+    expect(r.after.squeezes).toBe(0);
+  });
 });

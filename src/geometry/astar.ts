@@ -13,7 +13,10 @@ import { coordsFromPoints, type Anchor, type Rect } from './routing';
 
 const MARGIN = 80; // search area around the two pins
 const WIDE_MARGIN = 400; // retry area if the first search finds nothing
-const CLEARANCE = 4; // obstacles are inflated by this much
+export const CLEARANCE = 8; // obstacles are inflated by this much (pins stick out 5)
+/** In front of a pin: this far out along its normal, this far to either side. */
+export const PIN_KEEP_OUT = GRID + 2;
+export const PIN_KEEP_SIDE = 6;
 const MAX_STATES = 400_000;
 
 /** Search costs, in grid steps. */
@@ -22,6 +25,10 @@ export interface RouteCosts {
   /** Per grid step run on top of another wire. */
   overlap: number;
   cross: number;
+  /** Per grid step through the space right in front of a pin the wire isn't connected to. */
+  pin: number;
+  /** Per grid step squeezed through a one-line gap between two parts. */
+  squeeze: number;
   /** Search area around the two pins. */
   margin: number;
   /** >1 trades optimality for speed. */
@@ -34,7 +41,7 @@ export interface RouteCosts {
   turnBias?: number;
 }
 /** Live routing (runs on every drag frame): fast. */
-export const LIVE_COSTS: RouteCosts = { bend: 3, overlap: 12, cross: 1, margin: MARGIN, heuristicWeight: 1.3 };
+export const LIVE_COSTS: RouteCosts = { bend: 3, overlap: 12, cross: 1, pin: 10, squeeze: 6, margin: MARGIN, heuristicWeight: 1.3 };
 
 // Search buffers are reused between searches (routing runs on every drag
 // frame). `stamp[s] === gen` marks entries written by the current search.
@@ -160,7 +167,15 @@ class Heap {
   }
 }
 
-function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin: number, costs: RouteCosts): XY[] | null {
+function search(
+  S: Anchor,
+  T: Anchor,
+  obstacles: Rect[],
+  occ: Occupancy,
+  pins: Anchor[],
+  margin: number,
+  costs: RouteCosts,
+): XY[] | null {
   const xs = lines(Math.min(S.x, T.x) - margin, Math.max(S.x, T.x) + margin, [S.x, T.x]);
   const ys = lines(Math.min(S.y, T.y) - margin, Math.max(S.y, T.y) + margin, [S.y, T.y]);
   const nx = xs.length;
@@ -206,11 +221,48 @@ function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin:
   const sj = ys.indexOf(S.y);
   const ti = xs.indexOf(T.x);
   const tj = ys.indexOf(T.y);
-  blocked[sj * nx + si] = 0;
-  blocked[tj * nx + ti] = 0;
-
   const startDir = dirOf(sideNormal(S.side));
   const endDir = opposite(dirOf(sideNormal(T.side))); // direction of travel into T
+  // A one-line gap between two parts: blocked on both sides across the
+  // direction of travel. Wires can squeeze through, but it looks cramped.
+  const isBlocked = (i: number, j: number) => i >= 0 && j >= 0 && i < nx && j < ny && blocked[j * nx + i] === 1;
+  const narrowH = new Uint8Array(nx * ny); // for travel along x
+  const narrowV = new Uint8Array(nx * ny);
+  for (let j = 0; j < ny; j++)
+    for (let i = 0; i < nx; i++) {
+      if (blocked[j * nx + i]) continue;
+      if (isBlocked(i, j - 1) && isBlocked(i, j + 1)) narrowH[j * nx + i] = 1;
+      if (isBlocked(i - 1, j) && isBlocked(i + 1, j)) narrowV[j * nx + i] = 1;
+    }
+
+  // Keep a way out of each end pin through the clearance zone.
+  const clearOut = (i: number, j: number, d: number) => {
+    const x0 = xs[i];
+    const y0 = ys[j];
+    while (i >= 0 && j >= 0 && i < nx && j < ny && Math.abs(xs[i] - x0) + Math.abs(ys[j] - y0) <= CLEARANCE + GRID) {
+      blocked[j * nx + i] = 0;
+      narrowH[j * nx + i] = narrowV[j * nx + i] = 0;
+      i += DX[d];
+      j += DY[d];
+    }
+  };
+  clearOut(si, sj, startDir);
+  clearOut(ti, tj, opposite(endDir));
+
+  // Right in front of other pins: passing there looks like a connection.
+  const keepOut = new Uint8Array(nx * ny);
+  for (const P of pins) {
+    if ((P.x === S.x && P.y === S.y) || (P.x === T.x && P.y === T.y)) continue;
+    const n = sideNormal(P.side);
+    const x0 = n.x ? P.x + Math.min(0, n.x * PIN_KEEP_OUT) : P.x - PIN_KEEP_SIDE;
+    const x1 = n.x ? P.x + Math.max(0, n.x * PIN_KEEP_OUT) : P.x + PIN_KEEP_SIDE;
+    const y0 = n.y ? P.y + Math.min(0, n.y * PIN_KEEP_OUT) : P.y - PIN_KEEP_SIDE;
+    const y1 = n.y ? P.y + Math.max(0, n.y * PIN_KEEP_OUT) : P.y + PIN_KEEP_SIDE;
+    if (x1 < xs[0] || x0 > xs[nx - 1] || y1 < ys[0] || y0 > ys[ny - 1]) continue;
+    const [i0, i1] = range(xs, x0, x1, false);
+    const [j0, j1] = range(ys, y0, y1, false);
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) keepOut[j * nx + i] = 1;
+  }
   buffers(nx * ny * 4);
   const g = gBuf;
   const parent = parentBuf;
@@ -267,6 +319,8 @@ function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin:
       }
       if (horizontal ? stepH[j * nx + Math.min(i, ni)] : stepV[Math.min(j, nj) * nx + i]) cost += costs.overlap;
       if (horizontal ? crossForH[nc] : crossForV[nc]) cost += costs.cross;
+      if (keepOut[nc]) cost += costs.pin;
+      if (horizontal ? narrowH[nc] : narrowV[nc]) cost += costs.squeeze;
       const ns = nc * 4 + nd;
       const ng = g[s] + cost;
       if (stamp[ns] !== G || ng < g[ns]) {
@@ -300,16 +354,23 @@ function corners(path: XY[]): XY[] {
  * Route one wire around obstacles. Returns alternating coordinates, or null
  * if no route was found (callers fall back to the simple router).
  */
-export function astarCoords(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy): number[] | null {
-  const bends = astarBends(S, T, obstacles, occ, LIVE_COSTS);
+export function astarCoords(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, pins: Anchor[] = []): number[] | null {
+  const bends = astarBends(S, T, obstacles, occ, LIVE_COSTS, pins);
   return bends && coordsFromPoints(bends, isHorizontalSide(S.side));
 }
 
 /** Route one wire; returns its bend points (what a wire stores as `points`), or null. */
-export function astarBends(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, costs: RouteCosts): XY[] | null {
+export function astarBends(
+  S: Anchor,
+  T: Anchor,
+  obstacles: Rect[],
+  occ: Occupancy,
+  costs: RouteCosts,
+  pins: Anchor[] = [],
+): XY[] | null {
   if (S.x === T.x && S.y === T.y) return null;
   const path =
-    search(S, T, obstacles, occ, costs.margin, costs) ??
-    search(S, T, obstacles, occ, Math.max(WIDE_MARGIN, costs.margin), costs);
+    search(S, T, obstacles, occ, pins, costs.margin, costs) ??
+    search(S, T, obstacles, occ, pins, Math.max(WIDE_MARGIN, costs.margin), costs);
   return path && corners(path);
 }

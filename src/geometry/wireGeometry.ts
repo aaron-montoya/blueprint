@@ -35,6 +35,14 @@ export function pinAnchor(node: PartNode | undefined, pinId: string | null | und
   return { x: node.position.x + pin.x, y: node.position.y + pin.y, side: pin.side };
 }
 
+/** Every pin on the canvas: wires keep out of the space right in front of them. */
+export function allPinAnchors(parts: Iterable<PartNode>): Anchor[] {
+  const out: Anchor[] = [];
+  for (const n of parts)
+    for (const p of partLayoutOf(n).pins) out.push({ x: n.position.x + p.x, y: n.position.y + p.y, side: p.side });
+  return out;
+}
+
 let lastNodes: DiagramNode[] | null = null;
 let lastEdges: WireEdge[] | null = null;
 let lastResult = new Map<string, WireGeometry>();
@@ -51,6 +59,7 @@ export function computeWireGeometry(nodes: DiagramNode[], edges: WireEdge[]): Ma
   // Manual (frozen) and straight wires are fixed; route them first so the
   // auto-router can steer the rest around them.
   const obstacles = [...parts.values()].map(partRect);
+  const pins = allPinAnchors(parts.values());
   const occupancy = new Occupancy();
   const pending: ({ id: string; g: Omit<WireGeometry, 'hops' | 'd'> } | null)[] = [];
   const auto: { index: number; id: string; source: Anchor; target: Anchor; sNode: PartNode; tNode: PartNode }[] = [];
@@ -78,7 +87,7 @@ export function computeWireGeometry(nodes: DiagramNode[], edges: WireEdge[]): Ma
   for (const { index, id, source, target, sNode, tNode } of auto) {
     const firstH = isHorizontalSide(source.side);
     const coords =
-      astarCoords(source, target, obstacles, occupancy) ??
+      astarCoords(source, target, obstacles, occupancy, pins) ??
       autoCoords(source, target, [partRect(sNode), ...(tNode !== sNode ? [partRect(tNode)] : [])]);
     const raw = pathFromCoords(source, target, coords, firstH);
     const points = simplify(raw);

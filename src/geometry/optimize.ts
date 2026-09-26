@@ -11,14 +11,14 @@
 import type { XY } from '../model/format';
 import type { DiagramNode, PartNode, WireEdge } from '../store/types';
 import { isPartNode } from '../store/types';
-import { astarBends, Occupancy, type RouteCosts } from './astar';
+import { astarBends, CLEARANCE, Occupancy, PIN_KEEP_OUT, PIN_KEEP_SIDE, type RouteCosts } from './astar';
 import { computeHops } from './hops';
-import { GRID, isHorizontalSide } from './partLayout';
-import { coordsFromPoints, interior, pathFromCoords, simplify, type Anchor } from './routing';
-import { computeWireGeometry, partRect, pinAnchor } from './wireGeometry';
+import { GRID, isHorizontalSide, sideNormal } from './partLayout';
+import { coordsFromPoints, interior, pathFromCoords, simplify, type Anchor, type Rect } from './routing';
+import { allPinAnchors, computeWireGeometry, partRect, pinAnchor } from './wireGeometry';
 
 /** Slower, more thorough than live routing: crossings and overlaps matter more. */
-export const OPTIMIZE_COSTS: RouteCosts = { bend: 3, overlap: 20, cross: 5, margin: 150, heuristicWeight: 1 };
+export const OPTIMIZE_COSTS: RouteCosts = { bend: 3, overlap: 20, cross: 5, pin: 30, squeeze: 25, margin: 150, heuristicWeight: 1 };
 const PASSES = 3;
 const TURN_BIAS = 0.05;
 const REPAIR_ROUNDS = 4;
@@ -38,6 +38,10 @@ export interface OptimizeStats {
   bends: number;
   /** Total length in grid steps. */
   length: number;
+  /** Times a wire passes right in front of a pin it isn't connected to. */
+  pinPasses: number;
+  /** Grid steps squeezed through one-line gaps between parts. */
+  squeezes: number;
 }
 
 export interface OptimizeResult {
@@ -67,13 +71,77 @@ function polyline(it: Item, bends: XY[]): XY[] {
 interface Line {
   pts: XY[];
   pins: [string, string];
+  /** How many other pins this wire passes right in front of. */
+  pinPasses: number;
+  /** Grid steps squeezed through one-line gaps between parts. */
+  squeezes: number;
   x0: number;
   x1: number;
   y0: number;
   y1: number;
 }
 
-function line(pts: XY[], pins: [string, string]): Line {
+/** Zones right in front of each pin (see the router's keep-out). */
+type PinZone = { x0: number; x1: number; y0: number; y1: number; at: XY };
+function pinZones(pins: Anchor[]): PinZone[] {
+  return pins.map((P) => {
+    const n = sideNormal(P.side);
+    const out = PIN_KEEP_OUT;
+    const side = PIN_KEEP_SIDE;
+    return {
+      x0: n.x ? P.x + Math.min(0, n.x * out) : P.x - side,
+      x1: n.x ? P.x + Math.max(0, n.x * out) : P.x + side,
+      y0: n.y ? P.y + Math.min(0, n.y * out) : P.y - side,
+      y1: n.y ? P.y + Math.max(0, n.y * out) : P.y + side,
+      at: P,
+    };
+  });
+}
+
+function countPinPasses(pts: XY[], zones: PinZone[]): number {
+  const s = pts[0];
+  const t = pts[pts.length - 1];
+  let n = 0;
+  for (const z of zones) {
+    if ((z.at.x === s.x && z.at.y === s.y) || (z.at.x === t.x && z.at.y === t.y)) continue;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i];
+      const b = pts[i + 1];
+      if (Math.max(a.x, b.x) >= z.x0 && Math.min(a.x, b.x) <= z.x1 && Math.max(a.y, b.y) >= z.y0 && Math.min(a.y, b.y) <= z.y1) {
+        n++;
+        break;
+      }
+    }
+  }
+  return n;
+}
+
+/** Grid steps of `pts` running through a one-line gap between parts (as the router sees it). */
+function countSqueezes(pts: XY[], rects: Rect[]): number {
+  const inside = (x: number, y: number) =>
+    rects.some((r) => x > r.x - CLEARANCE + 0.5 && x < r.x + r.width + CLEARANCE - 0.5 && y > r.y - CLEARANCE + 0.5 && y < r.y + r.height + CLEARANCE - 0.5);
+  const s = pts[0];
+  const t = pts[pts.length - 1];
+  const nearEnd = (x: number, y: number) =>
+    Math.abs(x - s.x) + Math.abs(y - s.y) <= CLEARANCE + GRID || Math.abs(x - t.x) + Math.abs(y - t.y) <= CLEARANCE + GRID;
+  let n = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i];
+    const b = pts[i + 1];
+    const steps = Math.round((Math.abs(b.x - a.x) + Math.abs(b.y - a.y)) / GRID);
+    const dx = Math.sign(b.x - a.x) * GRID;
+    const dy = Math.sign(b.y - a.y) * GRID;
+    for (let k = 1; k <= steps; k++) {
+      const x = a.x + dx * k;
+      const y = a.y + dy * k;
+      if (nearEnd(x, y)) continue;
+      if (dx ? inside(x, y - GRID) && inside(x, y + GRID) : inside(x - GRID, y) && inside(x + GRID, y)) n++;
+    }
+  }
+  return n;
+}
+
+function line(pts: XY[], pins: [string, string], zones: PinZone[], rects: Rect[]): Line {
   let x0 = Infinity;
   let x1 = -Infinity;
   let y0 = Infinity;
@@ -84,7 +152,7 @@ function line(pts: XY[], pins: [string, string]): Line {
     y0 = Math.min(y0, p.y);
     y1 = Math.max(y1, p.y);
   }
-  return { pts, pins, x0, x1, y0, y1 };
+  return { pts, pins, pinPasses: countPinPasses(pts, zones), squeezes: countSqueezes(pts, rects), x0, x1, y0, y1 };
 }
 
 /** Length (grid steps) and bends of one wire. */
@@ -95,10 +163,32 @@ function own(l: Line) {
   return { length, bends: Math.max(0, p.length - 2) };
 }
 
+/** Corners of `p` (not its pin ends) lying on `q`. */
+function touches(p: XY[], q: XY[]): number {
+  let n = 0;
+  for (let i = 1; i < p.length - 1; i++) {
+    const v = p[i];
+    for (let j = 0; j < q.length - 1; j++) {
+      const a = q[j];
+      const b = q[j + 1];
+      if (
+        (a.x === b.x && v.x === a.x && v.y >= Math.min(a.y, b.y) && v.y <= Math.max(a.y, b.y)) ||
+        (a.y === b.y && v.y === a.y && v.x >= Math.min(a.x, b.x) && v.x <= Math.max(a.x, b.x))
+      ) {
+        n++;
+        break;
+      }
+    }
+  }
+  return n;
+}
+
 /** Crossings and overlap (grid steps; ignored for wires sharing a pin) between two wires. */
 function between(a: Line, b: Line) {
   if (a.x1 < b.x0 || b.x1 < a.x0 || a.y1 < b.y0 || b.y1 < a.y0) return { crossings: 0, overlap: 0 };
-  const crossings = computeHops([a.pts, b.pts])[1].length;
+  // A corner sitting on another wire reads as a junction (a connection),
+  // which is worse than a crossing, and hops don't catch it: count it double.
+  const crossings = computeHops([a.pts, b.pts])[1].length + 2 * (touches(a.pts, b.pts) + touches(b.pts, a.pts));
   let overlap = 0;
   if (!a.pins.some((p) => b.pins.includes(p))) {
     const p = a.pts;
@@ -118,11 +208,13 @@ function between(a: Line, b: Line) {
 }
 
 function stats(lines: Line[]): OptimizeStats {
-  const s: OptimizeStats = { crossings: 0, overlap: 0, bends: 0, length: 0 };
+  const s: OptimizeStats = { crossings: 0, overlap: 0, bends: 0, length: 0, pinPasses: 0, squeezes: 0 };
   lines.forEach((l, i) => {
     const o = own(l);
     s.length += o.length;
     s.bends += o.bends;
+    s.pinPasses += l.pinPasses;
+    s.squeezes += l.squeezes;
     for (let j = i + 1; j < lines.length; j++) {
       const b = between(l, lines[j]);
       s.crossings += b.crossings;
@@ -132,14 +224,17 @@ function stats(lines: Line[]): OptimizeStats {
   return s;
 }
 
-const score = (s: OptimizeStats, c: RouteCosts) => s.length + s.bends * c.bend + s.overlap * c.overlap + s.crossings * c.cross;
+/** A pass in front of a pin counts like a couple of grid steps of keep-out. */
+const PIN_PASS_STEPS = 2;
+const score = (s: OptimizeStats, c: RouteCosts) =>
+  s.length + s.bends * c.bend + s.overlap * c.overlap + s.crossings * c.cross + s.pinPasses * c.pin * PIN_PASS_STEPS + s.squeezes * c.squeeze;
 
 /** Score of the wires in `moved` plus their interactions with everything (the rest cancels out in a comparison). */
 function localScore(lines: Line[], moved: number[], c: RouteCosts) {
   let total = 0;
   for (const m of moved) {
     const o = own(lines[m]);
-    total += o.length + o.bends * c.bend;
+    total += o.length + o.bends * c.bend + lines[m].pinPasses * c.pin * PIN_PASS_STEPS + lines[m].squeezes * c.squeeze;
     for (let k = 0; k < lines.length; k++) {
       if (k === m || (moved.includes(k) && k < m)) continue;
       const b = between(lines[m], lines[k]);
@@ -164,6 +259,8 @@ export function optimizeWires(
   const parts = new Map<string, PartNode>();
   for (const n of nodes) if (isPartNode(n)) parts.set(n.id, n);
   const obstacles = [...parts.values()].map(partRect);
+  const pins = allPinAnchors(parts.values());
+  const zones = pinZones(pins);
 
   const items: Item[] = [];
   const current: Layout = [];
@@ -183,8 +280,8 @@ export function optimizeWires(
       fixedPins.push(pins);
     }
   }
-  const fixedLines = fixed.map((pts, i) => line(pts, fixedPins[i]));
-  const linesOf = (layout: Layout) => [...items.map((it, i) => line(polyline(it, layout[i]), it.pins)), ...fixedLines];
+  const fixedLines = fixed.map((pts, i) => line(pts, fixedPins[i], zones, obstacles));
+  const linesOf = (layout: Layout) => [...items.map((it, i) => line(polyline(it, layout[i]), it.pins, zones, obstacles)), ...fixedLines];
   const evaluate = (layout: Layout) => stats(linesOf(layout));
 
   const before = evaluate(current);
@@ -205,7 +302,7 @@ export function optimizeWires(
       const occ = new Occupancy();
       for (const pts of fixed) occ.add(pts);
       lines.forEach((pts, k) => k !== i && pts && occ.add(pts));
-      const next = astarBends(items[i].S, items[i].T, obstacles, occ, c);
+      const next = astarBends(items[i].S, items[i].T, obstacles, occ, c, pins);
       if (next && !(layout[i] && same(next, layout[i]))) {
         layout[i] = next;
         lines[i] = polyline(items[i], next);
@@ -267,7 +364,7 @@ export function optimizeWires(
         for (const g of group) trial[g] = null as unknown as XY[];
         reroute(trial, order, { ...costs, turnBias });
         if (group.some((g) => !trial[g])) continue;
-        for (const g of group) lines[g] = line(polyline(items[g], trial[g]), items[g].pins);
+        for (const g of group) lines[g] = line(polyline(items[g], trial[g]), items[g].pins, zones, obstacles);
         const sc = localScore(lines, group, costs);
         group.forEach((g, k) => (lines[g] = was[k]));
         if (sc < bestLocal - 1e-6) {
@@ -278,7 +375,7 @@ export function optimizeWires(
     if (!pick) return false;
     group.forEach((g, k) => {
       layout[g] = pick![k];
-      lines[g] = line(polyline(items[g], pick![k]), items[g].pins);
+      lines[g] = line(polyline(items[g], pick![k]), items[g].pins, zones, obstacles);
     });
     return true;
   };
