@@ -3,7 +3,8 @@ import { DIAGRAM_EXTENSION, FormatError, type PartDefinition } from '../model/fo
 import { downloadBlob, downloadJson, pickFile, readJsonFile, safeFilename } from '../export/files';
 import { makeLibraryFile, useLibrary } from '../library/libraryStore';
 import { toFile } from '../store/convert';
-import { currentContent } from '../store/diagramStore';
+import { optimizeWires } from '../geometry/optimize';
+import { currentContent, useDiagram } from '../store/diagramStore';
 import { diagramName } from '../store/persistence';
 import { importDiagram } from './session';
 import { toast } from './uiStore';
@@ -69,4 +70,33 @@ export function exportLibrary(name: string, parts: PartDefinition[]) {
     return;
   }
   downloadJson(makeLibraryFile(name, parts), `${safeFilename(name, 'parts')}.parts.json`);
+}
+
+/**
+ * Reroute wires together to cut crossings and overlaps. Works on the
+ * selected wires, else the wires of the selected parts, else every wire.
+ */
+export function optimizeWireRoutes() {
+  const { nodes, edges, setRoutes } = useDiagram.getState();
+  let ids: Set<string> | undefined;
+  const pickedWires = edges.filter((e) => e.selected);
+  const pickedParts = new Set(nodes.filter((n) => n.selected).map((n) => n.id));
+  if (pickedWires.length) ids = new Set(pickedWires.map((e) => e.id));
+  else if (pickedParts.size)
+    ids = new Set(edges.filter((e) => pickedParts.has(e.source) || pickedParts.has(e.target)).map((e) => e.id));
+  if (ids && !ids.size) return toast('The selected parts have no wires');
+  if (!edges.some((e) => e.data?.route === 'orthogonal' && (!ids || ids.has(e.id))))
+    return toast('No right-angle wires to optimize');
+
+  const r = optimizeWires(nodes, edges, ids);
+  if (!r.points.size) return toast('Wires are already as tidy as the optimizer can get them');
+  setRoutes(r.points);
+  const change = (label: string, a: number, b: number) => (a === b ? null : `${label} ${a} → ${b}`);
+  const summary = [
+    change('crossings', r.before.crossings, r.after.crossings),
+    change('overlaps', Math.round(r.before.overlap), Math.round(r.after.overlap)),
+  ]
+    .filter(Boolean)
+    .join(', ');
+  toast(`Rerouted ${r.points.size} wire${r.points.size === 1 ? '' : 's'}${summary ? ` — ${summary}` : ''}. Ctrl+Z to undo.`);
 }

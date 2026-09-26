@@ -188,6 +188,18 @@ test('build, move, round-trip and print the XLR + LED test prop', async ({ page,
   await expect(part(page2, 'Bottom XLR 3')).toHaveCount(1);
   await expect(page2.locator('.wire-label', { hasText: 'D23 → Top XLR 1' })).toHaveCount(1);
   expect((await wireEndsOnPins(page2)).bad).toEqual([]);
+
+  // Optimize wires: every wire still ends on its pins, and it undoes in one step.
+  await page2.locator('.react-flow__pane').click({ position: { x: 5, y: 5 } });
+  await page2.getByRole('button', { name: 'Optimize wires' }).click();
+  await expect(page2.locator('.toast').last()).toContainText(/Rerouted|already as tidy/);
+  await expect(page2.locator('g.wire')).toHaveCount(15);
+  expect((await wireEndsOnPins(page2)).bad).toEqual([]);
+  const routed = await page2.locator('g.wire .wire-core').evaluateAll((ps) => ps.map((p) => p.getAttribute('d')).join());
+  await page2.keyboard.press('Control+z');
+  await expect
+    .poll(() => page2.locator('g.wire .wire-core').evaluateAll((ps) => ps.map((p) => p.getAttribute('d')).join()))
+    .not.toBe(routed);
   // Re-export and compare: nothing was lost in the round trip.
   const [download2] = await Promise.all([page2.waitForEvent('download'), page2.keyboard.press('Control+s')]);
   const file2 = testInfo.outputPath('roundtrip.blueprint');

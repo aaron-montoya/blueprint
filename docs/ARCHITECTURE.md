@@ -75,8 +75,17 @@ recomputed from the current pin positions. Consequences:
   first/last segment (the ones bound to pins) inserts a jog.
 * With no points the wire is auto-routed each render. The moment the user
   drags a segment the current route is frozen into points. Nothing ever
-  re-routes a frozen wire except "Reset route" or rotating/flipping one of its
-  parts (which changes which way the pin faces).
+  re-routes a frozen wire except "Reset route", "Optimize wires", or
+  rotating/flipping one of its parts (which changes which way the pin faces).
+
+**Optimize wires** (`geometry/optimize.ts`): the live router places wires one
+at a time in drawing order, so early wires never make room for later ones.
+The optimizer does rip-up-and-reroute: every wire is rerouted with all the
+others in place, for a few passes, starting from both the current layout and
+a fresh shortest-wire-first layout, with higher crossing/overlap costs and a
+wider search area than live routing. Layouts are scored on length, bends,
+overlaps and crossings and the best one wins (never worse than the current
+layout). The result is stored as manual bends, in one undo step.
 
 **Straight wires** are a polyline through the points; dragging a segment
 inserts a bend.

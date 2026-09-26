@@ -84,6 +84,8 @@ export interface DiagramState extends Snapshot {
   updateWire(id: string, patch: Partial<WireData>, coalesceKey?: string): void;
   /** Live update while dragging a wire segment (checkpoint first). */
   setWirePoints(id: string, points: XY[] | undefined): void;
+  /** Replace several wires' bends at once (one undo step). */
+  setRoutes(points: Map<string, XY[]>): void;
   deleteWire(id: string): void;
   /** Replace placed parts with their latest library definitions. Returns wires removed. */
   updateParts(updates: { node: PartNode; latest: PartDefinition }[]): number;
@@ -373,6 +375,13 @@ export const useDiagram = create<DiagramState>()((set, get) => {
     setWirePoints(id, points) {
       set((s) => ({
         edges: s.edges.map((e) => (e.id === id && e.data ? { ...e, data: { ...e.data, points } } : e)),
+      }));
+    },
+
+    setRoutes(points) {
+      if (!points.size) return;
+      commit((s) => ({
+        edges: s.edges.map((e) => (e.data && points.has(e.id) ? { ...e, data: { ...e.data, points: points.get(e.id) } } : e)),
       }));
     },
 

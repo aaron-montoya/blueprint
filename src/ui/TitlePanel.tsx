@@ -92,6 +92,7 @@ function TitleBlockTab() {
         <li>Drag from a pin to another pin to wire them.</li>
         <li>Click a wire for color, stripe, label.</li>
         <li>Select a wire, then drag its handles to reshape.</li>
+        <li>⚡ Optimize wires reroutes everything together to cut crossings (or just the selected wires/parts).</li>
         <li>Double-click a part's title to rename it.</li>
         <li>Drag on empty canvas to box-select; right-drag or Space-drag to pan; wheel to zoom.</li>
         <li>R rotate · F flip · Ctrl+D duplicate · Ctrl+S export.</li>

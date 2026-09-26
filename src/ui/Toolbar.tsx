@@ -1,6 +1,6 @@
 import { useReactFlow } from '@xyflow/react';
 import { useEffect, useRef, useState } from 'react';
-import { exportBlueprint, exportPdf, exportPng, importBlueprint } from '../app/commands';
+import { exportBlueprint, exportPdf, exportPng, importBlueprint, optimizeWireRoutes } from '../app/commands';
 import { newDiagram, onSaved, openDiagram, flushSave } from '../app/session';
 import { toast, useUi } from '../app/uiStore';
 import { WIRE_COLOR_NAMES, WIRE_COLORS } from '../model/format';
@@ -23,6 +23,37 @@ function useClickOutside(open: boolean, close: () => void) {
     };
   }, [open, close]);
   return ref;
+}
+
+function OptimizeButton() {
+  const [busy, setBusy] = useState(false);
+  const hasWires = useDiagram((s) => s.edges.length > 0);
+  const scoped = useDiagram((s) => s.edges.some((e) => e.selected) || s.nodes.some((n) => n.selected));
+  return (
+    <button
+      aria-label="Optimize wires"
+      className="btn"
+      disabled={!hasWires || busy}
+      onClick={() => {
+        setBusy(true);
+        // Let the button repaint before the (up to a second or two) reroute.
+        setTimeout(() => {
+          try {
+            optimizeWireRoutes();
+          } finally {
+            setBusy(false);
+          }
+        }, 30);
+      }}
+      title={
+        scoped
+          ? 'Reroute the selected wires (or the selected parts\' wires) to cut crossings and overlaps'
+          : 'Reroute all wires together to cut crossings and overlaps. Select wires or parts to optimize just those.'
+      }
+    >
+      ⚡ <span className="tb-label">{busy ? 'Optimizing…' : 'Optimize wires'}</span>
+    </button>
+  );
 }
 
 function FileMenu() {
@@ -201,6 +232,7 @@ export function Toolbar() {
           ╱ <span className="tb-label">Straight</span>
         </button>
       </div>
+      <OptimizeButton />
       <label className="toggle" title="Snap parts and wire bends to the grid">
         <input type="checkbox" checked={snap} onChange={(e) => st.getState().setSnapToGrid(e.target.checked)} />
         <span className="tb-label">Snap</span>

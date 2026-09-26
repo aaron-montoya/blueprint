@@ -14,11 +14,21 @@ import { coordsFromPoints, type Anchor, type Rect } from './routing';
 const MARGIN = 80; // search area around the two pins
 const WIDE_MARGIN = 400; // retry area if the first search finds nothing
 const CLEARANCE = 4; // obstacles are inflated by this much
-const BEND_COST = 3; // in grid steps
-const OVERLAP_COST = 12; // per grid step shared with an earlier wire
-const CROSS_COST = 1;
 const MAX_STATES = 400_000;
-const HEURISTIC_WEIGHT = 1.3;
+
+/** Search costs, in grid steps. */
+export interface RouteCosts {
+  bend: number;
+  /** Per grid step run on top of another wire. */
+  overlap: number;
+  cross: number;
+  /** Search area around the two pins. */
+  margin: number;
+  /** >1 trades optimality for speed. */
+  heuristicWeight: number;
+}
+/** Live routing (runs on every drag frame): fast. */
+export const LIVE_COSTS: RouteCosts = { bend: 3, overlap: 12, cross: 1, margin: MARGIN, heuristicWeight: 1.3 };
 
 // Search buffers are reused between searches (routing runs on every drag
 // frame). `stamp[s] === gen` marks entries written by the current search.
@@ -144,7 +154,7 @@ class Heap {
   }
 }
 
-function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin: number): XY[] | null {
+function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin: number, costs: RouteCosts): XY[] | null {
   const xs = lines(Math.min(S.x, T.x) - margin, Math.max(S.x, T.x) + margin, [S.x, T.x]);
   const ys = lines(Math.min(S.y, T.y) - margin, Math.max(S.y, T.y) + margin, [S.y, T.y]);
   const nx = xs.length;
@@ -243,9 +253,9 @@ function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin:
       const horizontal = nd < 2;
       const nc = nj * nx + ni;
       let cost = (Math.abs(xs[ni] - xs[i]) + Math.abs(ys[nj] - ys[j])) / GRID;
-      if (nd !== dir) cost += BEND_COST;
-      if (horizontal ? stepH[j * nx + Math.min(i, ni)] : stepV[Math.min(j, nj) * nx + i]) cost += OVERLAP_COST;
-      if (horizontal ? crossForH[nc] : crossForV[nc]) cost += CROSS_COST;
+      if (nd !== dir) cost += costs.bend;
+      if (horizontal ? stepH[j * nx + Math.min(i, ni)] : stepV[Math.min(j, nj) * nx + i]) cost += costs.overlap;
+      if (horizontal ? crossForH[nc] : crossForV[nc]) cost += costs.cross;
       const ns = nc * 4 + nd;
       const ng = g[s] + cost;
       if (stamp[ns] !== G || ng < g[ns]) {
@@ -254,7 +264,7 @@ function search(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, margin:
         parent[ns] = s;
         // Weighted heuristic: slightly less optimal, an order of magnitude fewer states.
         const hh = h(ni, nj);
-        heap.push(ns, ng + hh * HEURISTIC_WEIGHT);
+        heap.push(ns, ng + hh * costs.heuristicWeight);
       }
     }
   }
@@ -280,8 +290,15 @@ function corners(path: XY[]): XY[] {
  * if no route was found (callers fall back to the simple router).
  */
 export function astarCoords(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy): number[] | null {
+  const bends = astarBends(S, T, obstacles, occ, LIVE_COSTS);
+  return bends && coordsFromPoints(bends, isHorizontalSide(S.side));
+}
+
+/** Route one wire; returns its bend points (what a wire stores as `points`), or null. */
+export function astarBends(S: Anchor, T: Anchor, obstacles: Rect[], occ: Occupancy, costs: RouteCosts): XY[] | null {
   if (S.x === T.x && S.y === T.y) return null;
-  const path = search(S, T, obstacles, occ, MARGIN) ?? search(S, T, obstacles, occ, WIDE_MARGIN);
-  if (!path) return null;
-  return coordsFromPoints(corners(path), isHorizontalSide(S.side));
+  const path =
+    search(S, T, obstacles, occ, costs.margin, costs) ??
+    search(S, T, obstacles, occ, Math.max(WIDE_MARGIN, costs.margin), costs);
+  return path && corners(path);
 }
