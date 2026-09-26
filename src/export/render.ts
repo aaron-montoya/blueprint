@@ -77,54 +77,74 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-/** PNG export: the diagram with the title block and pin-color legend underneath. */
+/** PNG export: the diagram with a slim title block and pin-color strip underneath. */
 export async function renderPng(content: DiagramContent): Promise<Blob> {
   const d = await renderDiagram(content, 3000);
   const img = await loadImage(d.dataUrl);
   const s = d.ratio;
-  const footerH = 190 * s;
-  const minW = 640 * s;
-  const W = Math.max(img.width, minW);
+  const rows = titleRows(content.title);
+  const colW = 150;
+  const legendW = 3 * 118 + 24;
+  const titleW = 24 + rows.length * colW;
+  const stripW = titleW + legendW;
+  const stripH = 62;
+  const W = Math.max(img.width, (stripW + 40) * s);
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(W);
-  canvas.height = Math.round(img.height + footerH);
+  canvas.height = Math.round(img.height + (stripH + 30) * s);
   const ctx = canvas.getContext('2d')!;
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(img, 0, 0);
 
+  const x0 = 20 * s;
   const y0 = img.height + 10 * s;
   const font = (px: number, bold = false) => `${bold ? 'bold ' : ''}${px * s}px system-ui, Segoe UI, Arial, sans-serif`;
-  // Title block
+  /** Cut `text` to fit `maxW` (in unscaled px), adding an ellipsis. */
+  const fit = (text: string, maxW: number) => {
+    if (ctx.measureText(text).width <= maxW * s) return text;
+    let t = text;
+    while (t && ctx.measureText(`${t}…`).width > maxW * s) t = t.slice(0, -1);
+    return `${t}…`;
+  };
   ctx.strokeStyle = '#222';
-  ctx.lineWidth = 2 * s;
-  ctx.strokeRect(20 * s, y0, 330 * s, 165 * s);
-  ctx.fillStyle = '#111';
-  ctx.font = font(14, true);
-  ctx.fillText(content.title.heading, 32 * s, y0 + 24 * s);
-  titleRows(content.title).forEach((r, i) => {
-    const y = y0 + (50 + i * 25) * s;
-    ctx.font = font(12, true);
-    ctx.fillText(r.label, 32 * s, y);
-    ctx.font = font(12);
-    ctx.fillText(r.value || '—', 120 * s, y);
-  });
-  // Legend
-  const lx = 370 * s;
-  ctx.strokeStyle = '#999';
+  ctx.lineWidth = 1.5 * s;
+  ctx.strokeRect(x0, y0, stripW * s, stripH * s);
   ctx.lineWidth = 1 * s;
-  ctx.strokeRect(lx, y0, 250 * s, 165 * s);
-  ctx.font = font(12, true);
-  ctx.fillText('Pin colors', lx + 12 * s, y0 + 22 * s);
-  legendEntries().forEach((e, i) => {
-    const y = y0 + (38 + i * 21) * s;
-    ctx.fillStyle = e.color;
-    ctx.fillRect(lx + 12 * s, y, 12 * s, 12 * s);
-    ctx.strokeStyle = '#333';
-    ctx.strokeRect(lx + 12 * s, y, 12 * s, 12 * s);
+  ctx.beginPath();
+  ctx.moveTo(x0 + titleW * s, y0);
+  ctx.lineTo(x0 + titleW * s, y0 + stripH * s);
+  ctx.stroke();
+
+  // Title block: heading, then the fields in one row.
+  ctx.fillStyle = '#111';
+  ctx.font = font(13, true);
+  ctx.fillText(fit(content.title.heading, titleW - 24), x0 + 12 * s, y0 + 19 * s);
+  rows.forEach((r, i) => {
+    const x = x0 + (12 + i * colW) * s;
+    ctx.fillStyle = '#6b7280';
+    ctx.font = font(9, true);
+    ctx.fillText(r.label.toUpperCase(), x, y0 + 36 * s);
     ctx.fillStyle = '#111';
     ctx.font = font(12);
-    ctx.fillText(e.label, lx + 32 * s, y + 11 * s);
+    ctx.fillText(fit(r.value || '—', colW - 8), x, y0 + 52 * s);
+  });
+
+  // Pin colors: two rows of three.
+  const lx = x0 + (titleW + 12) * s;
+  ctx.fillStyle = '#6b7280';
+  ctx.font = font(9, true);
+  ctx.fillText('PIN COLORS', lx, y0 + 15 * s);
+  ctx.font = font(11);
+  ctx.strokeStyle = '#333';
+  legendEntries().forEach((e, i) => {
+    const x = lx + (i % 3) * 118 * s;
+    const y = y0 + (23 + Math.floor(i / 3) * 18) * s;
+    ctx.fillStyle = e.color;
+    ctx.fillRect(x, y, 10 * s, 10 * s);
+    ctx.strokeRect(x, y, 10 * s, 10 * s);
+    ctx.fillStyle = '#111';
+    ctx.fillText(e.label, x + 15 * s, y + 9 * s);
   });
   return new Promise((resolve, reject) =>
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('PNG encoding failed'))), 'image/png'),

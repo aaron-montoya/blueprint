@@ -52,8 +52,8 @@ copy/paste · `Ctrl+D` duplicate · `Ctrl+A` select all · `Ctrl+S` export
 * **File → Import .blueprint** (or drop the file onto the page) opens a file to
   keep editing. Every part's full definition is embedded in the file, so it
   opens even on a machine that doesn't have the part library.
-* **Export PNG** and **Export PDF** render the whole diagram with the title
-  block and pin-color legend. The PDF puts the diagram on one landscape Letter
+* **Export PNG** and **Export PDF** render the whole diagram with a slim strip
+  underneath holding the title block and pin-color legend. The PDF puts the diagram on one landscape Letter
   page and the connection list on the page(s) after it.
 
 Clearing browser data deletes local copies, so export anything you want to keep.

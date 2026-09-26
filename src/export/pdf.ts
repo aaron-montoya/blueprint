@@ -19,17 +19,19 @@ export function pdfText(s: string): string {
 }
 
 /**
- * One landscape Letter page: the diagram scaled to fit, with the title block
- * and pin-color legend along the bottom as real (crisp) text.
+ * One landscape Letter page: the diagram scaled to fit, with a slim strip
+ * along the bottom holding the title block and pin-color legend as real
+ * (crisp) text. The strip is kept small so the diagram gets the page.
  */
 export async function renderPdf(content: DiagramContent): Promise<Blob> {
   const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' });
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
-  const M = 28;
-  const footerH = 104;
+  const M = 24;
+  const footerH = 40;
+  const gap = 6;
   const areaW = W - 2 * M;
-  const areaH = H - 2 * M - footerH - 10;
+  const areaH = H - 2 * M - footerH - gap;
 
   // Aim for ~250 dpi at the printed size.
   const probe = diagramBounds(content);
@@ -44,53 +46,56 @@ export async function renderPdf(content: DiagramContent): Promise<Blob> {
   doc.setLineWidth(0.5);
   doc.rect(M, M, areaW, areaH);
 
-  // Title block
+  // Footer strip: title block (left) | pin colors (right).
   const fy = H - M - footerH;
+  const legendW = 240;
+  const titleW = areaW - legendW;
   doc.setDrawColor(30);
-  doc.setLineWidth(1.2);
-  doc.rect(M, fy, 380, footerH);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.setTextColor(20);
-  doc.text(doc.splitTextToSize(pdfText(content.title.heading), 360)[0] ?? '', M + 10, fy + 18);
-  const rows = titleRows(content.title);
-  rows.forEach((r, i) => {
-    const col = i < 3 ? 0 : 1;
-    const row = i < 3 ? i : i - 3;
-    const x = M + 10 + col * 190;
-    const y = fy + 40 + row * 22;
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.text(r.label, x, y);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.text(doc.splitTextToSize(pdfText(r.value) || '—', 120)[0] ?? '', x + 58, y);
-  });
+  doc.setLineWidth(1);
+  doc.rect(M, fy, areaW, footerH);
+  doc.setLineWidth(0.5);
+  doc.line(M + titleW, fy, M + titleW, fy + footerH);
 
-  // Legend
-  const lx = M + 395;
-  doc.setDrawColor(150);
-  doc.setLineWidth(0.6);
-  doc.rect(lx, fy, 290, footerH);
+  const fit = (text: string, width: number) => doc.splitTextToSize(pdfText(text), width)[0] ?? '';
+  doc.setTextColor(20);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.text('Pin colors', lx + 10, fy + 16);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  legendEntries().forEach((e, i) => {
-    const col = i % 2;
-    const row = Math.floor(i / 2);
-    const x = lx + 10 + col * 140;
-    const y = fy + 30 + row * 22;
-    doc.setFillColor(e.color);
-    doc.setDrawColor(40);
-    doc.rect(x, y, 10, 10, 'FD');
-    doc.text(e.label, x + 16, y + 8.5);
+  doc.text(fit(content.title.heading, titleW - 16), M + 8, fy + 13);
+  const rows = titleRows(content.title);
+  const colW = (titleW - 16) / rows.length;
+  rows.forEach((r, i) => {
+    const x = M + 8 + i * colW;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6);
+    doc.setTextColor(110);
+    doc.text(r.label.toUpperCase(), x, fy + 23);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(20);
+    doc.text(fit(r.value || '—', colW - 6), x, fy + 33);
   });
 
+  const lx = M + titleW + 8;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  doc.setTextColor(110);
+  doc.text('PIN COLORS', lx, fy + 10);
+  doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
+  doc.setTextColor(20);
+  doc.setLineWidth(0.4);
+  legendEntries().forEach((e, i) => {
+    const x = lx + (i % 3) * 77;
+    const y = fy + 16 + Math.floor(i / 3) * 11;
+    doc.setFillColor(e.color);
+    doc.setDrawColor(40);
+    doc.rect(x, y, 7, 7, 'FD');
+    doc.text(e.label, x + 10, y + 6);
+  });
+
+  doc.setFontSize(6.5);
   doc.setTextColor(120);
-  doc.text(`Blueprint · printed ${new Date().toLocaleDateString()}`, W - M, H - M + 12, { align: 'right' });
+  doc.text(`Blueprint · printed ${new Date().toLocaleDateString()}`, W - M, H - M + 10, { align: 'right' });
   addConnectionPages(doc, content);
   return doc.output('blob');
 }
