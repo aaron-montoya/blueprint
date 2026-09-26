@@ -1541,3 +1541,10 @@ tr.conn-editor:hover {
   box-shadow: 0 6px 20px rgba(20, 30, 50, 0.14);
   font-size: 12px;
 }
+
+/* Inline SVG icons sit on the text baseline like the glyph icons. */
+.icon {
+  display: inline-block;
+  vertical-align: -2px;
+  flex: none;
+}

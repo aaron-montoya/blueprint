@@ -32,6 +32,11 @@ tools/
 examples/                      ← made-up props only (the repo is public)
 ```
 
+## Conventions
+
+* **No emoji** anywhere in the project (UI, docs, code). Icons are inline SVG
+  components in `src/ui/icons.tsx` that take the surrounding text color.
+
 ## How React Flow is used
 
 * **Parts are custom nodes** (`type: "part"`). The node's `data` holds the full

@@ -5,6 +5,7 @@ import { newDiagram, onSaved, openDiagram, flushSave } from '../app/session';
 import { toast, useUi } from '../app/uiStore';
 import { WIRE_COLOR_NAMES, WIRE_COLORS } from '../model/format';
 import { useDiagram } from '../store/diagramStore';
+import { OptimizeIcon } from './icons';
 import { deleteDiagram, listDiagrams, type DiagramSummary } from '../store/persistence';
 
 function useClickOutside(open: boolean, close: () => void) {
@@ -46,7 +47,7 @@ function OptimizeButton() {
           : 'Reroute all wires together to cut crossings and overlaps. Select wires or parts to optimize just those.'
       }
     >
-      ⚡ <span className="tb-label">{busy ? 'Optimizing…' : 'Optimize wires'}</span>
+      <OptimizeIcon /> <span className="tb-label">{busy ? 'Optimizing…' : 'Optimize wires'}</span>
     </button>
   );
 }
