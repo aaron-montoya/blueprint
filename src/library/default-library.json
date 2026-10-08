@@ -2026,12 +2026,12 @@
    "formatVersion": 1,
    "id": "mosfet-module",
    "name": "MOSFET Module",
-   "subtitle": "12V load switch",
+   "subtitle": "dual MOSFET PWM switch · 5-36V",
    "category": "Outputs",
    "pins": [
     {
-     "id": "TRIG",
-     "label": "TRIG",
+     "id": "PWM+",
+     "label": "PWM+",
      "side": "left",
      "index": 0,
      "type": "io"
@@ -2044,15 +2044,15 @@
      "type": "gnd"
     },
     {
-     "id": "VIN+",
-     "label": "VIN+",
+     "id": "DC+",
+     "label": "DC+",
      "side": "right",
      "index": 0,
      "type": "power"
     },
     {
-     "id": "VIN−",
-     "label": "VIN−",
+     "id": "DC−",
+     "label": "DC−",
      "side": "right",
      "index": 1,
      "type": "gnd"
@@ -2069,7 +2069,7 @@
      "label": "OUT−",
      "side": "right",
      "index": 3,
-     "type": "gnd"
+     "type": "other"
     }
    ]
   },
@@ -3204,15 +3204,15 @@
     {
      "id": "b",
      "label": "b",
-     "side": "right",
-     "index": 0,
+     "side": "left",
+     "index": 1,
      "type": "other"
     },
     {
      "id": "c",
      "label": "c",
-     "side": "right",
-     "index": 1,
+     "side": "left",
+     "index": 2,
      "type": "other"
     }
    ]
