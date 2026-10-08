@@ -94,6 +94,7 @@ function TitleBlockTab() {
         <li>Select a wire, then drag its handles to reshape.</li>
         <li>Optimize wires reroutes everything together to cut crossings (or just the selected wires/parts).</li>
         <li>Double-click a part's title to rename it.</li>
+        <li>Double-click the line under a part's name to change its value (a resistor's 1kΩ, a fuse's 5A).</li>
         <li>Drag on empty canvas to box-select; right-drag or Space-drag to pan; wheel to zoom.</li>
         <li>R rotate · F flip · Ctrl+D duplicate · Ctrl+S export.</li>
         <li>On a phone or tablet: ☰ opens the parts (tap one to add it), one finger pans, two fingers zoom, double-tap a title to rename.</li>

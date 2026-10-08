@@ -160,6 +160,8 @@ export interface PartInstanceRecord {
   flip: boolean;
   /** Instance label, e.g. "Top XLR 1". Defaults to the part name. */
   label: string;
+  /** Instance value, e.g. "1kΩ" on a resistor. Replaces the part's subtitle; absent = the subtitle. */
+  value?: string;
   /** Full embedded definition so the diagram opens without the library. */
   part: PartDefinition;
 }
@@ -314,6 +316,7 @@ export function validateDiagram(raw: unknown): DiagramFile {
       rotation: rotation as Rotation,
       flip: p.flip === true,
       label: str(p.label ?? part.name, `${pp}.label`)!,
+      ...(p.value !== undefined ? { value: str(p.value, `${pp}.value`)! } : {}),
       part,
     };
   });

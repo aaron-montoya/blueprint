@@ -79,6 +79,8 @@ export interface DiagramState extends Snapshot {
   addSection(rect: Rect, label?: string): string;
   wrapSelectionInSection(): string | null;
   setPartLabel(id: string, label: string): void;
+  /** Set a part's value (shown in place of its subtitle); undefined goes back to the subtitle. */
+  setPartValue(id: string, value: string | undefined): void;
   setNoteText(id: string, text: string): void;
   setSection(id: string, patch: Partial<{ label: string; color: string }>): void;
   updateWire(id: string, patch: Partial<WireData>, coalesceKey?: string): void;
@@ -338,6 +340,19 @@ export const useDiagram = create<DiagramState>()((set, get) => {
       const x1 = Math.max(...rects.map((r) => r.x + r.width)) + pad;
       const y1 = Math.max(...rects.map((r) => r.y + r.height)) + pad;
       return get().addSection({ x: x0, y: y0, width: x1 - x0, height: y1 - y0 });
+    },
+
+    setPartValue(id, value) {
+      commit(
+        (s) => ({
+          nodes: s.nodes.map((n) => {
+            if (n.id !== id || !isPartNode(n)) return n;
+            const { value: _old, ...rest } = n.data;
+            return { ...n, data: value === undefined ? rest : { ...rest, value } };
+          }),
+        }),
+        // Each edit is committed whole (Enter/blur), so each is its own undo step.
+      );
     },
 
     setPartLabel(id, label) {

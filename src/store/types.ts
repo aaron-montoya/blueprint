@@ -4,6 +4,8 @@ import type { PartDefinition, Rotation, WireColor, WireRoute, XY } from '../mode
 export type PartNodeData = {
   def: PartDefinition;
   label: string;
+  /** Replaces the part's subtitle (e.g. a resistor's "220Ω"); absent = the subtitle. */
+  value?: string;
   rotation: Rotation;
   flip: boolean;
 };

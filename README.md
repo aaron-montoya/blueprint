@@ -22,6 +22,7 @@ no server, and diagrams never leave your machine unless you export them.
 | Reshape a wire | Select it and drag the small handles on its segments. Your shape stays put when parts move. **Reset route** in the wire editor goes back to automatic routing. |
 | Untangle wires | **Optimize wires** in the toolbar reroutes all wires together to cut crossings and overlaps (select wires or parts first to do just those). The result is kept as manual bends; `Ctrl+Z` undoes it in one step. |
 | Rename a part | Double-click its title (or select it and press F2), e.g. "XLR Jack" → "Top XLR 1". |
+| Change a value | Double-click the line under a part's name, e.g. a resistor's "220Ω" → "1kΩ", a fuse's "__A" → "5A". Clear it to go back to the library's. |
 | Rotate / flip | `R` / `F`, or the toolbar. Pins move with the part. |
 | Group parts | Select them and click **Section** (or click Section with nothing selected and draw a box). Drag the section's tab to move it and everything inside. |
 | Notes | **Note** in the toolbar; double-click to edit. |

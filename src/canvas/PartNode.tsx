@@ -43,15 +43,31 @@ function PinLabel({ pin }: { pin: LaidOutPin }) {
 }
 
 function PartNodeView({ id, data, selected }: NodeProps<PartNodeType>) {
-  const layout = layoutPart(data.def, data.rotation, data.flip, data.label);
+  const layout = layoutPart(data.def, data.rotation, data.flip, data.label, data.value);
   const setPartLabel = useDiagram((s) => s.setPartLabel);
+  const setPartValue = useDiagram((s) => s.setPartValue);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(data.label);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [editingValue, setEditingValue] = useState(false);
+  const [valueDraft, setValueDraft] = useState('');
+  const valueRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (editing) inputRef.current?.select();
   }, [editing]);
+  useEffect(() => {
+    if (editingValue) valueRef.current?.select();
+  }, [editingValue]);
+
+  const finishValue = (save: boolean) => {
+    setEditingValue(false);
+    if (!save) return;
+    // Blank (or the library's own subtitle) means "use the library's".
+    const v = valueDraft.trim();
+    const next = v === '' || v === (data.def.subtitle ?? '') ? undefined : v;
+    if (next !== data.value) setPartValue(id, next);
+  };
 
   // F2 (or the toolbar) asks a selected part to start renaming.
   useEffect(() => {
@@ -97,6 +113,30 @@ function PartNodeView({ id, data, selected }: NodeProps<PartNodeType>) {
         setDraft(data.label);
         setEditing(true);
       }}
+      subtitle={
+        editingValue ? (
+          <input
+            ref={valueRef}
+            className="part-value-input nodrag"
+            value={valueDraft}
+            placeholder={data.def.subtitle || 'value'}
+            aria-label="Value"
+            onChange={(e) => setValueDraft(e.target.value)}
+            onBlur={() => finishValue(true)}
+            onDoubleClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+              if (e.key === 'Enter') finishValue(true);
+              if (e.key === 'Escape') finishValue(false);
+            }}
+          />
+        ) : undefined
+      }
+      onSubtitleDoubleClick={(e) => {
+        e.stopPropagation();
+        setValueDraft(data.value ?? data.def.subtitle ?? '');
+        setEditingValue(true);
+      }}
       renderPin={(pin, style) => (
         <Handle
           key={pin.def.id}
@@ -122,6 +162,8 @@ export function PartBody({
   selected,
   header,
   onHeaderDoubleClick,
+  subtitle,
+  onSubtitleDoubleClick,
   renderPin,
 }: {
   layout: PartLayout;
@@ -130,6 +172,9 @@ export function PartBody({
   /** Replaces the title line (e.g. with a rename input). */
   header?: React.ReactNode;
   onHeaderDoubleClick?: (e: React.MouseEvent) => void;
+  /** Replaces the subtitle line (e.g. with a value input). */
+  subtitle?: React.ReactNode;
+  onSubtitleDoubleClick?: (e: React.MouseEvent) => void;
   renderPin: (pin: LaidOutPin, style: React.CSSProperties) => React.ReactNode;
 }) {
   return (
@@ -145,7 +190,16 @@ export function PartBody({
         title={onHeaderDoubleClick ? 'Double-click to rename this part' : undefined}
       >
         {header ?? <div className="part-title">{layout.titleLine}</div>}
-        {layout.subtitleLine && <div className="part-subtitle">{layout.subtitleLine}</div>}
+        {subtitle ??
+          (layout.subtitleLine && (
+            <div
+              className="part-subtitle"
+              onDoubleClick={onSubtitleDoubleClick}
+              title={onSubtitleDoubleClick ? 'Double-click to change the value (e.g. 1kΩ)' : undefined}
+            >
+              {layout.subtitleLine}
+            </div>
+          ))}
       </div>
 
       {layout.note && (

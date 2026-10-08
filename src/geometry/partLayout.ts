@@ -110,24 +110,32 @@ const cache = new WeakMap<PartDefinition, Map<string, PartLayout>>();
  * Lay out a part body and its pins. Pure and cached: the part node, the wire
  * router and the exporters all call this, so wires always meet their pins.
  */
-export function layoutPart(def: PartDefinition, rotation: Rotation, flip: boolean, label: string): PartLayout {
-  const key = `${rotation}|${flip}|${label}`;
+export function layoutPart(
+  def: PartDefinition,
+  rotation: Rotation,
+  flip: boolean,
+  label: string,
+  /** Instance value shown in place of the subtitle (e.g. a resistor's "1kΩ"). */
+  value?: string,
+): PartLayout {
+  const key = `${rotation}|${flip}|${label}|${value ?? '\u0000'}`;
   let perDef = cache.get(def);
   if (!perDef) cache.set(def, (perDef = new Map()));
   const hit = perDef.get(key);
   if (hit) return hit;
-  const result = computeLayout(def, rotation, flip, label);
+  const result = computeLayout(def, rotation, flip, label, value);
   perDef.set(key, result);
   return result;
 }
 
-function computeLayout(def: PartDefinition, rotation: Rotation, flip: boolean, label: string): PartLayout {
+function computeLayout(def: PartDefinition, rotation: Rotation, flip: boolean, label: string, value?: string): PartLayout {
   const sides = pinsBySide(def, rotation, flip);
   const { left, right, top, bottom } = sides;
 
   const titleLine = label || def.name;
   const renamed = titleLine !== def.name;
-  const subtitleLine = renamed ? [def.name, def.subtitle].filter(Boolean).join(' · ') : (def.subtitle ?? '');
+  const subtitle = value ?? def.subtitle;
+  const subtitleLine = renamed ? [def.name, subtitle].filter(Boolean).join(' · ') : (subtitle ?? '');
   const headerHeight = subtitleLine ? HEADER_TWO_LINES : HEADER_ONE_LINE;
 
   const longest = (pins: PinDefinition[]) => Math.max(0, ...pins.map((p) => p.label.length));

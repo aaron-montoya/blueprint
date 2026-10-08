@@ -20,7 +20,7 @@ export interface WireGeometry {
 }
 
 export const partLayoutOf = (n: PartNode): PartLayout =>
-  layoutPart(n.data.def, n.data.rotation, n.data.flip, n.data.label);
+  layoutPart(n.data.def, n.data.rotation, n.data.flip, n.data.label, n.data.value);
 
 export function partRect(n: PartNode): Rect {
   const l = partLayoutOf(n);

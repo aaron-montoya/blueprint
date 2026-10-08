@@ -32,6 +32,7 @@ export function toFile({ nodes, edges, title }: DiagramContent): DiagramFile {
         rotation: n.data.rotation,
         flip: n.data.flip,
         label: n.data.label,
+        ...(n.data.value !== undefined ? { value: n.data.value } : {}),
         part: n.data.def,
       });
     } else if (n.type === 'note') {
@@ -104,7 +105,7 @@ export function fromFile(file: DiagramFile): DiagramContent {
     id: p.id,
     type: 'part',
     position: { x: p.x, y: p.y },
-    data: { def: p.part, label: p.label, rotation: p.rotation, flip: p.flip },
+    data: { def: p.part, label: p.label, ...(p.value !== undefined ? { value: p.value } : {}), rotation: p.rotation, flip: p.flip },
   }));
   const notes: NoteNode[] = file.notes.map((n) => ({
     id: n.id,

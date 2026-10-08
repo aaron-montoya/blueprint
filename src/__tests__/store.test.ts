@@ -2,7 +2,9 @@ import 'fake-indexeddb/auto';
 import { BUILTIN_PARTS } from '../library/builtin';
 import { EMPTY_TITLE, validateDiagram } from '../model/format';
 import { fromFile, toFile } from '../store/convert';
+import { layoutPart } from '../geometry/partLayout';
 import { freeSpot, nodeRect, useDiagram } from '../store/diagramStore';
+import { isPartNode } from '../store/types';
 import { listDiagrams, loadDiagram, saveDiagram } from '../store/persistence';
 import type { DiagramNode } from '../store/types';
 
@@ -18,6 +20,36 @@ function setup() {
 }
 
 describe('diagram store', () => {
+  it("sets a part's value (a resistor's ohms), saves it, and clears back to the library's", () => {
+    st().load({ nodes: [], edges: [], title: { ...EMPTY_TITLE } }, 'test');
+    const r = st().addPart(def('Resistor'), { x: 0, y: 0 });
+    const node = () => st().nodes.find((n) => n.id === r)!;
+    const subtitle = () => {
+      const n = node();
+      if (!isPartNode(n)) throw new Error('not a part');
+      return layoutPart(n.data.def, n.data.rotation, n.data.flip, n.data.label, n.data.value).subtitleLine;
+    };
+    expect(subtitle()).toBe('220Ω');
+    st().setPartValue(r, '1kΩ');
+    expect(subtitle()).toBe('1kΩ');
+    st().setPartLabel(r, 'R7');
+    expect(subtitle()).toBe('Resistor · 1kΩ');
+
+    // Round-trips through a .blueprint file.
+    const file = validateDiagram(JSON.parse(JSON.stringify(toFile({ nodes: st().nodes, edges: st().edges, title: st().title }))));
+    expect(file.parts[0].value).toBe('1kΩ');
+    const back = fromFile(file).nodes[0];
+    expect(isPartNode(back) && back.data.value).toBe('1kΩ');
+
+    st().undo();
+    st().undo();
+    expect(subtitle()).toBe('220Ω');
+    st().setPartValue(r, '4.7kΩ');
+    st().setPartValue(r, undefined);
+    expect(subtitle()).toBe('220Ω');
+    expect('value' in (node().data as object)).toBe(false);
+  });
+
   it('undoes and redoes everything, wires included', () => {
     const { wire } = setup();
     expect(st().edges).toHaveLength(1);

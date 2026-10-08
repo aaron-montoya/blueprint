@@ -711,6 +711,15 @@ table.connections tr.selected {
   border-radius: 3px;
   padding: 1px 3px;
 }
+.part-value-input {
+  width: 100%;
+  font: 10px var(--font);
+  text-align: center;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 3px;
+  margin-top: 1px;
+}
 .part-note {
   position: absolute;
   left: 6px;
