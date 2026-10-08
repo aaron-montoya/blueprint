@@ -234,7 +234,7 @@ PARTS = {
     Part("Resistor", "passive", subtitle="220Ω", left=[("1", NC)], right=[("2", NC)]),
     Part("Terminal Block 2-pos", "conn", left=[("1", NC), ("2", NC)], right=[("1", NC), ("2", NC)]),
     Part("Terminal Block 4-pos", "conn", left=[(str(i), NC) for i in range(1, 5)], right=[(str(i), NC) for i in range(1, 5)]),
-    Part("Wago 3-way", "conn", subtitle="all pins joined", left=[("a", NC), ("b", NC), ("c", NC)]),
+    Part("Wago 3-way", "conn", subtitle="all pins joined", left=[("a", NC)], right=[("b", NC), ("c", NC)]),
     Part("JST 2-pin", "conn", left=[("1", NC), ("2", NC)], right=[("1", NC), ("2", NC)]),
     Part("JST 3-pin", "conn", left=[(str(i), NC) for i in range(1, 4)], right=[(str(i), NC) for i in range(1, 4)]),
     Part("JST 4-pin", "conn", left=[(str(i), NC) for i in range(1, 5)], right=[(str(i), NC) for i in range(1, 5)]),

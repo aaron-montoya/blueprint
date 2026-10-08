@@ -3204,15 +3204,15 @@
     {
      "id": "b",
      "label": "b",
-     "side": "left",
-     "index": 1,
+     "side": "right",
+     "index": 0,
      "type": "other"
     },
     {
      "id": "c",
      "label": "c",
-     "side": "left",
-     "index": 2,
+     "side": "right",
+     "index": 1,
      "type": "other"
     }
    ]

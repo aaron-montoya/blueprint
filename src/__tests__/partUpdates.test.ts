@@ -12,7 +12,7 @@ const pin = (id: string, side: PinDefinition['side'], index: number, type: PinDe
   type,
 });
 
-/** The MOSFET and Wago as they were before their pins changed. */
+/** The MOSFET before its pins were renamed, and a Wago with all its pins on one side (briefly the library's). */
 const oldMosfet: PartDefinition = {
   ...latest('MOSFET Module'),
   subtitle: '12V load switch',
@@ -27,7 +27,7 @@ const oldMosfet: PartDefinition = {
 };
 const oldWago: PartDefinition = {
   ...latest('Wago 3-way'),
-  pins: [pin('a', 'left', 0, 'other'), pin('b', 'right', 0, 'other'), pin('c', 'right', 1, 'other')],
+  pins: [pin('a', 'left', 0, 'other'), pin('b', 'left', 1, 'other'), pin('c', 'left', 2, 'other')],
 };
 
 describe('updating placed parts to the library version', () => {
@@ -64,7 +64,7 @@ describe('updating placed parts to the library version', () => {
     expect(to('m-VIN−')).toBe('DC−');
     expect(to('m-OUT+')).toBe('OUT+');
     expect(to('m-OUT−')).toBe('OUT−');
-    // The Wago's pins kept their names; they just all moved to one side.
+    // The Wago's pins kept their names; b and c moved back to the other side.
     expect(['a', 'b', 'c'].map((p) => to(`w-${p}`))).toEqual(['a', 'b', 'c']);
     // Wires whose pin moved elsewhere on the part lose their old bends;
     // the rest (including renamed pins in the same spot) keep theirs.
