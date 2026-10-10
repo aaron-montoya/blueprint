@@ -397,6 +397,167 @@
      "type": "other"
     }
    ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "piezo-disc",
+   "name": "Piezo Disc",
+   "subtitle": "contact mic",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "+",
+     "label": "+ (red)",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "−",
+     "label": "− (black)",
+     "side": "right",
+     "index": 1,
+     "type": "gnd"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "jfet",
+   "name": "JFET",
+   "subtitle": "N-channel",
+   "category": "Inline Parts",
+   "pins": [
+    {
+     "id": "Gate",
+     "label": "Gate",
+     "side": "left",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "Drain",
+     "label": "Drain",
+     "side": "right",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "Source",
+     "label": "Source",
+     "side": "bottom",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "3-5mm-trs-plug",
+   "name": "3.5mm TRS Plug",
+   "subtitle": "TRS",
+   "category": "Inputs",
+   "pins": [
+    {
+     "id": "Tip",
+     "label": "Tip",
+     "side": "top",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "Ring",
+     "label": "Ring",
+     "side": "top",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "Sleeve",
+     "label": "Sleeve",
+     "side": "top",
+     "index": 2,
+     "type": "other"
+    },
+    {
+     "id": "plug",
+     "label": "plug",
+     "side": "bottom",
+     "index": 0,
+     "type": "other"
+    }
+   ],
+   "width": 180
+  },
+  {
+   "formatVersion": 1,
+   "id": "headset-splitter",
+   "name": "Headset Splitter",
+   "subtitle": "TRRS to mic + headphones",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "Mic jack",
+     "label": "Mic jack",
+     "side": "top",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "Headphones",
+     "label": "Headphones",
+     "side": "top",
+     "index": 1,
+     "type": "other"
+    },
+    {
+     "id": "TRRS plug",
+     "label": "TRRS plug",
+     "side": "bottom",
+     "index": 0,
+     "type": "other"
+    }
+   ],
+   "width": 220
+  },
+  {
+   "formatVersion": 1,
+   "id": "usb-c-3-5mm-dongle",
+   "name": "USB-C to 3.5mm Dongle",
+   "subtitle": "headset (TRRS)",
+   "category": "Power & Wiring",
+   "pins": [
+    {
+     "id": "3.5mm in",
+     "label": "3.5mm in",
+     "side": "top",
+     "index": 0,
+     "type": "other"
+    },
+    {
+     "id": "USB-C",
+     "label": "USB-C",
+     "side": "bottom",
+     "index": 0,
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "formatVersion": 1,
+   "id": "phone",
+   "name": "Phone",
+   "subtitle": "recorder",
+   "category": "Outputs",
+   "pins": [
+    {
+     "id": "USB-C",
+     "label": "USB-C",
+     "side": "top",
+     "index": 0,
+     "type": "other"
+    }
+   ]
   }
  ]
 }

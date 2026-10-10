@@ -128,7 +128,35 @@ export function layoutPart(
   return result;
 }
 
+/** Schematic symbols (the GND flag) are a small square with each pin centred on its side. */
+export const SYMBOL_SIZE = 40;
+
+function symbolLayout(def: PartDefinition, rotation: Rotation, flip: boolean, label: string): PartLayout {
+  const sides = pinsBySide(def, rotation, flip);
+  const s = SYMBOL_SIZE;
+  const at: Record<PinSide, { x: number; y: number }> = {
+    top: { x: s / 2, y: 0 },
+    bottom: { x: s / 2, y: s },
+    left: { x: 0, y: s / 2 },
+    right: { x: s, y: s / 2 },
+  };
+  const pins: LaidOutPin[] = [];
+  for (const side of ['top', 'right', 'bottom', 'left'] as PinSide[])
+    for (const p of sides[side]) pins.push({ def: p, side, ...at[side], verticalLabel: false });
+  return {
+    width: s,
+    height: s,
+    headerTop: 0,
+    headerHeight: 0,
+    titleLine: label || def.name,
+    subtitleLine: '',
+    pins,
+    pinById: new Map(pins.map((p) => [p.def.id, p])),
+  };
+}
+
 function computeLayout(def: PartDefinition, rotation: Rotation, flip: boolean, label: string, value?: string): PartLayout {
+  if (def.symbol) return symbolLayout(def, rotation, flip, label);
   const sides = pinsBySide(def, rotation, flip);
   const { left, right, top, bottom } = sides;
 

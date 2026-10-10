@@ -44,8 +44,13 @@ export interface PartDefinition {
   /** Preferred body width in px. Omit to size automatically. */
   width?: number;
   note?: string;
+  /** Draw as a schematic symbol instead of a box (e.g. the GND flag). */
+  symbol?: PartSymbol;
   pins: PinDefinition[];
 }
+
+export const PART_SYMBOLS = ['ground'] as const;
+export type PartSymbol = (typeof PART_SYMBOLS)[number];
 
 export const DEFAULT_CATEGORIES = ['Boards', 'Inputs', 'Outputs', 'Inline Parts', 'Power & Wiring'];
 
@@ -267,6 +272,11 @@ export function validatePart(raw: unknown, path = 'part'): PartDefinition {
   if (width !== undefined) part.width = width;
   const note = str(raw.note, `${path}.note`, true);
   if (note) part.note = note;
+  const symbol = str(raw.symbol, `${path}.symbol`, true);
+  if (symbol !== undefined) {
+    if (!(PART_SYMBOLS as readonly string[]).includes(symbol)) fail(`${path}.symbol`, `must be one of ${PART_SYMBOLS.join(', ')}`);
+    part.symbol = symbol as PartSymbol;
+  }
   return part;
 }
 

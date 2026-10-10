@@ -1,5 +1,5 @@
 import { BUILTIN_PARTS } from '../library/builtin';
-import { GRID, layoutPart } from '../geometry/partLayout';
+import { GRID, layoutPart, SYMBOL_SIZE } from '../geometry/partLayout';
 import type { Rotation } from '../model/format';
 
 const esp = BUILTIN_PARTS.find((p) => p.id === 'esp32-devkit-v1-30')!;
@@ -44,5 +44,19 @@ describe('part layout', () => {
     expect(f.pinById.get('EN')!.side).toBe('right');
     expect(f.pinById.get('D23')!.side).toBe('left');
     expect(f.pinById.get('EN')!.y).toBe(layoutPart(esp, 0, false, esp.name).pinById.get('EN')!.y);
+  });
+});
+
+describe('symbol parts', () => {
+  const gnd = BUILTIN_PARTS.find((p) => p.id === 'gnd')!;
+  it('draws the GND flag as a small symbol with its pin centred on a side', () => {
+    expect(gnd.symbol).toBe('ground');
+    const l = layoutPart(gnd, 0, false, gnd.name);
+    expect([l.width, l.height]).toEqual([SYMBOL_SIZE, SYMBOL_SIZE]);
+    expect(l.pins.map((p) => [p.side, p.x, p.y])).toEqual([['top', SYMBOL_SIZE / 2, 0]]);
+  });
+  it('moves the pin round when rotated', () => {
+    expect(layoutPart(gnd, 90, false, gnd.name).pins.map((p) => [p.side, p.x, p.y])).toEqual([['right', SYMBOL_SIZE, SYMBOL_SIZE / 2]]);
+    expect(layoutPart(gnd, 180, false, gnd.name).pins[0].side).toBe('bottom');
   });
 });

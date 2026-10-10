@@ -3437,6 +3437,7 @@
    "name": "GND",
    "subtitle": "ground reference",
    "category": "Power & Wiring",
+   "symbol": "ground",
    "pins": [
     {
      "id": "GND",

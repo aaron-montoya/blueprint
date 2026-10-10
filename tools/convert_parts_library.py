@@ -93,6 +93,7 @@ def ground_flag():
         "name": "GND",
         "subtitle": "ground reference",
         "category": "Power & Wiring",
+        "symbol": "ground",
         "pins": [{"id": "GND", "label": "GND", "side": "top", "index": 0, "type": "gnd"}],
     }
 

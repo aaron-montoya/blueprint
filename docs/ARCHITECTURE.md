@@ -142,7 +142,9 @@ wires, bends, colors, labels, sections, notes and the title block.
 See `src/model/format.ts` for the canonical TypeScript types.
 
 * **Part definition** — as in the brief: `id, name, subtitle?, category,
-  width?, note?, pins[] {id, label, side, index, type}`.
+  width?, note?, symbol?, pins[] {id, label, side, index, type}`.
+  `symbol: "ground"` draws the part as a schematic ground symbol (a 40×40
+  square, pin centred on its side) instead of a box; the GND flag uses it.
 * **Parts library** — `{ formatVersion, name, parts[] }`.
 * **Diagram** —
   ```jsonc
@@ -150,7 +152,7 @@ See `src/model/format.ts` for the canonical TypeScript types.
     "formatVersion": 1,
     "kind": "blueprint-diagram",
     "title": { "room": "", "prop": "", "firmware": "", "wiredBy": "", "updated": "" },
-    "parts":    [{ "id", "x", "y", "rotation", "flip", "label", "part": { …full part definition… } }],
+    "parts":    [{ "id", "x", "y", "rotation", "flip", "label", "value"?, "part": { …full part definition… } }],
     "wires":    [{ "id", "from": { "part", "pin" }, "to": { "part", "pin" },
                    "color": "white", "stripe": "blue", "label": "…",
                    "route": "orthogonal", "points": [{ "x", "y" }] }],

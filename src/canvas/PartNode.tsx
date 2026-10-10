@@ -177,6 +177,33 @@ export function PartBody({
   onSubtitleDoubleClick?: (e: React.MouseEvent) => void;
   renderPin: (pin: LaidOutPin, style: React.CSSProperties) => React.ReactNode;
 }) {
+  const pinStyle = (pin: LaidOutPin): React.CSSProperties => ({
+    left: pin.x,
+    top: pin.y,
+    width: PIN_SIZE,
+    height: PIN_SIZE,
+    background: PIN_TYPE_INFO[pin.def.type].color,
+  });
+  if (def.symbol === 'ground') {
+    // The symbol points away from wherever its pin ended up.
+    const side = layout.pins[0]?.side ?? 'top';
+    const angle = { top: 0, right: 90, bottom: 180, left: 270 }[side];
+    return (
+      <div
+        className={`part part-symbol${selected ? ' selected' : ''}`}
+        style={{ width: layout.width, height: layout.height }}
+        data-category={def.category}
+        title={layout.titleLine}
+      >
+        <svg className="symbol-glyph" width={layout.width} height={layout.height} viewBox="0 0 40 40" aria-hidden="true">
+          <g transform={`rotate(${angle} 20 20)`}>
+            <path d="M20 0V17M7 17H33M12 24H28M17 31H23" />
+          </g>
+        </svg>
+        {layout.pins.map((pin) => renderPin(pin, pinStyle(pin)))}
+      </div>
+    );
+  }
   return (
     <div
       className={`part${selected ? ' selected' : ''}`}
@@ -212,13 +239,7 @@ export function PartBody({
         <PinLabel key={`l-${pin.def.id}`} pin={pin} />
       ))}
       {layout.pins.map((pin) =>
-        renderPin(pin, {
-          left: pin.x,
-          top: pin.y,
-          width: PIN_SIZE,
-          height: PIN_SIZE,
-          background: PIN_TYPE_INFO[pin.def.type].color,
-        }),
+        renderPin(pin, pinStyle(pin)),
       )}
     </div>
   );
